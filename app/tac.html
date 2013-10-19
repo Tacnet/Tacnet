@@ -13,6 +13,7 @@
         <!-- build:css(.tmp) styles/main.css -->
         <link rel="stylesheet" href="styles/bootstrap-flatly.css">
         <link rel="stylesheet" href="styles/navbar.css">
+        <script src="https://togetherjs.com/togetherjs-min.js"></script>
         <!-- endbuild -->
     </head>
     <body>
@@ -30,12 +31,16 @@
                 <li><a href="about.html">About</a></li>
                 <li><a href="contact.html">Contact</a></li>
               </ul>
+            <div class="golive"><button class="btn btn-info" id="collaborate">Go Live</button></div>
             </div>
         </div>
 
         <div class="jumbotron">
-            <p class="lead">Collaborate with your team and create tactics in your favorite game - no installation, no registration, no hassle.</p>
-            <p><a href="tac.html" class="btn btn-lg btn-success">Get Started</a></p>
+            <script>
+            document.getElementById("collaborate")
+                .addEventListener("click", TogetherJS, false);
+            </script>
+            <canvas id="tacsketch" style="height: 500px; width: 800px;"></canvas>
         </div>
 
          
