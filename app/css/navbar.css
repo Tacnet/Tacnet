@@ -10,7 +10,45 @@ margin-bottom: 30px;
   text-align: center;
   border-bottom: 1px solid #e5e5e5;
 }
+
 .jumbotron .btn {
 	font-size: 40px;
 	padding: 14px 48px;
+}
+
+.drawotron {
+  padding: 30px;
+  margin-bottom: 30px;
+  font-size: 22.5px;
+  font-weight: 200;
+  line-height: 2.1428571435;
+  color: inherit;
+  background-color: #ecf0f1;
+}
+
+.drawotron h1 {
+  line-height: 1;
+  color: inherit;
+}
+
+.drawotron p {
+  line-height: 1.4;
+}
+
+.container .drawotron {
+  border-radius: 6px;
+}
+
+@media screen and (min-width: 768px) {
+  .drawotron {
+    padding-top: 48px;
+    padding-bottom: 48px;
+  }
+  .container .drawotron {
+    padding-right: 60px;
+    padding-left: 60px;
+  }
+  .drawotron h1 {
+    font-size: 67.5px;
+  }
 }

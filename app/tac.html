@@ -35,15 +35,14 @@
             </div>
         </div>
 
-        <div class="jumbotron">
-            <script>
-            document.getElementById("collaborate")
-                .addEventListener("click", TogetherJS, false);
-            </script>
-            <canvas id="tacsketch" style="height: 500px; width: 800px;"></canvas>
-        </div>
+        <div class="drawotron">
+            <div id="sketchContainer" style="width: 400px; height: 400px; border: 1px solid #000">
+              <canvas id="sketch"></canvas>
+              <script src="js/tacsketch.js"></script>
+            </div>
+         </div>
 
-         
+
         <!-- build:js scripts/vendor.js -->
         <!-- bower:js -->
         <script src="bower_components/jquery/jquery.js"></script>
@@ -60,8 +59,8 @@
             ga('create','UA-XXXXX-X');ga('send','pageview');
         </script>
 
-        <!-- build:js scripts/main.js -->
-        <script data-main="scripts/main" src="bower_components/requirejs/require.js"></script>
-        <!-- endbuild -->
+
+
+
 </body>
 </html>
