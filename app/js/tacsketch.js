@@ -37,6 +37,11 @@ function decreaseBrush() {
 	context.lineWidth-=1;
 }
 
+// Set brush size
+function setSize(size) {
+	context.lineWidth = size;
+}
+
 // Set brush color
 function setColor(color) {
 	context.strokeStyle = color;
