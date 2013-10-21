@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE HTML>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
@@ -14,9 +14,11 @@
         <link rel="stylesheet" href="css/bootstrap-flatly.css">
         <link rel="stylesheet" href="css/navbar.css">
         <script src="https://togetherjs.com/togetherjs-min.js"></script>
-
+        <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="bower_components/jquery/jquery.js"></script>
         <!-- endbuild -->
-    </head>
+
+<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>    </head>
     <body>
         <!--[if lt IE 10]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -45,14 +47,14 @@
         <button type="button" class="btn btn-mini btn-danger" onclick="decreaseBrush()">-</button>
         
         <div class="btn-group">
-            <button type="button" class="btn btn-default" onclick="setColor('#00ff00')"></button>
-            <button type="button" class="btn btn-default" onclick="setColor('#00ff00')"></button>
-            <button type="button" class="btn btn-default" onclick="setColor('#00ff00')"></button>
-            <button type="button" class="btn btn-default" onclick="setColor('#00ff00')"></button>
+            <button type="button" class="btn btn-default btn-green" onclick="setColor('#00ff00')">&nbsp;</button>
+            <button type="button" class="btn btn-default btn-yellow" onclick="setColor('#ff0')">&nbsp;</button>
+            <button type="button" class="btn btn-default btn-red" onclick="setColor('#ff0000')">&nbsp;</button>
+            <button type="button" class="btn btn-default btn-blue" onclick="setColor('#0000ff')">&nbsp;</button>
 
             <div class="btn-group">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    Color
+                    Size
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
