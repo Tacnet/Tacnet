@@ -9,18 +9,38 @@ var sketchStyle = getComputedStyle(sketchContainer);
 canvas.width = parseInt(sketchStyle.getPropertyValue('width'), 10);
 canvas.height = parseInt(sketchStyle.getPropertyValue('height'), 10);
 
-
-var img = new Image(); 
-img.src = 'img/de_dust2.jpg';
-img.onload = function() {
-	bgContext.drawImage(img,0,0);
-}
-
 // Brush Settings
 context.lineWidth = 1;
 context.lineJoin = 'round';
 context.lineCap = 'round';
-context.strokeStyle = '#fff';
+context.strokeStyle = '#000';
+
+// Set background
+function setBackground(background) {
+	var img = new Image();
+	img.src = background;
+	img.onload = function() {
+		bgContext.drawImage(img,0,0);
+	}
+}
+
+// Clear
+function clearCanvas() {
+	canvas.width = canvas.width;
+}
+// Increase and decrease brush size
+function increaseBrush() {
+	context.lineWidth+=1;
+	console.log(context.lineWidth)
+}
+function decreaseBrush() {
+	context.lineWidth-=1;
+}
+
+// Set brush color
+function setColor(color) {
+	context.strokeStyle = color;
+}
 
 // Initialize last mouse
 var lastMouse = {

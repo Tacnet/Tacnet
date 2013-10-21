@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="css/bootstrap-flatly.css">
         <link rel="stylesheet" href="css/navbar.css">
         <script src="https://togetherjs.com/togetherjs-min.js"></script>
+
         <!-- endbuild -->
     </head>
     <body>
@@ -21,26 +22,54 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
         <div class="container">
-          <div class="navbar navbar-default">
-            <div class="navbar-header">
-              <a class="navbar-brand" href="index.html">Tac.net</a>
-            </div>
+            <div class="navbar navbar-default">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="index.html">Tac.net</a>
+                </div>
             <div class="navbar-collapse collapse">
-              <ul class="nav navbar-nav">
-                <li class="active"><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="contact.html">Contact</a></li>
-              </ul>
-              <div class="golive"><button class="btn btn-info" id="collaborate" onclick="TogetherJS(this); return false;">Go Live</button></div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
             </div>
         </div>
 
-        <div class="drawotron">
-            <div id="sketchContainer" style="width: 100%; height: 700px;">
-              <canvas id="sketch"></canvas>
-              <script src="js/tacsketch.js"></script>
+
+        <div style="margin-bottom: 10px">
+        <button type="button" class="btn btn-large btn-success" onclick="TogetherJS(this); return false;">Start TogetherJS</button>
+        <button type="button" class="btn btn-large btn-warning" onclick="clearCanvas()">Clear</button>
+        <button type="button" class="btn btn-large btn-info" onclick="setBackground('img/de_dust2.jpg')">de_dust2</button>
+        <button type="button" class="btn btn-large btn-info" onclick="setBackground('img/whatever.jpg')">Whatever</button>
+        <button type="button" class="btn btn-mini btn-info" onclick="increaseBrush()">+</button>
+        <button type="button" class="btn btn-mini btn-danger" onclick="decreaseBrush()">-</button>
+        
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" onclick="setColor('#00ff00')"></button>
+            <button type="button" class="btn btn-default" onclick="setColor('#00ff00')"></button>
+            <button type="button" class="btn btn-default" onclick="setColor('#00ff00')"></button>
+            <button type="button" class="btn btn-default" onclick="setColor('#00ff00')"></button>
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    Color
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="#" onclick="setSize(1)">1</a></li>
+                    <li><a href="#" onclick="setSize(2)">2</a></li>
+                    <li><a href="#" onclick="setSize(3)">3</a></li>
+                </ul>
             </div>
-         </div>
+        </div>
+        </div>
+        <div class="drawotron">
+                <div id="sketchContainer" style="height: 700px;">
+                  <canvas id="sketch"></canvas>
+                  <script src="js/tacsketch.js"></script>
+                </div>
+            </div>
+        </div>
 
 
         <!-- build:js scripts/vendor.js -->

@@ -6,13 +6,12 @@ padding: 30px;
 margin-bottom: 30px;
 }
 
-.golive
-{
-	margin-top: 0.7%;
-    position: absolute;
-    width: 100%;
-    left: 0;
-    text-align: center;
+.nav.nav-center {
+	margin:0;
+	float:none;
+}
+.nav-center {
+	text-align:center;
 }
 .jumbotron {
   text-align: center;
@@ -39,3 +38,8 @@ margin-bottom: 30px;
   border-radius: 6px;
 }
 
+.btn-green {
+  color: #ffffff;
+  background-color: #00ff00;
+  border-color: #00ff00;
+}
