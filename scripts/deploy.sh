@@ -45,8 +45,8 @@ ssh root@$target -t -p 9001 '
         git reset --hard origin/'$branch'
         source venv/bin/activate
         pip install -r requirements.txt
-        python tacnet/manage.py syncdb --migrate
-        python tacnet/manage.py migrate
+        #python tacnet/manage.py syncdb --migrate
+        #python tacnet/manage.py migrate
         '$full'
     "
 
