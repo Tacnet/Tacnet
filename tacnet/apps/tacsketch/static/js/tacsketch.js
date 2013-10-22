@@ -84,12 +84,12 @@ $( document ).ready(function() {
     }
 
     // Clears the canvas
-    function clear() {
+    function clearCanvas() {
         context.clearRect(0,0 , canvas.width, canvas.height);
 
         if (TogetherJS.running) {
             TogetherJS.send({
-                type: "clear"
+                type: "clearCanvas"
             });
         }
     }
@@ -119,7 +119,7 @@ $( document ).ready(function() {
         }
     }
 
-    TogetherJS.hub.on("clear", function (msg) {
+    TogetherJS.hub.on("clearCanvas", function (msg) {
         if (!msg.sameUrl) {
             return;
         }
