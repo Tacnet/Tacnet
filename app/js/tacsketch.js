@@ -76,10 +76,35 @@ function move(e) {
 }
 
 // Draws the lines
-function draw(start, end) {
+function draw(start, end, remote) {
 	context.beginPath();
 	context.moveTo(start.x, start.y);
 	context.lineTo(end.x, end.y);
 	context.closePath();
 	context.stroke();
+	if ((!remote) && TogetherJS.running) {
+		TogetherJS.send({
+			type: "draw",
+			start: start,
+			end: end,
+		});
+	}
 }
+
+TogetherJS.hub.on("draw", function (msg) {
+	draw(msg.start, msg.end, true);
+});
+
+TogetherJS.hub.on("togetherjs.hello", function() {
+	var image = canvas.toDataURL("image/png");
+	TogetherJS.send({
+		type: "init",
+		image: image
+	});
+});
+
+TogetherJS.hub.on("init", function(msg) {
+	var image = new Image();
+	image.src = msg.image;
+	context.drawImage(image, 0, 0);
+});
