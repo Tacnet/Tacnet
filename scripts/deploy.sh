@@ -2,7 +2,7 @@
 set -e # Exit on error
 
 user='tacnet-www'
-target='ek.sylliaas.no'
+target='sylliaas.no'
 port=''
 branch='master'
 prod_folder='/home/tacnet-www/www/'
@@ -37,7 +37,7 @@ if [ "$full_build" == true ]; then
     full=''
 fi
 
-ssh root@$target -p $port  -t '
+ssh root@$target -t -p 9001 '
 
     su '$user' -c "
         cd '$prod_folder'
