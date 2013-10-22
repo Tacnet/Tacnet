@@ -76,6 +76,7 @@ $( document ).ready(function() {
         }
 
         if (TogetherJS.running) {
+            console.log("background set");
             TogetherJS.send({
                 type: "setBackground",
                 background: background
@@ -88,10 +89,11 @@ $( document ).ready(function() {
         context.clearRect(0,0 , canvas.width, canvas.height);
 
         if (TogetherJS.running) {
+            console.log("clear msg sent");
             TogetherJS.send({
                 type: "clearCanvas"
             });
-            console.log("clear msg sent");
+
         }
     }
 
