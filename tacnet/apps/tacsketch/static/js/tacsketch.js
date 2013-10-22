@@ -1,8 +1,8 @@
 var canvas = document.querySelector ("#sketch");
-var context = canvas.getContext('2d');
+var context = canvas.getContext("2d");
 
-var bgCanvas = document.querySelector ("#sketch");
-var bgContext = bgCanvas.getContext('2d');
+var bgCanvas = document.querySelector ("#background");
+var bgContext = bgCanvas.getContext("2d");
 
 
 // Brush Settings
