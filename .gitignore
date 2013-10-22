@@ -7,3 +7,4 @@ app/bower_components
 venv
 *.pyc
 .idea
+tacnet.db
