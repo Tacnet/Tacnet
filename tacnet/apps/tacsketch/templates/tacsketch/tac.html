@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Tacnet</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <!-- build:css(.tmp) styles/main.css -->
+        <link rel="stylesheet" href="/static/css/bootstrap-flatly.css">
+        <link rel="stylesheet" href="/static/css/main.css">
+        <script src="https://togetherjs.com/togetherjs-min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+        <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+        <!-- endbuild -->
+    </head>
+
+    <body>
+        <!--[if lt IE 10]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <div class="container">
+            <div class="navbar navbar-default">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="index.html">Tac.net</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+
+
+            <div style="margin-bottom: 10px">
+                <button type="button" class="btn btn-large btn-success" onclick="TogetherJS(this); return false;">Start TogetherJS</button>
+                <button type="button" class="btn btn-large btn-warning" onclick="clearCanvas(); return false;">Clear</button>
+                <button type="button" class="btn btn-large btn-info" onclick="setBackground('img/de_dust2.jpg'); return false;">de_dust2</button>
+                <button type="button" class="btn btn-large btn-info" onclick="setBackground('img/whatever.jpg'); return false;">Whatever</button>
+                <button type="button" class="btn btn-mini btn-info" onclick="increaseBrush(); return false;">+</button>
+                <button type="button" class="btn btn-mini btn-danger" onclick="decreaseBrush(); return false;">-</button>
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default btn-green" onclick="setColor('#00ff00'); return false;">&nbsp;</button>
+                    <button type="button" class="btn btn-default btn-yellow" onclick="setColor('#ff0'); return false;">&nbsp;</button>
+                    <button type="button" class="btn btn-default btn-red" onclick="setColor('#ff0000'); return false;">&nbsp;</button>
+                    <button type="button" class="btn btn-default btn-blue" onclick="setColor('#0000ff'); return false;">&nbsp;</button>
+
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            Size
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" onclick="setSize(1); return false;">1</a></li>
+                            <li><a href="#" onclick="setSize(2); return false;">2</a></li>
+                            <li><a href="#" onclick="setSize(3); return false;">3</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="drawotron">
+                <div id="sketchContainer" style="position: relative; border: 1px solid blue; width: 800px; height: 700px">
+                    <canvas id="background" height=700 width=800 style="z-index: 0; position: absolute; left: 0px; top: 0px;"></canvas>
+                    <canvas id="sketch" height=700 width=800 style="z-index: 1; position: absolute; left: 0px; top: 0px;"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Google Analytics -->
+        <script src="/static/js/googleanalytics.js"></script>
+
+
+
+
+</body>
+</html>

@@ -4,25 +4,12 @@ var context = canvas.getContext('2d');
 var bgCanvas = document.querySelector ("#sketch");
 var bgContext = bgCanvas.getContext('2d');
 
-var sketchContainer = document.querySelector("#sketchContainer");
-var sketchStyle = getComputedStyle(sketchContainer);
-canvas.width = parseInt(sketchStyle.getPropertyValue('width'), 10);
-canvas.height = parseInt(sketchStyle.getPropertyValue('height'), 10);
 
 // Brush Settings
 context.lineWidth = 1;
 context.lineJoin = 'round';
 context.lineCap = 'round';
 context.strokeStyle = '#000';
-
-// Set background
-function setBackground(background) {
-	var img = new Image();
-	img.src = background;
-	img.onload = function() {
-		bgContext.drawImage(img,0,0);
-	}
-}
 
 // Clear
 function clearCanvas() {
@@ -75,6 +62,22 @@ function move(e) {
 	lastMouse = mouse; 
 }
 
+// Set background
+function setBackground(background) {
+	var img = new Image();
+	img.src = background;
+	img.onload = function() {
+		bgContext.drawImage(img,0,0);
+	}
+
+    if (TogetherJS.running) {
+        TogetherJS.send({
+            type: "setBackground",
+            background: background
+        });
+    }
+}
+
 // Draws the lines
 function draw(start, end, color, size) {
 	context.save();
@@ -105,6 +108,13 @@ TogetherJS.hub.on("draw", function (msg) {
 		return;
 	}
 	draw(msg.start, msg.end, msg.color, msg.size);
+});
+
+TogetherJS.hub.on("setBackground", function (msg) {
+    if (!msg.sameUrl) {
+        return;
+    }
+    setBackground(msg.background);
 });
 
 TogetherJS.hub.on("togetherjs.hello", function (msg) {
