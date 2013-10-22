@@ -1,9 +1,16 @@
-var canvas = document.querySelector ("#sketch");
-var context = canvas.getContext("2d");
+var canvas = document.getElementById ('sketch');
+var context = canvas.getContext('2d');
 
-var bgCanvas = document.querySelector ("#background");
-var bgContext = bgCanvas.getContext("2d");
+var bgCanvas = document.getElementById ('background');
+var bgContext = bgCanvas.getContext('2d');
 
+var sketchContainer = document.getElementById('sketchContainer');
+var sketchStyle = getComputedStyle(sketchContainer);
+
+canvas.width = parseInt(sketchStyle.getPropertyValue('width'), 10);
+canvas.height = parseInt(sketchStyle.getPropertyValue('height'), 10);
+bgCanvas.width = parseInt(sketchStyle.getPropertyValue('width'), 10);
+bgCanvas.height = parseInt(sketchStyle.getPropertyValue('height'), 10);
 
 // Brush Settings
 context.lineWidth = 1;
