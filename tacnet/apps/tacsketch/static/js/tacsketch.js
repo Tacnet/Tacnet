@@ -84,7 +84,7 @@ $( document ).ready(function() {
     }
 
     // Clears the canvas
-    function clearCanvas() {
+    function clear() {
         context.clearRect(0,0 , canvas.width, canvas.height);
 
         if (TogetherJS.running) {
