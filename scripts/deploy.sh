@@ -1,11 +1,11 @@
 #!/bin/bash
 set -e # Exit on error
 
-user='tacnet-web'
+user='tacnet-www'
 target='ek.sylliaas.no'
 port=''
 branch='master'
-prod_folder='/home/tacnet-web/www/'
+prod_folder='/home/tacnet-www/www/'
 
 # Help
 function usage {

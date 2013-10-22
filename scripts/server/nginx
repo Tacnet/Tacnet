@@ -4,17 +4,17 @@ server {
         server_name ek.sylliaas.no;
 
 	    #Logs
-	    access_log  /home/tacnet-web/www/logs/nginx_access.log;
-  	    error_log   /home/tacnet-web/www/logs/nginx_error.log;
+	    access_log  /home/tacnet-www/www/logs/nginx_access.log;
+  	    error_log   /home/tacnet-www/www/logs/nginx_error.log;
 
         client_max_body_size 4G;
 
         location /static/ {
-            alias   /home/tacnet-web/www/tacnet/files/static/;
+            alias   /home/tacnet-www/www/tacnet/files/static/;
         }
 
         location /media/ {
-             alias   /home/tacnet-web/www/tacnet/files/media/;
+             alias   /home/tacnet-www/www/tacnet/files/media/;
         }
 
 	    location / {
