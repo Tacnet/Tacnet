@@ -82,7 +82,7 @@ function draw(start, end, remote) {
 	context.lineTo(end.x, end.y);
 	context.closePath();
 	context.stroke();
-	if ((!remote) && TogetherJS.running) {
+	if (TogetherJS.running) {
 		TogetherJS.send({
 			type: "draw",
 			start: start,
@@ -92,10 +92,16 @@ function draw(start, end, remote) {
 }
 
 TogetherJS.hub.on("draw", function (msg) {
-	draw(msg.start, msg.end, true);
+	if (!msg.sameUrl) {
+		return;
+	}
+	draw(msg.start, msg.end);
 });
 
 TogetherJS.hub.on("togetherjs.hello", function() {
+	if (!msg.sameUrl) {
+		return;
+	}
 	var image = canvas.toDataURL("image/png");
 	TogetherJS.send({
 		type: "init",
@@ -104,6 +110,9 @@ TogetherJS.hub.on("togetherjs.hello", function() {
 });
 
 TogetherJS.hub.on("init", function(msg) {
+	if (!msg.sameUrl) {
+		return;
+	}
 	var image = new Image();
 	image.src = msg.image;
 	context.drawImage(image, 0, 0);
