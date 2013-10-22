@@ -91,6 +91,7 @@ $( document ).ready(function() {
             TogetherJS.send({
                 type: "clearCanvas"
             });
+            console.log("clear msg sent");
         }
     }
 
@@ -125,7 +126,7 @@ $( document ).ready(function() {
         }
         clearCanvas();
     });
-    
+
     TogetherJS.hub.on("draw", function (msg) {
         if (!msg.sameUrl) {
             return;
