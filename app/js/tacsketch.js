@@ -71,23 +71,32 @@ function move(e) {
 		x: e.pageX - this.offsetLeft,
 		y: e.pageY - this.offsetTop
 	};
-	draw(lastMouse, mouse);
+	draw(lastMouse, mouse, context.strokeStyle, context.lineWidth);
 	lastMouse = mouse; 
 }
 
 // Draws the lines
-function draw(start, end, remote) {
+function draw(start, end, color, size) {
+	context.save();
+
+	context.strokeStyle = color;
+	context.lineWidth = size;
 	context.beginPath();
 	context.moveTo(start.x, start.y);
 	context.lineTo(end.x, end.y);
 	context.closePath();
 	context.stroke();
+
 	if (TogetherJS.running) {
 		TogetherJS.send({
 			type: "draw",
 			start: start,
 			end: end,
+			color: color,
+			size: size
 		});
+
+	context.restore();
 	}
 }
 
@@ -95,10 +104,10 @@ TogetherJS.hub.on("draw", function (msg) {
 	if (!msg.sameUrl) {
 		return;
 	}
-	draw(msg.start, msg.end);
+	draw(msg.start, msg.end, msg.color, msg.size);
 });
 
-TogetherJS.hub.on("togetherjs.hello", function() {
+TogetherJS.hub.on("togetherjs.hello", function (msg) {
 	if (!msg.sameUrl) {
 		return;
 	}
