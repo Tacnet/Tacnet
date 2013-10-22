@@ -19,10 +19,7 @@ $( document ).ready(function() {
     context.lineCap = 'round';
     context.strokeStyle = '#000';
 
-    // Clear
-    function clearCanvas() {
-        canvas.width = canvas.width;
-    }
+
     // Increase and decrease brush size
     function increaseBrush() {
         context.lineWidth+=1;
@@ -86,6 +83,17 @@ $( document ).ready(function() {
         }
     }
 
+    // Clears the canvas
+    function clearCanvas() {
+        context.clearRect(0,0 , canvas.width, canvas.height);
+
+        if (TogetherJS.running) {
+            TogetherJS.send({
+                type: "clear"
+            });
+        }
+    }
+
     // Draws the lines
     function draw(start, end, color, size) {
         context.save();
@@ -111,6 +119,12 @@ $( document ).ready(function() {
         }
     }
 
+    TogetherJS.hub.on("clear", function (msg) {
+        if (!msg.sameUrl) {
+            return;
+        }
+        clearCanvas();
+    })
     TogetherJS.hub.on("draw", function (msg) {
         if (!msg.sameUrl) {
             return;
