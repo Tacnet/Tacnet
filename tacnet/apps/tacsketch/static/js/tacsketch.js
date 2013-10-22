@@ -124,7 +124,8 @@ $( document ).ready(function() {
             return;
         }
         clearCanvas();
-    })
+    });
+    
     TogetherJS.hub.on("draw", function (msg) {
         if (!msg.sameUrl) {
             return;
