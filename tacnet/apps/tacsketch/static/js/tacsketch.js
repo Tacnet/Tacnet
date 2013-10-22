@@ -11,15 +11,6 @@ context.lineJoin = 'round';
 context.lineCap = 'round';
 context.strokeStyle = '#000';
 
-// Set background
-function setBackground(background) {
-	var img = new Image();
-	img.src = background;
-	img.onload = function() {
-		bgContext.drawImage(img,0,0);
-	}
-}
-
 // Clear
 function clearCanvas() {
 	canvas.width = canvas.width;
@@ -71,6 +62,22 @@ function move(e) {
 	lastMouse = mouse; 
 }
 
+// Set background
+function setBackground(background) {
+	var img = new Image();
+	img.src = background;
+	img.onload = function() {
+		bgContext.drawImage(img,0,0);
+	}
+
+    if (TogetherJS.running) {
+        TogetherJS.send({
+            type: "setBackground",
+            background: background
+        });
+    }
+}
+
 // Draws the lines
 function draw(start, end, color, size) {
 	context.save();
@@ -101,6 +108,13 @@ TogetherJS.hub.on("draw", function (msg) {
 		return;
 	}
 	draw(msg.start, msg.end, msg.color, msg.size);
+});
+
+TogetherJS.hub.on("setBackground", function (msg) {
+    if (!msg.sameUrl) {
+        return;
+    }
+    setBackground(msg.background);
 });
 
 TogetherJS.hub.on("togetherjs.hello", function (msg) {
