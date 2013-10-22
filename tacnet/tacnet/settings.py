@@ -201,7 +201,7 @@ if DEBUG:
     # Production settings
 configs = {
     ROOTPATH: 'settings',
-    '/home/tacnet-www/www/tacnet': 'settings_production',
+    '/home/tacnet-www/www/tacnet': 'settings-production',
 }
 
 config_module = __import__('%s' % configs[ROOTPATH], globals(), locals(), 'tacnet')
