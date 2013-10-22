@@ -133,6 +133,7 @@ INSTALLED_APPS = (
     'frontpage',
     'base',
     'gunicorn',
+    'tacsketch'
 
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
