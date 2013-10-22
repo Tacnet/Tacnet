@@ -40,17 +40,17 @@
 
         <div style="margin-bottom: 10px">
         <button type="button" class="btn btn-large btn-success" onclick="TogetherJS(this); return false;">Start TogetherJS</button>
-        <button type="button" class="btn btn-large btn-warning" onclick="clearCanvas()">Clear</button>
-        <button type="button" class="btn btn-large btn-info" onclick="setBackground('img/de_dust2.jpg')">de_dust2</button>
-        <button type="button" class="btn btn-large btn-info" onclick="setBackground('img/whatever.jpg')">Whatever</button>
-        <button type="button" class="btn btn-mini btn-info" onclick="increaseBrush()">+</button>
-        <button type="button" class="btn btn-mini btn-danger" onclick="decreaseBrush()">-</button>
+        <button type="button" class="btn btn-large btn-warning" onclick="clearCanvas(); return false;">Clear</button>
+        <button type="button" class="btn btn-large btn-info" onclick="setBackground('img/de_dust2.jpg'); return false;">de_dust2</button>
+        <button type="button" class="btn btn-large btn-info" onclick="setBackground('img/whatever.jpg'); return false;">Whatever</button>
+        <button type="button" class="btn btn-mini btn-info" onclick="increaseBrush(); return false;">+</button>
+        <button type="button" class="btn btn-mini btn-danger" onclick="decreaseBrush(); return false;">-</button>
         
         <div class="btn-group">
-            <button type="button" class="btn btn-default btn-green" onclick="setColor('#00ff00')">&nbsp;</button>
-            <button type="button" class="btn btn-default btn-yellow" onclick="setColor('#ff0')">&nbsp;</button>
-            <button type="button" class="btn btn-default btn-red" onclick="setColor('#ff0000')">&nbsp;</button>
-            <button type="button" class="btn btn-default btn-blue" onclick="setColor('#0000ff')">&nbsp;</button>
+            <button type="button" class="btn btn-default btn-green" onclick="setColor('#00ff00'); return false;">&nbsp;</button>
+            <button type="button" class="btn btn-default btn-yellow" onclick="setColor('#ff0'); return false;">&nbsp;</button>
+            <button type="button" class="btn btn-default btn-red" onclick="setColor('#ff0000'); return false;">&nbsp;</button>
+            <button type="button" class="btn btn-default btn-blue" onclick="setColor('#0000ff'); return false;">&nbsp;</button>
 
             <div class="btn-group">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -58,9 +58,9 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a href="#" onclick="setSize(1)">1</a></li>
-                    <li><a href="#" onclick="setSize(2)">2</a></li>
-                    <li><a href="#" onclick="setSize(3)">3</a></li>
+                    <li><a href="#" onclick="setSize(1); return false;">1</a></li>
+                    <li><a href="#" onclick="setSize(2); return false;">2</a></li>
+                    <li><a href="#" onclick="setSize(3); return false;">3</a></li>
                 </ul>
             </div>
         </div>
