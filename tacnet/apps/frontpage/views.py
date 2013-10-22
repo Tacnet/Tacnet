@@ -7,3 +7,17 @@ def index(request):
         "frontpage/index.html",
         context_instance=RequestContext(request)
     )
+
+
+def about(request):
+    return render_to_response(
+        "frontpage/about.html",
+        context_instance=RequestContext(request)
+    )
+
+
+def contact(request):
+    return render_to_response(
+        "frontpage/contact.html",
+        context_instance=RequestContext(request)
+    )
