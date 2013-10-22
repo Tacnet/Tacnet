@@ -1,4 +1,5 @@
 # Django settings for tacnet project.
+import os, sys
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -6,6 +7,12 @@ TEMPLATE_DEBUG = DEBUG
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
+
+ROOTPATH = os.path.dirname(os.path.dirname(__file__))
+makepath = lambda *f: os.path.join(ROOTPATH, *f)
+
+PROJECT_ROOT = ROOTPATH
+sys.path.insert(0, os.path.join(PROJECT_ROOT, 'apps'))
 
 MANAGERS = ADMINS
 
@@ -61,7 +68,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = ''
+STATIC_ROOT = makepath('files', 'static')
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -72,6 +79,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    makepath('apps', 'frontpage', 'static'),
 )
 
 # List of finder classes that know how to find static files in
@@ -120,7 +128,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.frontpage'
+    'frontpage'
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -157,3 +165,47 @@ LOGGING = {
         },
     }
 }
+
+
+# Django Debug Toolbar
+# debug_toolbar settings
+if DEBUG:
+    INTERNAL_IPS = ('127.0.0.1',)
+    MIDDLEWARE_CLASSES += (
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+    )
+
+    INSTALLED_APPS += (
+        'debug_toolbar',
+    )
+
+    DEBUG_TOOLBAR_PANELS = (
+        'debug_toolbar.panels.version.VersionDebugPanel',
+        'debug_toolbar.panels.timer.TimerDebugPanel',
+        'debug_toolbar.panels.settings_vars.SettingsVarsDebugPanel',
+        'debug_toolbar.panels.headers.HeaderDebugPanel',
+        #'debug_toolbar.panels.profiling.ProfilingDebugPanel',
+        'debug_toolbar.panels.request_vars.RequestVarsDebugPanel',
+        'debug_toolbar.panels.sql.SQLDebugPanel',
+        'debug_toolbar.panels.template.TemplateDebugPanel',
+        'debug_toolbar.panels.cache.CacheDebugPanel',
+        'debug_toolbar.panels.signals.SignalDebugPanel',
+        'debug_toolbar.panels.logger.LoggingPanel',
+    )
+
+    DEBUG_TOOLBAR_CONFIG = {
+        'INTERCEPT_REDIRECTS': False,
+    }
+
+    # Production settings
+configs = {
+    ROOTPATH: 'settings',
+    '/home/tacnet-www/www/tacnet': 'settings_production',
+}
+
+config_module = __import__('%s' % configs[ROOTPATH], globals(), locals(), 'tacnet')
+
+# Load the config settings properties into the local scope.
+for setting in dir(config_module):
+    if setting == setting.upper():
+        locals()[setting] = getattr(config_module, setting)
