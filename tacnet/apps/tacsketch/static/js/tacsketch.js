@@ -4,10 +4,6 @@ var context = canvas.getContext('2d');
 var bgCanvas = document.querySelector ("#sketch");
 var bgContext = bgCanvas.getContext('2d');
 
-var sketchContainer = document.querySelector("#sketchContainer");
-var sketchStyle = getComputedStyle(sketchContainer);
-canvas.width = parseInt(sketchStyle.getPropertyValue('width'), 10);
-canvas.height = parseInt(sketchStyle.getPropertyValue('height'), 10);
 
 // Brush Settings
 context.lineWidth = 1;
