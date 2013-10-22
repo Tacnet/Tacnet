@@ -1,8 +1,8 @@
-Tacnet (temporary name) is a work in progress application that allows users to easily share and construct new tactics for different games, without registration, installation or annoying ads. 
+Tacnet (temporary name) is a work in progress application that allows users to easily share and construct new tactics for games, without registration, installation or annoying ads. 
 
 Tacnet uses TogetherJS for collaboration. 
 
-To install:
-Install Node.js, Grunt and Bower. 
-Run npm install and bower install. 
-Run grunt, then grunt server to start. 
+Instructions (run these commands from the root project folder):
+1) virtualenv venv
+2) source venv/bin/activate (can also run . venv/bin/activate if source isn't available)
+3) pip install -r requirements.txt
