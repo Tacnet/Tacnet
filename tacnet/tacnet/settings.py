@@ -79,8 +79,8 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    "/home/tacnet-www/www/tacnet/apps/base/static",
-    "/home/tacnet-www/www/tacnet/apps/tacsketch/static",
+    makepath('apps', 'base', 'static'),
+    makepath('apps', 'tacsketch', 'static'),
 )
 
 # List of finder classes that know how to find static files in
