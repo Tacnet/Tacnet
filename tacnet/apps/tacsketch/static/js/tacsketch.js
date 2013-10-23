@@ -94,10 +94,25 @@ function setBackground(background) {
     img.src = background;
     gBackground = background;
     img.onload = function() {
+        resetBackground();
         bgContext.drawImage(img,0,0);
     }
 }
 
+// Reset background and sends reset message
+function resetClicked() {
+    resetBackground();
+    if(TogetherJS.running) {
+        TogetherJS.send({
+            type: "resetBackground"
+        });
+    }
+}
+
+// Reset background
+function resetBackground() {
+    bgContext.clearRect(0,0 , bgCanvas.width, bgCanvas.height);
+}
 // Clears and sends clear message
 function clearClicked() {
     clearCanvas();
@@ -131,6 +146,13 @@ TogetherJS.hub.on("clearCanvas", function (msg) {
         return;
     }
     clearCanvas();
+});
+
+TogetherJS.hub.on("resetBackground", function (msg) {
+    if (!msg.sameUrl) {
+        return;
+    }
+    resetBackground();
 });
 
 TogetherJS.hub.on("draw", function (msg) {
