@@ -19,6 +19,7 @@ $( document ).ready(function() {
     context.lineCap = 'round';
     context.strokeStyle = '#000';
 
+    var gBackground;
 
     // Increase and decrease brush size
     function increaseBrush() {
@@ -64,6 +65,15 @@ $( document ).ready(function() {
             y: e.pageY - this.offsetTop
         };
         draw(lastMouse, mouse, context.strokeStyle, context.lineWidth);
+        if (TogetherJS.running) {
+            TogetherJS.send({
+                type: "draw",
+                start: lastMouse,
+                end: mouse,
+                color: context.strokeStyle,
+                size: context.lineWidth
+            });
+        }
         lastMouse = mouse;
     }
 
@@ -71,6 +81,7 @@ $( document ).ready(function() {
     function setBackground(background) {
         var img = new Image();
         img.src = background;
+        gBackground = background;
         img.onload = function() {
             bgContext.drawImage(img,0,0);
         }
@@ -84,23 +95,24 @@ $( document ).ready(function() {
         }
     }
 
-    // Clears the canvas
-    function clearCanvas() {
-        context.clearRect(0,0 , canvas.width, canvas.height);
-
+    // Clears and sends clear message
+    function clearClicked() {
+        clearCanvas();
         if (TogetherJS.running) {
-            console.log("clear msg sent");
             TogetherJS.send({
                 type: "clearCanvas"
             });
-
         }
+    }
+
+    // Clears the canvas
+    function clearCanvas() {
+        context.clearRect(0,0 , canvas.width, canvas.height);
     }
 
     // Draws the lines
     function draw(start, end, color, size) {
         context.save();
-
         context.strokeStyle = color;
         context.lineWidth = size;
         context.beginPath();
@@ -108,18 +120,7 @@ $( document ).ready(function() {
         context.lineTo(end.x, end.y);
         context.closePath();
         context.stroke();
-
-        if (TogetherJS.running) {
-            TogetherJS.send({
-                type: "draw",
-                start: start,
-                end: end,
-                color: color,
-                size: size
-            });
-
         context.restore();
-        }
     }
 
     TogetherJS.hub.on("clearCanvas", function (msg) {
