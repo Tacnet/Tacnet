@@ -76,21 +76,25 @@ function move(e) {
     lastMouse = mouse;
 }
 
-// Set background
+// Sets background and sends message
+function backgroundClicked(background) {
+    setBackground(background);
+    if (TogetherJS.running) {
+        console.log("TJS bg msg sent");
+        TogetherJS.send({
+            type: "setBackground",
+            background: background
+        });
+    }
+}
+
+// Sets background
 function setBackground(background) {
     var img = new Image();
     img.src = background;
     gBackground = background;
     img.onload = function() {
         bgContext.drawImage(img,0,0);
-    }
-
-    if (TogetherJS.running) {
-        console.log("background set");
-        TogetherJS.send({
-            type: "setBackground",
-            background: background
-        });
     }
 }
 
