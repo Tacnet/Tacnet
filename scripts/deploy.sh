@@ -46,7 +46,7 @@ ssh root@$target -t -p 9001 '
         source venv/bin/activate
         pip install -r requirements.txt
         python tacnet/manage.py syncdb
-        python tacnet/manage.py collectstatic --noinput
+        python tacnet/manage.py collectstatic --noinput --clear
         '$full'
     "
 
