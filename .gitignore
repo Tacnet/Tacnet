@@ -8,3 +8,4 @@ venv
 *.pyc
 .idea
 tacnet.db
+tacnet/files/static
