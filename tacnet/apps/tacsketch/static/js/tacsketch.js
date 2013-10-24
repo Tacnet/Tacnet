@@ -173,19 +173,25 @@ TogetherJS.hub.on("togetherjs.hello", function (msg) {
     if (!msg.sameUrl) {
         return;
     }
-    var image = canvas.toDataURL("image/png");
+    var background = bgCanvas.toDataURL("image/png");
+    var drawings = canvas.toDataURL("image/png");
     TogetherJS.send({
         type: "init",
-        image: image
+        drawings: drawings,
+        background: background
     });
 });
 
 TogetherJS.hub.on("init", function(msg) {
     if (!msg.sameUrl) {
-        return;
+        return;s
     }
-    var image = new Image();
-    image.src = msg.image;
-    context.drawImage(image, 0, 0);
+    var drawings = new Image();
+    drawings.src = msg.drawings;
+    var background = new Image();
+    background.src = msg.background;
+    bgContext.drawImage(background, 0,0)
+    context.drawImage(drawings, 0,0);
+
 });
 
