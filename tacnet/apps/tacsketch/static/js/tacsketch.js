@@ -9,10 +9,7 @@ bgCanvas.height = 600;
 canvas.width = bgCanvas.width;
 canvas.height = bgCanvas.height;
 
-bgCanvas.style.width = 800;
-bgCanvas.style.height = 600;
-canvas.style.width = bgCanvas.width;
-canvas.style.height = bgCanvas.height;
+
 // Brush Settings
 context.lineWidth = 1;
 context.lineJoin = 'round';
@@ -101,10 +98,6 @@ function setBackground(background) {
         canvas.width = img.width;
         canvas.height = img.height;
 
-        bgCanvas.style.width = img.width;
-        bgCanvas.style.height = img.height;
-        canvas.style.width = bgCanvas.width;
-        canvas.style.height = bgCanvas.height;
         bgContext.drawImage(img,0,0);
 
     }
