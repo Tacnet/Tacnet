@@ -4,14 +4,15 @@ var context = canvas.getContext('2d');
 var bgCanvas = document.getElementById ('background');
 var bgContext = bgCanvas.getContext('2d');
 
-var sketchContainer = document.getElementById('sketchContainer');
-var sketchStyle = getComputedStyle(sketchContainer);
+bgCanvas.width = 800;
+bgCanvas.height = 600;
+canvas.width = bgCanvas.width;
+canvas.height = bgCanvas.height;
 
-canvas.width = parseInt(sketchStyle.getPropertyValue('width'), 10);
-canvas.height = parseInt(sketchStyle.getPropertyValue('height'), 10);
-bgCanvas.width = parseInt(sketchStyle.getPropertyValue('width'), 10);
-bgCanvas.height = parseInt(sketchStyle.getPropertyValue('height'), 10);
-
+bgCanvas.style.width = 800;
+bgCanvas.style.height = 600;
+canvas.style.width = bgCanvas.width;
+canvas.style.height = bgCanvas.height;
 // Brush Settings
 context.lineWidth = 1;
 context.lineJoin = 'round';
@@ -95,7 +96,17 @@ function setBackground(background) {
     gBackground = background;
     img.onload = function() {
         resetBackground();
+        bgCanvas.width = img.width;
+        bgCanvas.height = img.height;
+        canvas.width = img.width;
+        canvas.height = img.height;
+
+        bgCanvas.style.width = img.width;
+        bgCanvas.style.height = img.height;
+        canvas.style.width = bgCanvas.width;
+        canvas.style.height = bgCanvas.height;
         bgContext.drawImage(img,0,0);
+
     }
 }
 
