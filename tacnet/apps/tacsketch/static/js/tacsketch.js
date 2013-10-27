@@ -188,14 +188,23 @@ TogetherJS.hub.on("togetherjs.hello", function (msg) {
 
 TogetherJS.hub.on("init", function(msg) {
     if (!msg.sameUrl) {
-        return;s
+        return;
     }
     var drawings = new Image();
     drawings.src = msg.drawings;
     var background = new Image();
     background.src = msg.background;
-    bgContext.drawImage(background, 0,0)
-    context.drawImage(drawings, 0,0);
+    background.onload = function () {
+        bgCanvas.width = background.width;
+        bgCanvas.height = background.height;
+        canvas.width = bgCanvas.width;
+        canvas.height = bgCanvas.height;
+
+        bgContext.drawImage(background, 0,0);
+        context.drawImage(drawings, 0,0);
+
+    }
+
 
 });
 
