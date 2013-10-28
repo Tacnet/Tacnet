@@ -29,7 +29,7 @@
     background-color: #444444 !important;
 }
 
-.togetherjs #togetherjs-buttons #togetherjs-share-button.togetherjs-active, .togetherjs #togetherjs-buttons #togetherjs-audio-button.togetherjs-active, .togetherjs #togetherjs-buttons #togetherjs-chat-button.togetherjs-active {
+.togetherjs #togetherjs-buttons #togetherjs-share-button.togetherjs-active, .togetherjs #togetherjs-buttons #togetherjs-audio-button.togetherjs-active, .togetherjs #togetherjs-buttons #togetherjs-chat-button.togetherjs-active, .togetherjs #togetherjs-dock-participants button.togetherjs-active {
     background-color: #707070 !important;
 }
 
