@@ -1,4 +1,46 @@
-#togetherjs-dock {
+#togetherjs-dock, .togetherjs .togetherjs-window > header, .togetherjs .togetherjs-modal > header {
     background-color: #474747 !important;
 
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#484e55), color-stop(60%, #3a3f44), to(#313539)) !important;
+    background-image: -webkit-linear-gradient(#484e55, #3a3f44 60%, #313539) !important;
+    background-image: -moz-linear-gradient(top, #484e55, #3a3f44 60%, #313539) !important;
+    background-image: linear-gradient(#484e55, #3a3f44 60%, #313539) !important;
+
+}
+
+.togetherjs .togetherjs-window header button.togetherjs-close, .togetherjs .togetherjs-modal header button.togetherjs-close {
+    border-left: 1px solid #000000 !important;
+}
+
+.togetherjs .togetherjs-subtitle {
+    background-color: #474747 !important;
+
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#484e55), color-stop(60%, #3a3f44), to(#313539)) !important;
+    background-image: -webkit-linear-gradient(#484e55, #3a3f44 60%, #313539) !important;
+    background-image: -moz-linear-gradient(top, #484e55, #3a3f44 60%, #313539) !important;
+    background-image: linear-gradient(#484e55, #3a3f44 60%, #313539) !important;
+}
+
+.togetherjs .togetherjs-window > header {
+    border-bottom-color: #000000 !important;
+}
+
+.togetherjs #togetherjs-buttons .togetherjs-button:hover {
+    background-color: #444444 !important;
+}
+
+.togetherjs #togetherjs-buttons #togetherjs-share-button.togetherjs-active, .togetherjs #togetherjs-buttons #togetherjs-audio-button.togetherjs-active, .togetherjs #togetherjs-buttons #togetherjs-chat-button.togetherjs-active {
+    background-color: #707070 !important;
+}
+
+#togetherjs-menu-feedback, #togetherjs-menu-help {
+    display: none !important;
+}
+
+.togetherjs-primary {
+    background: #233D49 !important;
+}
+
+.togetherjs-primary:hover {
+    background: #025A84 !important;
 }
