@@ -16,8 +16,6 @@ context.lineJoin = 'round';
 context.lineCap = 'round';
 context.strokeStyle = '#000';
 
-var gBackground;
-
 // Increase and decrease brush size
 function increaseBrush() {
     context.lineWidth+=1;
@@ -90,16 +88,22 @@ function backgroundClicked(background) {
 function setBackground(background) {
     var img = new Image();
     img.src = background;
-    gBackground = background;
     img.onload = function() {
-        resetBackground();
+        var oldLineWidth = context.lineWidth;
+        var oldLineJoin = context.lineJoin;
+        var oldLineCap = context.lineCap;
+        var oldStrokeStyle = context.strokeStyle;
+
         bgCanvas.width = img.width;
         bgCanvas.height = img.height;
-        canvas.width = img.width;
-        canvas.height = img.height;
-
+        canvas.width = bgCanvas.width;
+        canvas.height = bgCanvas.height;
         bgContext.drawImage(img,0,0);
 
+        context.lineWidth =  oldLineWidth;
+        context.lineJoin = oldLineJoin;
+        context.lineCap = oldLineCap;
+        context.strokeStyle = oldStrokeStyle;
     }
 }
 

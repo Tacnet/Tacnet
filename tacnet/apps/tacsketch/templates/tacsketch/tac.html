@@ -2,47 +2,47 @@
 
 {% block content %}
 
-        <div class="container">
-            <div style="margin-bottom: 10px">
-                <button type="button" class="btn btn-large btn-success" onclick="TogetherJS(this); return false;">Start TogetherJS</button>
-                <button type="button" class="btn btn-large btn-warning" onclick="clearClicked(); return false;">Clear</button>
-                <button type="button" class="btn btn-large btn-warning" onclick="resetClicked(); return false;">Reset Map</button>
-                <button type="button" class="btn btn-large btn-info" onclick="backgroundClicked('/static/img/smite.jpg'); return false;">Smite</button>
-                <button type="button" class="btn btn-large btn-info" onclick="backgroundClicked('/static/img/de_dust2.jpg'); return false;">de_dust2</button>
-                <button type="button" class="btn btn-large btn-info" onclick="backgroundClicked('/static/img/whatever.jpg'); return false;">Whatever</button>
-                <button type="button" class="btn btn-mini btn-info" onclick="increaseBrush(); return false;">+</button>
-                <button type="button" class="btn btn-mini btn-danger" onclick="decreaseBrush(); return false;">-</button>
+    <div class="container">
+        <div style="margin-bottom: 10px">
+            <button type="button" class="btn btn-large btn-success" onclick="TogetherJS(this); return false;">Start TogetherJS</button>
+            <button type="button" class="btn btn-large btn-warning" onclick="clearClicked(); return false;">Clear</button>
+            <button type="button" class="btn btn-large btn-warning" onclick="resetClicked(); return false;">Reset Map</button>
+            <button type="button" class="btn btn-large btn-info" onclick="backgroundClicked('/static/img/smite.jpg'); return false;">Smite</button>
+            <button type="button" class="btn btn-large btn-info" onclick="backgroundClicked('/static/img/de_dust2.jpg'); return false;">de_dust2</button>
+            <button type="button" class="btn btn-large btn-info" onclick="backgroundClicked('/static/img/whatever.jpg'); return false;">Whatever</button>
+            <button type="button" class="btn btn-mini btn-info" onclick="increaseBrush(); return false;">+</button>
+            <button type="button" class="btn btn-mini btn-danger" onclick="decreaseBrush(); return false;">-</button>
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-default btn-green" onclick="setColor('#00ff00'); return false;">&nbsp;</button>
+                <button type="button" class="btn btn-default btn-yellow" onclick="setColor('#ff0'); return false;">&nbsp;</button>
+                <button type="button" class="btn btn-default btn-red" onclick="setColor('#ff0000'); return false;">&nbsp;</button>
+                <button type="button" class="btn btn-default btn-blue" onclick="setColor('#0000ff'); return false;">&nbsp;</button>
 
                 <div class="btn-group">
-                    <button type="button" class="btn btn-default btn-green" onclick="setColor('#00ff00'); return false;">&nbsp;</button>
-                    <button type="button" class="btn btn-default btn-yellow" onclick="setColor('#ff0'); return false;">&nbsp;</button>
-                    <button type="button" class="btn btn-default btn-red" onclick="setColor('#ff0000'); return false;">&nbsp;</button>
-                    <button type="button" class="btn btn-default btn-blue" onclick="setColor('#0000ff'); return false;">&nbsp;</button>
-
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                            Size
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a href="#" onclick="setSize(1); return false;">1</a></li>
-                            <li><a href="#" onclick="setSize(2); return false;">2</a></li>
-                            <li><a href="#" onclick="setSize(3); return false;">3</a></li>
-                        </ul>
-                    </div>
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        Size
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" onclick="setSize(1); return false;">1</a></li>
+                        <li><a href="#" onclick="setSize(2); return false;">2</a></li>
+                        <li><a href="#" onclick="setSize(3); return false;">3</a></li>
+                    </ul>
                 </div>
-            </div>
-
-            <div class="drawotron">
-                <canvas id="background" style="border: 1px solid blue; z-index: 0; position: absolute;"></canvas>
-                <canvas id="sketch"     style="border: 1px solid blue; z-index: 1; position: absolute;"></canvas>
             </div>
         </div>
 
+        <div class="drawotron">
+            <canvas id="background" style="border: 1px solid blue; z-index: 0; position: absolute; "></canvas>
+            <canvas id="sketch"     style="border: 1px solid blue; z-index: 1; position: absolute;"></canvas>
+        </div>
+    </div>
 
-        <!-- scripts -->
-        <script src="https://togetherjs.com/togetherjs-min.js"></script>
-        <script src="/static/js/tacsketch.js"></script>
+
+    <!-- scripts -->
+    <script src="https://togetherjs.com/togetherjs-min.js"></script>
+    <script src="/static/js/tacsketch.js"></script>
 
 
 {% endblock %}
