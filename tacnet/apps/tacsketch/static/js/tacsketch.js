@@ -9,6 +9,8 @@ bgCanvas.height = 600;
 canvas.width = bgCanvas.width;
 canvas.height = bgCanvas.height;
 
+bgContext.fillStyle = '#FFFFFF';
+bgContext.fillRect (0, 0, bgCanvas.width, bgCanvas.height);
 
 // Brush Settings
 context.lineWidth = 1;
@@ -120,6 +122,8 @@ function resetClicked() {
 // Reset background
 function resetBackground() {
     bgContext.clearRect(0,0 , bgCanvas.width, bgCanvas.height);
+    bgContext.fillStyle = '#FFFFFF';
+    bgContext.fillRect (0, 0, bgCanvas.width, bgCanvas.height);
 }
 // Clears and sends clear message
 function clearClicked() {
