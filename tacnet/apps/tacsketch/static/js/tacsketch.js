@@ -207,8 +207,8 @@ TogetherJS.hub.on("init", function(msg) {
         var oldLineCap = context.lineCap;
         var oldStrokeStyle = context.strokeStyle;
 
-        bgCanvas.width = img.width;
-        bgCanvas.height = img.height;
+        bgCanvas.width = background.width;
+        bgCanvas.height = background.height;
         canvas.width = bgCanvas.width;
         canvas.height = bgCanvas.height;
 
