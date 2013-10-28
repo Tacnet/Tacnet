@@ -122,7 +122,6 @@ function resetClicked() {
 // Reset background
 function resetBackground() {
     bgContext.clearRect(0,0 , bgCanvas.width, bgCanvas.height);
-    bgContext.fillStyle = '#FFFFFF';
     bgContext.fillRect (0, 0, bgCanvas.width, bgCanvas.height);
 }
 // Clears and sends clear message
@@ -203,14 +202,23 @@ TogetherJS.hub.on("init", function(msg) {
     var background = new Image();
     background.src = msg.background;
     background.onload = function () {
-        bgCanvas.width = background.width;
-        bgCanvas.height = background.height;
+        var oldLineWidth = context.lineWidth;
+        var oldLineJoin = context.lineJoin;
+        var oldLineCap = context.lineCap;
+        var oldStrokeStyle = context.strokeStyle;
+
+        bgCanvas.width = img.width;
+        bgCanvas.height = img.height;
         canvas.width = bgCanvas.width;
         canvas.height = bgCanvas.height;
 
         bgContext.drawImage(background, 0,0);
         context.drawImage(drawings, 0,0);
 
+        context.lineWidth =  oldLineWidth;
+        context.lineJoin = oldLineJoin;
+        context.lineCap = oldLineCap;
+        context.strokeStyle = oldStrokeStyle;
     }
 
 
