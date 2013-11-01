@@ -9,8 +9,7 @@ bgCanvas.height = 600;
 canvas.width = bgCanvas.width;
 canvas.height = bgCanvas.height;
 
-bgContext.fillStyle = '#FFFFFF';
-bgContext.fillRect (0, 0, bgCanvas.width, bgCanvas.height);
+setBackground('/static/img/boot.jpg');
 
 // Brush Settings
 context.lineWidth = 1;
