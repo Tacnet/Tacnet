@@ -10,3 +10,4 @@ venv
 .idea
 tacnet.db
 tacnet/files/static
+passwords
