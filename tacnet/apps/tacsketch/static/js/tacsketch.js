@@ -226,7 +226,7 @@ TogetherJS.hub.on("init", function(msg) {
 
 
 
- $(document).ready(function() {
+ $(document).ready(function(){
 
         $('#chooseMap').popover({
             html : true,

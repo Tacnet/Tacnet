@@ -33,7 +33,7 @@
     background-color: #707070 !important;
 }
 
-#togetherjs-menu-feedback, #togetherjs-menu-help {
+#togetherjs-menu-feedback, #togetherjs-menu-help, #togetherjs-menu-end {
     display: none !important;
 }
 
