@@ -1,5 +1,3 @@
- $(document).ready(function(){
-
         var canvas = document.getElementById ('sketch');
         var context = canvas.getContext('2d');
 
@@ -226,6 +224,8 @@
 
         });
 
+
+ $(document).ready(function(){
 
         $('#chooseMap').popover({
             html : true,
