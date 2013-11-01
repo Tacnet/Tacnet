@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.template import RequestContext
 from models import *
+from django.views.decorators.cache import never_cache
 
+@never_cache
 def index(request):
 
     games = Game.objects.all()
