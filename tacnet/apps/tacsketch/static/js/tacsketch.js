@@ -240,7 +240,7 @@ TogetherJS.hub.on("init", function(msg) {
         $('#chooseMap').on('shown.bs.popover', function () {
 
             $("#gameslist").select2({
-                placeholder: "Select a Game"
+                placeholder: "Select Game"
             }).on("change", function(e) {
                 var mapsList = $('#mapslist');
                 mapsList.html($('#' + e.val).html());
@@ -248,7 +248,7 @@ TogetherJS.hub.on("init", function(msg) {
 
 
             $("#mapslist").select2({
-                placeholder: "Select Game before Map"
+                placeholder: "Select Map"
             }).on("change", function(e) {
                 backgroundClicked(e.val);
                 $('#chooseMap').popover('hide');
