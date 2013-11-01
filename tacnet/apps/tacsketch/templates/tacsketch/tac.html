@@ -54,14 +54,12 @@
 
 {% block container %}
     <div class="container">
-
-        <div class="drawotron">
-            <canvas id="background" style="z-index: 0 !important;"></canvas>
-            <canvas id="sketch"     style="z-index: 1 !important;"></canvas>
-        </div>
+        <canvas id="background" style="z-index: -1 !important;"></canvas>
+        <canvas id="sketch" style="z-index: 0 !important;"></canvas>
+        <div class="clearfix"></div>
 
     </div>
-
+    <div class="clearfix"></div>
     <!--Map Opt values-->
 
     {% for game in games %}
