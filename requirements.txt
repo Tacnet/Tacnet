@@ -4,5 +4,5 @@ newrelic
 django-debug-toolbar
 south
 django-suit
-PIL
 psycopg2
+PIL
