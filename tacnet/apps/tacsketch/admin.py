@@ -2,7 +2,19 @@ from django.contrib import admin
 from models import *
 
 
-#class MapAdmin(admin.ModelAdmin):
-#    list_display = ('name', 'game', 'gamemode')
-#
-#admin.site.register(Class, MapAdmin)
+class GameAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+
+admin.site.register(Game, GameAdmin)
+
+
+class GameModeAdmin(admin.ModelAdmin):
+    list_display = ('name', 'game',)
+
+admin.site.register(GameMode, GameModeAdmin)
+
+
+class MapAdmin(admin.ModelAdmin):
+    list_display = ('name', 'game', 'gameMode')
+
+admin.site.register(Map, MapAdmin)

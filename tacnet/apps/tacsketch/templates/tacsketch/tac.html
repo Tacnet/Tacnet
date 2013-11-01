@@ -1,23 +1,33 @@
-{% include "base/base.html" %}
+{% extends 'base/base.html' %}
 
-{% block content %}
+{% block nav %}
 
-    <div class="container">
-        <div style="margin-bottom: 10px">
-            <button type="button" class="btn btn-large btn-success" onclick="TogetherJS(this); return false;">Start TogetherJS</button>
-            <button type="button" class="btn btn-large btn-warning" onclick="clearClicked(); return false;">Clear</button>
-            <button type="button" class="btn btn-large btn-warning" onclick="resetClicked(); return false;">Reset Map</button>
-            <button type="button" class="btn btn-large btn-info" onclick="backgroundClicked('/static/img/smite.jpg'); return false;">Smite</button>
-            <button type="button" class="btn btn-large btn-info" onclick="backgroundClicked('/static/img/de_dust2.jpg'); return false;">de_dust2</button>
-            <button type="button" class="btn btn-large btn-info" onclick="backgroundClicked('/static/img/whatever.jpg'); return false;">Whatever</button>
-            <button type="button" class="btn btn-mini btn-info" onclick="increaseBrush(); return false;">+</button>
-            <button type="button" class="btn btn-mini btn-danger" onclick="decreaseBrush(); return false;">-</button>
+<li id="chooseMap" data-original-title="Select Map"><a href="#"><span class="glyphicon glyphicon-tower"></span> Select Map</a></li>
+             <div id="chooseMap_content_wrapper" style="display: none">
 
-            <div class="btn-group">
-                <button type="button" class="btn btn-default btn-green" onclick="setColor('#00ff00'); return false;">&nbsp;</button>
-                <button type="button" class="btn btn-default btn-yellow" onclick="setColor('#ff0'); return false;">&nbsp;</button>
-                <button type="button" class="btn btn-default btn-red" onclick="setColor('#ff0000'); return false;">&nbsp;</button>
-                <button type="button" class="btn btn-default btn-blue" onclick="setColor('#0000ff'); return false;">&nbsp;</button>
+                 <p><select id="gameslist" style="width: 100%;">
+                         <option></option>
+                            {% for game in games %}
+                                <option value="opt-{{ game.name|slugify }}">{{ game.name }}</option>
+                            {% endfor %}
+                        </select></p>
+
+
+                        <p><select id="mapslist" style="width: 100%;">
+                            <option></option>
+                            <option value="/media/">a</option>
+                        </select></p>
+
+             </div>
+
+            <li id="chooseBrush"  data-original-title="Select Brush"><a href="#"><span class="glyphicon glyphicon-pencil"></span> Select Brush</a></li>
+             <div id="chooseBrush_content_wrapper" style="display: none">
+
+                <div class="btn-group">
+                <button type="button" class="btn btn-success" onclick="setColor('#00ff00'); $('#chooseBrush').popover('hide'); return false;">Green</button>
+                <button type="button" class="btn btn-warning" onclick="setColor('#ff0'); $('#chooseBrush').popover('hide'); return false;">Yellow</button>
+                <button type="button" class="btn btn-danger" onclick="setColor('#ff0000'); $('#chooseBrush').popover('hide'); return false;">Red</button>
+                <button type="button" class="btn btn-info" onclick="setColor('#0000ff'); $('#chooseBrush').popover('hide'); return false;">Blue</button>
 
                 <div class="btn-group">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -25,19 +35,55 @@
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a href="#" onclick="setSize(1); return false;">1</a></li>
-                        <li><a href="#" onclick="setSize(2); return false;">2</a></li>
-                        <li><a href="#" onclick="setSize(3); return false;">3</a></li>
+                        <li><a href="#" onclick="setSize(1); $('#chooseBrush').popover('hide'); return false;">1</a></li>
+                        <li><a href="#" onclick="setSize(2); $('#chooseBrush').popover('hide'); return false;">2</a></li>
+                        <li><a href="#" onclick="setSize(3); $('#chooseBrush').popover('hide'); return false;">3</a></li>
                     </ul>
                 </div>
             </div>
-        </div>
+
+             </div>
+
+
+
+            <li  onclick="clearClicked(); return false;"><a href="#"><span class="glyphicon glyphicon-minus"></span> Clear</a></li>
+            <li onclick="resetClicked(); return false;"><a href="#"><span class="glyphicon glyphicon-remove-sign"></span> Reset Map</a></li>
+            <!--<button type="button" class="btn btn-large btn-info" onclick="backgroundClicked('/static/img/smite.jpg'); return false;">Smite</button>
+            <button type="button" class="btn btn-large btn-info" onclick="backgroundClicked('/static/img/de_dust2.jpg'); return false;">de_dust2</button>
+            <button type="button" class="btn btn-large btn-info" onclick="backgroundClicked('/static/img/whatever.jpg'); return false;">Whatever</button>-->
+            <li onclick="increaseBrush(); return false;"><a href="#"><span class="glyphicon glyphicon-zoom-in"></span></a></li>
+            <li onclick="decreaseBrush(); return false;"><a href="#"><span class="glyphicon glyphicon-zoom-out"></span></a></li>
+
+
+{% endblock %}
+
+{% block container %}
+    <div class="container">
 
         <div class="drawotron">
-            <canvas id="background" style="z-index: 0;"></canvas>
-            <canvas id="sketch"     style="z-index: 1;"></canvas>
+            <canvas id="background" style="z-index: -20 !important;"></canvas>
+            <canvas id="sketch"     style="z-index: -10 !important;"></canvas>
         </div>
+
+
     </div>
+
+    <!--Opt values-->
+
+    {% for game in games %}
+        <div id="opt-{{ game.name|slugify }}" style="display: none;">
+        <option></option>
+
+        {% for mode in game.modes %}
+            <optgroup label="{{ mode.name }}">
+                {%  for map in mode.maps %}
+                    <option value="/media/{{ map.image }}">{{ map.name }}</option>
+                {% endfor %}
+            </optgroup>
+        {% endfor %}
+
+        </div>
+    {% endfor %}
 
 
     <!-- scripts -->
@@ -45,6 +91,77 @@
     <script src="https://togetherjs.com/togetherjs-min.js"></script>
     <script src="/static/js/tacsketch.js"></script>
     <link rel="stylesheet" href="/static/css/dock.css">
+
+    <!--Select2-->
+    <link href="/static/js/select2/select2.css" rel="stylesheet"/>
+    <script src="/static/js/select2/select2.js"></script>
+    <script>
+        $(document).ready(function() {
+
+        $('#chooseMap').popover({
+            html : true,
+            placement: 'bottom',
+            content: function() {
+              return $('#chooseMap_content_wrapper').html();
+            }
+        });
+
+
+        $('#chooseMap').on('shown.bs.popover', function () {
+
+
+            $("#gameslist").select2({
+                placeholder: "Select a Game"
+            }).on("change", function(e) {
+
+
+                var mapsList = $('#mapslist');
+
+                mapsList.html($('#' + e.val).html());
+
+            });
+
+
+            $("#mapslist").select2({
+                placeholder: "Select Game before Map"
+            }).on("change", function(e) {
+                backgroundClicked(e.val);
+                $('#chooseMap').popover('hide');
+            });
+
+
+
+
+
+
+
+
+
+            $('#chooseBrush').popover('hide');
+        });
+
+        $('#chooseBrush').popover({
+            html : true,
+            placement: 'bottom',
+            content: function() {
+              return $('#chooseBrush_content_wrapper').html();
+            }
+        });
+
+        $('#chooseBrush').on('show.bs.popover', function () {
+            $('#chooseMap').popover('hide');
+        });
+
+        setBackground('/static/img/boot.jpg');
+
+        });
+
+
+
+
+
+    </script>
+
 
 {% endblock %}
 

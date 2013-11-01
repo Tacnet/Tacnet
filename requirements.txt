@@ -4,3 +4,4 @@ newrelic
 django-debug-toolbar
 south
 django-suit
+PIL

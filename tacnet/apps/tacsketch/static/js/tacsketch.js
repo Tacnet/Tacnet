@@ -123,6 +123,7 @@ function resetClicked() {
 function resetBackground() {
     bgContext.clearRect(0,0 , bgCanvas.width, bgCanvas.height);
     bgContext.fillRect (0, 0, bgCanvas.width, bgCanvas.height);
+    setBackground('/static/img/boot.jpg')
 }
 // Clears and sends clear message
 function clearClicked() {
