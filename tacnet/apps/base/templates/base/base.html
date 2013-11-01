@@ -8,11 +8,18 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Tacnet</title>
         <meta name="description" content="">
-        <meta name="viewport" content="width=device-width">
-        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <link rel="shortcut icon" href="/static/img/icons/favicon.ico">
 
-        <link rel="stylesheet" href="/static/css/bootstrap-slate.css">
+
+        <link href="/static/css/bootstrap.css" rel="stylesheet">
+        <link href="/static/css/bootstrap-slate.css" rel="stylesheet">
         <link rel="stylesheet" href="/static/css/main.css">
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+        <script src="/static/js/googleanalytics.js"></script>
+
 
     </head>
     <body>
@@ -31,17 +38,19 @@
                 <li><a href="/frontpage/about">About</a></li>
                 <li><a href="/frontpage/contact">Contact</a></li>
               </ul>
+
+              <ul class="nav navbar-nav navbar-right">
+
+
+             {% block nav %}{% endblock %}
+
+              </ul>
+
             </div>
           </div>
         </div>
 
-        {% block container %}
-            
-        {% endblock %}
-
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-        <script src="/static/js/googleanalytics.js"></script>
+        {% block container %}{% endblock %}
 
 </body>
 </html>

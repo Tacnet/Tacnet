@@ -44,3 +44,13 @@
 .togetherjs-primary:hover {
     background: #025A84 !important;
 }
+
+#togetherjs-dock.togetherjs-dock-right {
+top: 200px !important;
+}
+
+/* Map Selector */
+.popover {
+            max-width: 500px !important;
+            width: 335px;
+        }
