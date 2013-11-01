@@ -12,7 +12,7 @@
         setBackground('/static/img/boot.jpg');
 
         // Brush Settings
-        context.lineWidth = 1;
+        context.lineWidth = 2;
         context.lineJoin = 'round';
         context.lineCap = 'round';
         context.strokeStyle = '#000';
@@ -267,6 +267,26 @@
 
         $('#chooseBrush').on('show.bs.popover', function () {
             $('#chooseMap').popover('hide');
+        });
+
+         $('#chooseBrush').on('shown.bs.popover', function () {
+            $('#brushSizeForm').append('<input type="text" class="slider" id="brushSize" style="width: 300px;" />');
+            $('.slider').slider({
+                min: 2,
+                max: 20,
+                step: 1,
+                value: context.lineWidth
+            }).on('slide', function(ev){
+               setSize(ev.value);
+            }).on('slideStop', function(ev){
+                 $('#chooseBrush').popover('hide');
+            });
+
+        });
+
+         $('#chooseBrush').on('hide.bs.popover', function () {
+            $('.slider').remove();
+
         });
 
   });
