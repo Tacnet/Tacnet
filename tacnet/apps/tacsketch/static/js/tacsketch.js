@@ -227,6 +227,13 @@
 
  $(document).ready(function(){
 
+        function hidePopover(element){
+          if (element.next('div.popover:visible').length){
+               element.popover('toggle');
+          }
+        };
+
+
         $('#chooseMap').popover({
             html : true,
             placement: 'bottom',
@@ -250,10 +257,10 @@
                 placeholder: "Select Map"
             }).on("change", function(e) {
                 backgroundClicked(e.val);
-                $('#chooseMap').popover('hide');
+                hidePopover($("#chooseMap"));
             });
 
-            $('#chooseBrush').popover('hide');
+            hidePopover($("#chooseBrush"));
 
         });
 
@@ -266,7 +273,8 @@
         });
 
         $('#chooseBrush').on('show.bs.popover', function () {
-            $('#chooseMap').popover('hide');
+            hidePopover($("#chooseMap"));
+
         });
 
          $('#chooseBrush').on('shown.bs.popover', function () {
@@ -279,14 +287,50 @@
             }).on('slide', function(ev){
                setSize(ev.value);
             }).on('slideStop', function(ev){
-                 $('#chooseBrush').popover('hide');
+                 hidePopover($("#chooseBrush"));
             });
+
+             //Color change functions
+             $('.green-pick').click(function(){
+                 setColor('#00ff00');
+                 hidePopover($("#chooseBrush"));
+             });
+
+             //Color change functions
+             $('.yellow-pick').click(function(){
+                 setColor('#ff0');
+                 hidePopover($("#chooseBrush"));
+             });
+
+             //Color change functions
+             $('.red-pick').click(function(){
+                 setColor('#ff0000');
+                 hidePopover($("#chooseBrush"));
+             });
+
+             //Color change functions
+             $('.blue-pick').click(function(){
+                 setColor('#0000ff');
+                 hidePopover($("#chooseBrush"));
+             });
 
         });
 
          $('#chooseBrush').on('hide.bs.popover', function () {
             $('.slider').remove();
+          });
 
+        $('#sketch').mousedown(function(){
+            hidePopover($("#chooseMap"));
+            hidePopover($("#chooseBrush"));
         });
+
+
+
+
+
+
+
+
 
   });
