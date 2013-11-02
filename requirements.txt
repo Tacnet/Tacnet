@@ -6,4 +6,3 @@ south
 django-suit
 psycopg2
 PIL
-python-memcached
