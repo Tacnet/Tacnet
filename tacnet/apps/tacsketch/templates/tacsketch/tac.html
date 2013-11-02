@@ -1,5 +1,15 @@
 {% extends 'base/base.html' %}
 
+{% block header %}
+
+    <!--Loading layer-->
+    <div id="loading_layer"></div>
+    <script src="/static/js/spin.js"></script>
+    <link rel="stylesheet" href="/static/js/loading_layer/loading.css">
+    <script type="text/javascript" src="/static/js/loading_layer/loading.js"></script>
+
+{% endblock %}
+
 {% block nav %}
 
     <li id="chooseMap" data-original-title="Select Map"><a href="#"><span class="glyphicon glyphicon-tower"></span> Select Map</a></li>
@@ -85,6 +95,9 @@
     <!--Slider-->
     <link href="/static/js/slider/slider.css" rel="stylesheet"/>
     <script src="/static/js/slider/slider.js"></script>
+
+    <!--Close loading layer-->
+    <script type="text/javascript" src="/static/js/loading_layer/closeLoading.js"></script>
 
 {% endblock %}
 
