@@ -314,6 +314,11 @@
                  hidePopover($("#chooseBrush"));
              });
 
+             //Color change functions
+             $('.black-pick').click(function(){
+                 setColor('#000');
+                 hidePopover($("#chooseBrush"));
+             });
         });
 
          $('#chooseBrush').on('hide.bs.popover', function () {
