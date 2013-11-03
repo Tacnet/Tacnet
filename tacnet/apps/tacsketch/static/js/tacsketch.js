@@ -125,6 +125,22 @@ function resetClicked() {
     }
 }
 
+// Reset background
+function resetBackground() {
+    bgContext.clearRect(0,0 , bgCanvas.width, bgCanvas.height);
+    bgContext.fillRect (0, 0, bgCanvas.width, bgCanvas.height);
+    setBackground('/static/img/boot.jpg')
+}
+// Clears and sends clear message
+function clearClicked() {
+    clearCanvas();
+    if (TogetherJS.running) {
+        TogetherJS.send({
+            type: "clearCanvas"
+        });
+    }
+}
+
 // Clears the canvas
 function clearCanvas() {
     context.clearRect(0,0 , canvas.width, canvas.height);
