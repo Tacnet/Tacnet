@@ -57,6 +57,10 @@ canvas.addEventListener('mousedown', function(e) {
     canvas.addEventListener('mousemove', move, false);
 }, false);
 
+canvas.addEventListener('mouseout', function() {
+    canvas.removeEventListener('mousemove', move, false);
+}, false);
+
 canvas.addEventListener('mouseup', function() {
     canvas.removeEventListener('mousemove', move, false);
 }, false);
@@ -400,43 +404,39 @@ $(document).ready(function () {
 
     // Draw Mouse
     function ChangeMouse(){
-    var brushSize = context.lineWidth;
-    if (brushSize < 10){
-        brushSize = 10;
-    }
+        var brushSize = context.lineWidth;
+        if (brushSize < 10){
+            brushSize = 10;
+        }
 
-    var brushColor = context.strokeStyle;
+        var brushColor = context.strokeStyle;
 
-    var eraser = false;
-    if (context.globalCompositeOperation == "destination-out"){
-        eraser = true;
-    }
+        var eraser = false;
+        if (context.globalCompositeOperation == "destination-out"){
+            eraser = true;
+        }
 
-    var cursorGenerator = document.createElement("canvas");
-    cursorGenerator.width = brushSize;
-    cursorGenerator.height = brushSize;
-    var ctx = cursorGenerator.getContext("2d");
+        var cursorGenerator = document.createElement("canvas");
+        cursorGenerator.width = brushSize;
+        cursorGenerator.height = brushSize;
+        var ctx = cursorGenerator.getContext("2d");
 
-    var centerX = cursorGenerator.width / 2;
-    var centerY = cursorGenerator.height / 2;
-    var radius = brushSize;
+        var centerX = cursorGenerator.width / 2;
+        var centerY = cursorGenerator.height / 2;
+        var radius = brushSize;
 
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, (brushSize/2)-4, 0, 2 * Math.PI, false);
-    if (eraser){
-         ctx.fillStyle = 'white';
-         ctx.fill()
-    }
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, (brushSize/2)-4, 0, 2 * Math.PI, false);
+        if (eraser){
+             ctx.fillStyle = 'white';
+             ctx.fill()
+        }
 
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = brushColor;
+        ctx.stroke();
 
-    ctx.lineWidth = 3;
-    ctx.strokeStyle = brushColor;
-    ctx.stroke();
-
-
-
-
-    $('#sketch').css( "cursor", "url(" + cursorGenerator.toDataURL("image/png") + ") " + brushSize/2 + " " + brushSize/2 + ",crosshair");
+        $('#sketch').css( "cursor", "url(" + cursorGenerator.toDataURL("image/png") + ") " + brushSize/2 + " " + brushSize/2 + ",crosshair");
 
 
     };
