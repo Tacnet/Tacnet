@@ -27,8 +27,15 @@ function setSize(size) {
     context.lineWidth = size;
 }
 
+// Sets eraser mode
+function eraser() {
+    context.globalCompositeOperation = "destination-out";
+    context.strokeStyle = "rgba(0,0,0,1)";
+}
+
 // Set brush color
 function setColor(color) {
+    context.globalCompositeOperation = "source-over";
     context.strokeStyle = color;
 }
 
@@ -300,10 +307,10 @@ $(document).ready(function () {
     });
 
     $('#chooseBrush').on('shown.bs.popover', function () {
-        $('#brushSizeForm').append('<input type="text" class="slider" id="brushSize" style="width: 300px;" />');
+        $('#brushSizeForm').append('<input type="text" class="slider" id="brushSize" style="width: 360px;" />');
         $('.slider').slider({
             min: 2,
-            max: 20,
+            max: 50,
             step: 1,
             value: context.lineWidth
         }).on('slide', function (ev) {
@@ -343,6 +350,10 @@ $(document).ready(function () {
             setColor('#000');
             hidePopover($("#chooseBrush"));
         });
+        $('.eraser').click(function () {
+            eraser();
+            hidePopover($("#chooseBrush"));
+        })
     });
 
     // Hide popover listeners

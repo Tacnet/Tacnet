@@ -53,18 +53,3 @@
 top: 200px !important;
 }
 
-/* Map Selector */
-.popover {
-            max-width: 500px !important;
-            width: 335px;
-        }
-
-/* Remove select color */
-body {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}

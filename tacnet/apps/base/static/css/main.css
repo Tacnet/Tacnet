@@ -36,8 +36,6 @@ margin-bottom: 30px;
   background-color: #ecf0f1;
 }
 
-
-
 .container .drawotron {
   border-radius: 6px;
 }
@@ -64,4 +62,20 @@ margin-bottom: 30px;
   color: #ffffff;
   background-color: #ff0;
   border-color: #ff0;
+}
+
+/* Map Selector */
+.popover {
+            max-width: 500px !important;
+            width: 395px;
+        }
+
+/* Remove select color */
+body {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
