@@ -1,5 +1,6 @@
 # Django settings for tacnet project.
 import os, sys
+from django.contrib.messages import constants as messages
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -30,7 +31,7 @@ DATABASES = {
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['ek.sylliaas.no', '129.241.208.163']
+ALLOWED_HOSTS = ['ek.sylliaas.no', '129.241.208.163', 'tacnet.io']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -255,3 +256,12 @@ from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
 TEMPLATE_CONTEXT_PROCESSORS = TCP + (
     'django.core.context_processors.request',
 )
+
+# Messages
+
+MESSAGE_TAGS = {
+    messages.SUCCESS: 'alert-success',
+    messages.INFO: 'alert-info',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger',
+}

@@ -34,6 +34,7 @@ class MapRequest (models.Model):
     game = models.CharField(max_length=300, verbose_name="Game")
     map = models.CharField(max_length=300, verbose_name="Map")
     gameMode = models.CharField(max_length=300, verbose_name="Game Mode", blank=True)
+    image = models.ImageField(upload_to="maprequests", verbose_name="Image", blank=True)
 
     def __unicode__(self):
         return self.game + ", " + self.map

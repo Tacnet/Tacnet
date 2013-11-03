@@ -1,0 +1,22 @@
+{% block messages %}
+    <div class="container messages-container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-dismissable {% if message.tags %}{{ message.tags }}{% endif %}">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <strong>
+                        {% if message.tags == 'alert-success' %}
+                            Success!
+                        {% elif message.tags == 'alert-info' %}
+                            Information!
+                        {% elif message.tags == 'alert-warning' %}
+                            Warning!
+                        {% elif message.tags == 'alert-danger' %}
+                            Error!
+                        {% endif %}
+                    </strong> {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock %}

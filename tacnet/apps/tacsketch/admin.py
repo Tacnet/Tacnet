@@ -18,3 +18,8 @@ class MapAdmin(admin.ModelAdmin):
     list_display = ('name', 'game', 'gameMode')
 
 admin.site.register(Map, MapAdmin)
+
+class MapRequestAdmin(admin.ModelAdmin):
+    list_display = ('email', 'game', 'gameMode', 'map')
+
+admin.site.register(MapRequest, MapRequestAdmin)
