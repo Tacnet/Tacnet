@@ -433,8 +433,8 @@ $(document).ready(function () {
     ctx.strokeStyle = brushColor;
     ctx.stroke();
 
-    var img = document.createElement("img");
-    img.src = cursorGenerator.toDataURL("image/png");
+
+
 
     $('#sketch').css( "cursor", "url(" + cursorGenerator.toDataURL("image/png") + ") " + brushSize/2 + " " + brushSize/2 + ",crosshair");
 
