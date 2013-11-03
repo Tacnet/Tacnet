@@ -63,14 +63,15 @@ function move(e) {
         x: e.pageX - this.offsetLeft,
         y: e.pageY - this.offsetTop
     };
-    draw(lastMouse, mouse, context.strokeStyle, context.lineWidth);
+    draw(lastMouse, mouse, context.strokeStyle, context.lineWidth, context.globalCompositeOperation);
     if (TogetherJS.running) {
         TogetherJS.send({
             type: "draw",
             start: lastMouse,
             end: mouse,
             color: context.strokeStyle,
-            size: context.lineWidth
+            size: context.lineWidth,
+            compositeoperation: context.globalCompositeOperation
         });
     }
     lastMouse = mouse;
@@ -154,9 +155,10 @@ function clearCanvas() {
 }
 
 // Draws the lines
-function draw(start, end, color, size) {
+function draw(start, end, color, size, compositeoperation) {
     context.save();
     context.strokeStyle = color;
+    context.globalCompositeOperation = compositeoperation;
     context.lineWidth = size;
     context.beginPath();
     context.moveTo(start.x, start.y);
@@ -212,7 +214,7 @@ TogetherJS.hub.on("draw", function (msg) {
     if (!msg.sameUrl) {
         return;
     }
-    draw(msg.start, msg.end, msg.color, msg.size);
+    draw(msg.start, msg.end, msg.color, msg.size, msg.compositeoperation);
 });
 
 TogetherJS.hub.on("setBackground", function (msg) {
