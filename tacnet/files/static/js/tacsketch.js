@@ -1,3 +1,4 @@
+
 var canvas = document.getElementById ('sketch');
 var context = canvas.getContext('2d');
 
@@ -16,27 +17,25 @@ var initDrawings;
 setBackground('/static/img/boot.jpg');
 
 // Brush Settings
-context.lineWidth = 2;
+context.lineWidth = 1;
 context.lineJoin = 'round';
 context.lineCap = 'round';
 context.strokeStyle = '#000';
-
-// Increase and decrease brush size
-function increaseBrush() {
-    context.lineWidth+=1;
-    console.log(context.lineWidth)
-}
-function decreaseBrush() {
-    context.lineWidth-=1;
-}
 
 // Set brush size
 function setSize(size) {
     context.lineWidth = size;
 }
 
+// Sets eraser mode
+function eraser() {
+    context.globalCompositeOperation = "destination-out";
+    context.strokeStyle = "rgba(0,0,0,1)";
+}
+
 // Set brush color
 function setColor(color) {
+    context.globalCompositeOperation = "source-over";
     context.strokeStyle = color;
 }
 
@@ -55,7 +54,7 @@ canvas.addEventListener('mousedown', function(e) {
     canvas.addEventListener('mousemove', move, false);
 }, false);
 
-canvas.addEventListener('mouseup', function () {
+canvas.addEventListener('mouseup', function() {
     canvas.removeEventListener('mousemove', move, false);
 }, false);
 
@@ -64,14 +63,15 @@ function move(e) {
         x: e.pageX - this.offsetLeft,
         y: e.pageY - this.offsetTop
     };
-    draw(lastMouse, mouse, context.strokeStyle, context.lineWidth);
+    draw(lastMouse, mouse, context.strokeStyle, context.lineWidth, context.globalCompositeOperation);
     if (TogetherJS.running) {
         TogetherJS.send({
             type: "draw",
             start: lastMouse,
             end: mouse,
             color: context.strokeStyle,
-            size: context.lineWidth
+            size: context.lineWidth,
+            compositeoperation: context.globalCompositeOperation
         });
     }
     lastMouse = mouse;
@@ -81,6 +81,7 @@ function move(e) {
 function backgroundClicked(background) {
     setBackground(background);
     if (TogetherJS.running) {
+        console.log("TJS bg msg sent");
         TogetherJS.send({
             type: "setBackground",
             background: background
@@ -90,32 +91,38 @@ function backgroundClicked(background) {
 
 // Sets background
 function setBackground(background) {
-    var bgimg = new Image();
-    bgimg.src = background;
-    bgimg.onload = function() {
-        var oldLineWidth = context.lineWidth;
-        var oldLineJoin = context.lineJoin;
-        var oldLineCap = context.lineCap;
-        var oldStrokeStyle = context.strokeStyle;
+    currentBackground = background;
+        var bgimg = new Image();
+        bgimg.src = background;
+        bgimg.onload = function() {
+            var oldLineWidth = context.lineWidth;
+            var oldLineJoin = context.lineJoin;
+            var oldLineCap = context.lineCap;
+            var oldStrokeStyle = context.strokeStyle;
 
-        bgCanvas.width = bgimg.width;
-        bgCanvas.height = bgimg.height;
-        canvas.width = bgCanvas.width;
-        canvas.height = bgCanvas.height;
-        bgContext.drawImage(bgimg,0,0);
+            bgCanvas.width = bgimg.width;
+            bgCanvas.height = bgimg.height;
+            canvas.width = bgCanvas.width;
+            canvas.height = bgCanvas.height;
+            bgContext.drawImage(bgimg,0,0);
 
-        context.lineWidth =  oldLineWidth;
-        context.lineJoin = oldLineJoin;
-        context.lineCap = oldLineCap;
-        context.strokeStyle = oldStrokeStyle;
+            context.lineWidth =  oldLineWidth;
+            context.lineJoin = oldLineJoin;
+            context.lineCap = oldLineCap;
+            context.strokeStyle = oldStrokeStyle;
+            if (hello) {
+                console.log("starting hellodraw");
+                helloDraw();
+            }
     }
 }
 
-// Send drawings when background is ready
-function helloDraw() {
+function helloDraw(){
     context.drawImage(initDrawings, 0,0);
     hello = false;
+    console.log("done hello draw");
 }
+
 // Reset background and sends reset message
 function resetClicked() {
     resetBackground();
@@ -148,9 +155,10 @@ function clearCanvas() {
 }
 
 // Draws the lines
-function draw(start, end, color, size) {
+function draw(start, end, color, size, compositeoperation) {
     context.save();
     context.strokeStyle = color;
+    context.globalCompositeOperation = compositeoperation;
     context.lineWidth = size;
     context.beginPath();
     context.moveTo(start.x, start.y);
@@ -160,7 +168,6 @@ function draw(start, end, color, size) {
     context.restore();
 }
 
-// Save drawings
 function saveDrawings() {
     var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
     window.location.href=image;
@@ -178,17 +185,13 @@ function handleFiles(e) {
     img.src = URL.createObjectURL(e.target.files[0]);
     img.onload = function() {
         context.drawImage(img, 0,0);
-        alert('drawn');
-        console.log(img);
         img = canvas.toDataURL("image/png");
-        console.log(img);
         if (TogetherJS.running) {
             TogetherJS.send({
                 type: "init",
                 background: currentBackground,
                 drawings: img
             });
-        alert('sent');
         }
     }
 }
@@ -211,7 +214,7 @@ TogetherJS.hub.on("draw", function (msg) {
     if (!msg.sameUrl) {
         return;
     }
-    draw(msg.start, msg.end, msg.color, msg.size);
+    draw(msg.start, msg.end, msg.color, msg.size, msg.compositeoperation);
 });
 
 TogetherJS.hub.on("setBackground", function (msg) {
@@ -306,10 +309,10 @@ $(document).ready(function () {
     });
 
     $('#chooseBrush').on('shown.bs.popover', function () {
-        $('#brushSizeForm').append('<input type="text" class="slider" id="brushSize" style="width: 300px;" />');
+        $('#brushSizeForm').append('<input type="text" class="slider" id="brushSize" style="width: 360px;" />');
         $('.slider').slider({
             min: 2,
-            max: 20,
+            max: 50,
             step: 1,
             value: context.lineWidth
         }).on('slide', function (ev) {
@@ -349,6 +352,10 @@ $(document).ready(function () {
             setColor('#000');
             hidePopover($("#chooseBrush"));
         });
+        $('.eraser').click(function () {
+            eraser();
+            hidePopover($("#chooseBrush"));
+        })
     });
 
     // Hide popover listeners
@@ -369,6 +376,7 @@ $(document).ready(function () {
     $('.resetCanvas').click(function(){
         resetClicked();
     });
+
     $('.increaseBrush').click(function(){
         increaseBrush();
     });
@@ -376,6 +384,7 @@ $(document).ready(function () {
         decreaseBrush();
     });
 
-
-
+    $('.saveDrawings').click(function(){
+        saveDrawings();
+    })
 });

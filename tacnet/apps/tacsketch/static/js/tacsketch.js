@@ -25,18 +25,21 @@ context.strokeStyle = '#000';
 // Set brush size
 function setSize(size) {
     context.lineWidth = size;
+
 }
 
 // Sets eraser mode
 function eraser() {
     context.globalCompositeOperation = "destination-out";
     context.strokeStyle = "rgba(0,0,0,1)";
+
 }
 
 // Set brush color
 function setColor(color) {
     context.globalCompositeOperation = "source-over";
     context.strokeStyle = color;
+
 }
 
 // Initialize last mouse
@@ -319,6 +322,7 @@ $(document).ready(function () {
             setSize(ev.value);
         }).on('slideStop', function (ev) {
             hidePopover($("#chooseBrush"));
+            ChangeMouse();
         });
 
         // Button listeners
@@ -327,34 +331,40 @@ $(document).ready(function () {
         $('.green-pick').click(function () {
             setColor('#00ff00');
             hidePopover($("#chooseBrush"));
+            ChangeMouse();
         });
 
         //Color change functions
         $('.yellow-pick').click(function () {
             setColor('#ff0');
             hidePopover($("#chooseBrush"));
+            ChangeMouse();
         });
 
         //Color change functions
         $('.red-pick').click(function () {
             setColor('#ff0000');
             hidePopover($("#chooseBrush"));
+            ChangeMouse();
         });
 
         //Color change functions
         $('.blue-pick').click(function () {
             setColor('#0000ff');
             hidePopover($("#chooseBrush"));
+            ChangeMouse();
         });
 
         //Color change functions
         $('.black-pick').click(function () {
             setColor('#000');
             hidePopover($("#chooseBrush"));
+            ChangeMouse();
         });
         $('.eraser').click(function () {
             eraser();
             hidePopover($("#chooseBrush"));
+            ChangeMouse();
         })
     });
 
@@ -387,4 +397,50 @@ $(document).ready(function () {
     $('.saveDrawings').click(function(){
         saveDrawings();
     })
+
+    // Draw Mouse
+    function ChangeMouse(){
+    var brushSize = context.lineWidth;
+    if (brushSize < 10){
+        brushSize = 10;
+    }
+
+    var brushColor = context.strokeStyle;
+
+    var eraser = false;
+    if (context.globalCompositeOperation == "destination-out"){
+        eraser = true;
+    }
+
+    var cursorGenerator = document.createElement("canvas");
+    cursorGenerator.width = brushSize;
+    cursorGenerator.height = brushSize;
+    var ctx = cursorGenerator.getContext("2d");
+
+    var centerX = cursorGenerator.width / 2;
+    var centerY = cursorGenerator.height / 2;
+    var radius = brushSize;
+
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, (brushSize/2)-4, 0, 2 * Math.PI, false);
+    if (eraser){
+         ctx.fillStyle = 'white';
+         ctx.fill()
+    }
+
+
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = brushColor;
+    ctx.stroke();
+
+    var img = document.createElement("img");
+    img.src = cursorGenerator.toDataURL("image/png");
+
+    $('#sketch').css( "cursor", "url(" + cursorGenerator.toDataURL("image/png") + ") " + brushSize/2 + " " + brushSize/2 + ",crosshair");
+
+
+    };
+    // Init mouse
+    ChangeMouse();
+
 });
