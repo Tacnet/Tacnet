@@ -2,7 +2,7 @@
 set -e # Exit on error
 
 user='tacnet-www'
-target='sylliaas.no'
+target='tacnet.io'
 port=''
 branch='master'
 prod_folder='/home/tacnet-www/www/'
