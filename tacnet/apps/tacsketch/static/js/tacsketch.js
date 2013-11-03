@@ -224,120 +224,118 @@
 
         });
 
+$(document).ready(function () {
 
- $(document).ready(function(){
+    // Hide popover
+    function hidePopover(element) {
+        if (element.next('div.popover:visible').length) {
+            element.popover('toggle');
+        }
+    };
 
-        function hidePopover(element){
-          if (element.next('div.popover:visible').length){
-               element.popover('toggle');
-          }
-        };
+    // Initialize popovers
+    $('#chooseMap').popover({
+        html: true,
+        placement: 'bottom',
+        content: function () {
+            return $('#chooseMap_content_wrapper').html();
+        }
+    });
 
+    $('#chooseBrush').popover({
+        html: true,
+        placement: 'bottom',
+        content: function () {
+            return $('#chooseBrush_content_wrapper').html();
+        }
+    });
 
-        $('#chooseMap').popover({
-            html : true,
-            placement: 'bottom',
-            content: function() {
-              return $('#chooseMap_content_wrapper').html();
-            }
+    // Show popovers
+    $('#chooseMap').on('shown.bs.popover', function () {
+
+        $("#gameslist").select2({
+            placeholder: "Select Game"
+        }).on("change", function (e) {
+            var mapsList = $('#mapslist');
+            mapsList.html($('#' + e.val).html());
         });
 
 
-        $('#chooseMap').on('shown.bs.popover', function () {
-
-            $("#gameslist").select2({
-                placeholder: "Select Game"
-            }).on("change", function(e) {
-                var mapsList = $('#mapslist');
-                mapsList.html($('#' + e.val).html());
-            });
-
-
-            $("#mapslist").select2({
-                placeholder: "Select Map"
-            }).on("change", function(e) {
-                backgroundClicked(e.val);
-                hidePopover($("#chooseMap"));
-            });
-
-            hidePopover($("#chooseBrush"));
-
-        });
-
-        $('#chooseBrush').popover({
-            html : true,
-            placement: 'bottom',
-            content: function() {
-              return $('#chooseBrush_content_wrapper').html();
-            }
-        });
-
-        $('#chooseBrush').on('show.bs.popover', function () {
+        $("#mapslist").select2({
+            placeholder: "Select Map"
+        }).on("change", function (e) {
+            backgroundClicked(e.val);
             hidePopover($("#chooseMap"));
-
         });
 
-         $('#chooseBrush').on('shown.bs.popover', function () {
-            $('#brushSizeForm').append('<input type="text" class="slider" id="brushSize" style="width: 300px;" />');
-            $('.slider').slider({
-                min: 2,
-                max: 20,
-                step: 1,
-                value: context.lineWidth
-            }).on('slide', function(ev){
-               setSize(ev.value);
-            }).on('slideStop', function(ev){
-                 hidePopover($("#chooseBrush"));
-            });
+        hidePopover($("#chooseBrush"));
 
-             // Button listeners
+    });
 
-             //Color change functions
-             $('.green-pick').click(function(){
-                 setColor('#00ff00');
-                 hidePopover($("#chooseBrush"));
-             });
+    $('#chooseBrush').on('show.bs.popover', function () {
+        hidePopover($("#chooseMap"));
 
-             //Color change functions
-             $('.yellow-pick').click(function(){
-                 setColor('#ff0');
-                 hidePopover($("#chooseBrush"));
-             });
+    });
 
-             //Color change functions
-             $('.red-pick').click(function(){
-                 setColor('#ff0000');
-                 hidePopover($("#chooseBrush"));
-             });
-
-             //Color change functions
-             $('.blue-pick').click(function(){
-                 setColor('#0000ff');
-                 hidePopover($("#chooseBrush"));
-             });
-
-             //Color change functions
-             $('.black-pick').click(function(){
-                 setColor('#000');
-                 hidePopover($("#chooseBrush"));
-             });
-        });
-
-         $('#chooseBrush').on('hide.bs.popover', function () {
-            $('.slider').remove();
-          });
-
-        $('#sketch').mousedown(function(){
-            hidePopover($("#chooseMap"));
+    $('#chooseBrush').on('shown.bs.popover', function () {
+        $('#brushSizeForm').append('<input type="text" class="slider" id="brushSize" style="width: 300px;" />');
+        $('.slider').slider({
+            min: 2,
+            max: 20,
+            step: 1,
+            value: context.lineWidth
+        }).on('slide', function (ev) {
+            setSize(ev.value);
+        }).on('slideStop', function (ev) {
             hidePopover($("#chooseBrush"));
         });
 
+        // Button listeners
+
+        //Color change functions
+        $('.green-pick').click(function () {
+            setColor('#00ff00');
+            hidePopover($("#chooseBrush"));
+        });
+
+        //Color change functions
+        $('.yellow-pick').click(function () {
+            setColor('#ff0');
+            hidePopover($("#chooseBrush"));
+        });
+
+        //Color change functions
+        $('.red-pick').click(function () {
+            setColor('#ff0000');
+            hidePopover($("#chooseBrush"));
+        });
+
+        //Color change functions
+        $('.blue-pick').click(function () {
+            setColor('#0000ff');
+            hidePopover($("#chooseBrush"));
+        });
+
+        //Color change functions
+        $('.black-pick').click(function () {
+            setColor('#000');
+            hidePopover($("#chooseBrush"));
+        });
+    });
+
+    // Hide popover listeners
+    $('#chooseBrush').on('hide.bs.popover', function () {
+        $('.slider').remove();
+    });
+
+    // Close popovers when clicking on canvas
+    $('#sketch').mousedown(function () {
+        hidePopover($("#chooseMap"));
+        hidePopover($("#chooseBrush"));
+    });
+
+    // Listeners
+    
 
 
-
-
-
-
-
-
-  });
+});
