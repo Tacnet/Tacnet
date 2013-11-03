@@ -1,228 +1,226 @@
-        var canvas = document.getElementById ('sketch');
-        var context = canvas.getContext('2d');
 
-        var bgCanvas = document.getElementById ('background');
-        var bgContext = bgCanvas.getContext('2d');
+var canvas = document.getElementById ('sketch');
+var context = canvas.getContext('2d');
 
-        bgCanvas.width = 800;
-        bgCanvas.height = 600;
-        canvas.width = bgCanvas.width;
-        canvas.height = bgCanvas.height;
+var bgCanvas = document.getElementById ('background');
+var bgContext = bgCanvas.getContext('2d');
 
-        setBackground('/static/img/boot.jpg');
+bgCanvas.width = 800;
+bgCanvas.height = 600;
+canvas.width = bgCanvas.width;
+canvas.height = bgCanvas.height;
 
-        // Brush Settings
-        context.lineWidth = 2;
-        context.lineJoin = 'round';
-        context.lineCap = 'round';
-        context.strokeStyle = '#000';
+var currentBackground;
+var hello = false;
+var initDrawings;
 
-        // Increase and decrease brush size
-        function increaseBrush() {
-            context.lineWidth+=1;
-            console.log(context.lineWidth)
-        }
-        function decreaseBrush() {
-            context.lineWidth-=1;
-        }
+setBackground('/static/img/boot.jpg');
 
-        // Set brush size
-        function setSize(size) {
-            context.lineWidth = size;
-        }
+// Brush Settings
+context.lineWidth = 1;
+context.lineJoin = 'round';
+context.lineCap = 'round';
+context.strokeStyle = '#000';
 
-        // Set brush color
-        function setColor(color) {
-            context.strokeStyle = color;
-        }
+// Set brush size
+function setSize(size) {
+    context.lineWidth = size;
+}
 
-        // Initialize last mouse
-        var lastMouse = {
-            x: 0,
-            y: 0
-        };
+// Set brush color
+function setColor(color) {
+    context.strokeStyle = color;
+}
 
-        // Event listeners for mouse
-        canvas.addEventListener('mousedown', function(e) {
-            lastMouse = {
-                x: e.pageX - this.offsetLeft,
-                y: e.pageY - this.offsetTop
-            };
-            canvas.addEventListener('mousemove', move, false);
-        }, false);
+// Initialize last mouse
+var lastMouse = {
+    x: 0,
+    y: 0
+};
 
-        canvas.addEventListener('mouseup', function () {
-            canvas.removeEventListener('mousemove', move, false);
-        }, false);
+// Event listeners for mouse
+canvas.addEventListener('mousedown', function(e) {
+    lastMouse = {
+        x: e.pageX - this.offsetLeft,
+        y: e.pageY - this.offsetTop
+    };
+    canvas.addEventListener('mousemove', move, false);
+}, false);
 
-        function move(e) {
-            var mouse = {
-                x: e.pageX - this.offsetLeft,
-                y: e.pageY - this.offsetTop
-            };
-            draw(lastMouse, mouse, context.strokeStyle, context.lineWidth);
-            if (TogetherJS.running) {
-                TogetherJS.send({
-                    type: "draw",
-                    start: lastMouse,
-                    end: mouse,
-                    color: context.strokeStyle,
-                    size: context.lineWidth
-                });
-            }
-            lastMouse = mouse;
-        }
+canvas.addEventListener('mouseup', function() {
+    canvas.removeEventListener('mousemove', move, false);
+}, false);
 
-        // Sets background and sends message
-        function backgroundClicked(background) {
-            setBackground(background);
-            if (TogetherJS.running) {
-                console.log("TJS bg msg sent");
-                TogetherJS.send({
-                    type: "setBackground",
-                    background: background
-                });
-            }
-        }
-
-        // Sets background
-        function setBackground(background) {
-            var img = new Image();
-            img.src = background;
-            img.onload = function() {
-                var oldLineWidth = context.lineWidth;
-                var oldLineJoin = context.lineJoin;
-                var oldLineCap = context.lineCap;
-                var oldStrokeStyle = context.strokeStyle;
-
-                bgCanvas.width = img.width;
-                bgCanvas.height = img.height;
-                canvas.width = bgCanvas.width;
-                canvas.height = bgCanvas.height;
-                bgContext.drawImage(img,0,0);
-
-                context.lineWidth =  oldLineWidth;
-                context.lineJoin = oldLineJoin;
-                context.lineCap = oldLineCap;
-                context.strokeStyle = oldStrokeStyle;
-            }
-        }
-
-        // Reset background and sends reset message
-        function resetClicked() {
-            resetBackground();
-            if(TogetherJS.running) {
-                TogetherJS.send({
-                    type: "resetBackground"
-                });
-            }
-        }
-
-        // Reset background
-        function resetBackground() {
-            bgContext.clearRect(0,0 , bgCanvas.width, bgCanvas.height);
-            bgContext.fillRect (0, 0, bgCanvas.width, bgCanvas.height);
-            setBackground('/static/img/boot.jpg')
-        }
-        // Clears and sends clear message
-        function clearClicked() {
-            clearCanvas();
-            if (TogetherJS.running) {
-                TogetherJS.send({
-                    type: "clearCanvas"
-                });
-            }
-        }
-
-        // Clears the canvas
-        function clearCanvas() {
-            context.clearRect(0,0 , canvas.width, canvas.height);
-        }
-
-        // Draws the lines
-        function draw(start, end, color, size) {
-            context.save();
-            context.strokeStyle = color;
-            context.lineWidth = size;
-            context.beginPath();
-            context.moveTo(start.x, start.y);
-            context.lineTo(end.x, end.y);
-            context.closePath();
-            context.stroke();
-            context.restore();
-        }
-
-        TogetherJS.hub.on("clearCanvas", function (msg) {
-            if (!msg.sameUrl) {
-                return;
-            }
-            clearCanvas();
+function move(e) {
+    var mouse = {
+        x: e.pageX - this.offsetLeft,
+        y: e.pageY - this.offsetTop
+    };
+    draw(lastMouse, mouse, context.strokeStyle, context.lineWidth);
+    if (TogetherJS.running) {
+        TogetherJS.send({
+            type: "draw",
+            start: lastMouse,
+            end: mouse,
+            color: context.strokeStyle,
+            size: context.lineWidth
         });
+    }
+    lastMouse = mouse;
+}
 
-        TogetherJS.hub.on("resetBackground", function (msg) {
-            if (!msg.sameUrl) {
-                return;
-            }
-            resetBackground();
+// Sets background and sends message
+function backgroundClicked(background) {
+    setBackground(background);
+    if (TogetherJS.running) {
+        console.log("TJS bg msg sent");
+        TogetherJS.send({
+            type: "setBackground",
+            background: background
         });
+    }
+}
 
-        TogetherJS.hub.on("draw", function (msg) {
-            if (!msg.sameUrl) {
-                return;
+// Sets background
+function setBackground(background) {
+    currentBackground = background;
+        var bgimg = new Image();
+        bgimg.src = background;
+        bgimg.onload = function() {
+            var oldLineWidth = context.lineWidth;
+            var oldLineJoin = context.lineJoin;
+            var oldLineCap = context.lineCap;
+            var oldStrokeStyle = context.strokeStyle;
+
+            bgCanvas.width = bgimg.width;
+            bgCanvas.height = bgimg.height;
+            canvas.width = bgCanvas.width;
+            canvas.height = bgCanvas.height;
+            bgContext.drawImage(bgimg,0,0);
+
+            context.lineWidth =  oldLineWidth;
+            context.lineJoin = oldLineJoin;
+            context.lineCap = oldLineCap;
+            context.strokeStyle = oldStrokeStyle;
+            if (hello) {
+                console.log("starting hellodraw");
+                helloDraw();
             }
-            draw(msg.start, msg.end, msg.color, msg.size);
+    }
+}
+
+function helloDraw(){
+    context.drawImage(initDrawings, 0,0);
+    hello = false;
+    console.log("done hello draw");
+}
+
+// Reset background and sends reset message
+function resetClicked() {
+    resetBackground();
+    if(TogetherJS.running) {
+        TogetherJS.send({
+            type: "resetBackground"
         });
+    }
+}
 
-        TogetherJS.hub.on("setBackground", function (msg) {
-            if (!msg.sameUrl) {
-                return;
-            }
-            setBackground(msg.background);
-        });
+// Clears the canvas
+function clearCanvas() {
+    context.clearRect(0,0 , canvas.width, canvas.height);
+}
 
-        TogetherJS.hub.on("togetherjs.hello", function (msg) {
-            if (!msg.sameUrl) {
-                return;
-            }
-            var background = bgCanvas.toDataURL("image/png");
-            var drawings = canvas.toDataURL("image/png");
+// Draws the lines
+function draw(start, end, color, size) {
+    context.save();
+    context.strokeStyle = color;
+    context.lineWidth = size;
+    context.beginPath();
+    context.moveTo(start.x, start.y);
+    context.lineTo(end.x, end.y);
+    context.closePath();
+    context.stroke();
+    context.restore();
+}
+
+function saveDrawings() {
+    var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+    window.location.href=image;
+}
+
+function onLoadClick() {
+    $("#input").click();
+}
+
+var input = document.getElementById('input');
+input.addEventListener('change', handleFiles);
+
+function handleFiles(e) {
+    var img = new Image;
+    img.src = URL.createObjectURL(e.target.files[0]);
+    img.onload = function() {
+        context.drawImage(img, 0,0);
+        img = canvas.toDataURL("image/png");
+        if (TogetherJS.running) {
             TogetherJS.send({
                 type: "init",
-                drawings: drawings,
-                background: background
+                background: currentBackground,
+                drawings: img
             });
-        });
+        }
+    }
+}
 
-        TogetherJS.hub.on("init", function(msg) {
-            if (!msg.sameUrl) {
-                return;
-            }
-            var drawings = new Image();
-            drawings.src = msg.drawings;
-            var background = new Image();
-            background.src = msg.background;
-            background.onload = function () {
-                var oldLineWidth = context.lineWidth;
-                var oldLineJoin = context.lineJoin;
-                var oldLineCap = context.lineCap;
-                var oldStrokeStyle = context.strokeStyle;
+TogetherJS.hub.on("clearCanvas", function (msg) {
+    if (!msg.sameUrl) {
+        return;
+    }
+    clearCanvas();
+});
 
-                bgCanvas.width = background.width;
-                bgCanvas.height = background.height;
-                canvas.width = bgCanvas.width;
-                canvas.height = bgCanvas.height;
+TogetherJS.hub.on("resetBackground", function (msg) {
+    if (!msg.sameUrl) {
+        return;
+    }
+    resetBackground();
+});
 
-                bgContext.drawImage(background, 0,0);
-                context.drawImage(drawings, 0,0);
+TogetherJS.hub.on("draw", function (msg) {
+    if (!msg.sameUrl) {
+        return;
+    }
+    draw(msg.start, msg.end, msg.color, msg.size);
+});
 
-                context.lineWidth =  oldLineWidth;
-                context.lineJoin = oldLineJoin;
-                context.lineCap = oldLineCap;
-                context.strokeStyle = oldStrokeStyle;
-            }
+TogetherJS.hub.on("setBackground", function (msg) {
+    if (!msg.sameUrl) {
+        return;
+    }
+    setBackground(msg.background);
+});
 
+TogetherJS.hub.on("togetherjs.hello", function (msg) {
+    if (!msg.sameUrl) {
+        return;
+    }
+    var drawings = canvas.toDataURL("image/png");
+    TogetherJS.send({
+        type: "init",
+        drawings: drawings,
+        background: currentBackground
+    });
+});
 
-        });
+TogetherJS.hub.on("init", function(msg) {
+    if (!msg.sameUrl) {
+        return;
+    }
+    initDrawings = new Image();
+    initDrawings.src = msg.drawings;
+    hello = true;
+    setBackground(msg.background);
+});
+
 
 $(document).ready(function () {
 
@@ -349,6 +347,7 @@ $(document).ready(function () {
     $('.resetCanvas').click(function(){
         resetClicked();
     });
+
     $('.increaseBrush').click(function(){
         increaseBrush();
     });
@@ -356,6 +355,7 @@ $(document).ready(function () {
         decreaseBrush();
     });
 
-
-
+    $('.saveDrawings').click(function(){
+        saveDrawings();
+    })
 });
