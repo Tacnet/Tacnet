@@ -270,6 +270,14 @@ $(document).ready(function () {
 
         hidePopover($("#chooseBrush"));
 
+        // More maps
+        $('.moreMaps').click(function(){
+            hidePopover($("#chooseMap"));
+            $('#myModal').modal('toggle', {
+              keyboard: false
+            });
+        });
+
     });
 
     $('#chooseBrush').on('show.bs.popover', function () {
