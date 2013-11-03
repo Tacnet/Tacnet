@@ -335,7 +335,17 @@ $(document).ready(function () {
     });
 
     // Listeners
-    
-
+    $('.clearCanvas').click(function(){
+        clearClicked();
+    });
+    $('.resetCanvas').click(function(){
+        resetClicked();
+    });
+    $('.increaseBrush').click(function(){
+        increaseBrush();
+    });
+    $('.decreaseBrush').click(function(){
+        decreaseBrush();
+    });
 
 });
