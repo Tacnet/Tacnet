@@ -9,6 +9,10 @@ bgCanvas.height = 600;
 canvas.width = bgCanvas.width;
 canvas.height = bgCanvas.height;
 
+var currentBackground;
+var hello = false;
+var initDrawings;
+
 setBackground('/static/img/boot.jpg');
 
 // Brush Settings
@@ -87,25 +91,36 @@ function backgroundClicked(background) {
 
 // Sets background
 function setBackground(background) {
-    var img = new Image();
-    img.src = background;
-    img.onload = function() {
-        var oldLineWidth = context.lineWidth;
-        var oldLineJoin = context.lineJoin;
-        var oldLineCap = context.lineCap;
-        var oldStrokeStyle = context.strokeStyle;
+    currentBackground = background;
+        var bgimg = new Image();
+        bgimg.src = background;
+        bgimg.onload = function() {
+            var oldLineWidth = context.lineWidth;
+            var oldLineJoin = context.lineJoin;
+            var oldLineCap = context.lineCap;
+            var oldStrokeStyle = context.strokeStyle;
 
-        bgCanvas.width = img.width;
-        bgCanvas.height = img.height;
-        canvas.width = bgCanvas.width;
-        canvas.height = bgCanvas.height;
-        bgContext.drawImage(img,0,0);
+            bgCanvas.width = bgimg.width;
+            bgCanvas.height = bgimg.height;
+            canvas.width = bgCanvas.width;
+            canvas.height = bgCanvas.height;
+            bgContext.drawImage(bgimg,0,0);
 
-        context.lineWidth =  oldLineWidth;
-        context.lineJoin = oldLineJoin;
-        context.lineCap = oldLineCap;
-        context.strokeStyle = oldStrokeStyle;
+            context.lineWidth =  oldLineWidth;
+            context.lineJoin = oldLineJoin;
+            context.lineCap = oldLineCap;
+            context.strokeStyle = oldStrokeStyle;
+            if (hello) {
+                console.log("starting hellodraw");
+                helloDraw();
+            }
     }
+}
+
+function helloDraw(){
+    context.drawImage(initDrawings, 0,0);
+    hello = false;
+    console.log("done hello draw");
 }
 
 // Reset background and sends reset message
@@ -152,6 +167,38 @@ function draw(start, end, color, size) {
     context.restore();
 }
 
+function saveDrawings() {
+    var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+    window.location.href=image;
+}
+
+function onLoadClick() {
+    $("#input").click();
+}
+
+var input = document.getElementById('input');
+input.addEventListener('change', handleFiles);
+
+function handleFiles(e) {
+    var img = new Image;
+    img.src = URL.createObjectURL(e.target.files[0]);
+    img.onload = function() {
+        context.drawImage(img, 0,0);
+        alert('drawn');
+        console.log(img);
+        img = canvas.toDataURL("image/png");
+        console.log(img);
+        if (TogetherJS.running) {
+            TogetherJS.send({
+                type: "init",
+                background: currentBackground,
+                drawings: img
+            });
+        alert('sent');
+        }
+    }
+}
+
 TogetherJS.hub.on("clearCanvas", function (msg) {
     if (!msg.sameUrl) {
         return;
@@ -184,12 +231,11 @@ TogetherJS.hub.on("togetherjs.hello", function (msg) {
     if (!msg.sameUrl) {
         return;
     }
-    var background = bgCanvas.toDataURL("image/png");
     var drawings = canvas.toDataURL("image/png");
     TogetherJS.send({
         type: "init",
         drawings: drawings,
-        background: background
+        background: currentBackground
     });
 });
 
@@ -197,31 +243,10 @@ TogetherJS.hub.on("init", function(msg) {
     if (!msg.sameUrl) {
         return;
     }
-    var drawings = new Image();
-    drawings.src = msg.drawings;
-    var background = new Image();
-    background.src = msg.background;
-    background.onload = function () {
-        var oldLineWidth = context.lineWidth;
-        var oldLineJoin = context.lineJoin;
-        var oldLineCap = context.lineCap;
-        var oldStrokeStyle = context.strokeStyle;
-
-        bgCanvas.width = background.width;
-        bgCanvas.height = background.height;
-        canvas.width = bgCanvas.width;
-        canvas.height = bgCanvas.height;
-
-        bgContext.drawImage(background, 0,0);
-        context.drawImage(drawings, 0,0);
-
-        context.lineWidth =  oldLineWidth;
-        context.lineJoin = oldLineJoin;
-        context.lineCap = oldLineCap;
-        context.strokeStyle = oldStrokeStyle;
-    }
-
-
+    initDrawings = new Image();
+    initDrawings.src = msg.drawings;
+    hello = true;
+    setBackground(msg.background);
 });
 
 
