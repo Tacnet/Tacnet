@@ -290,6 +290,8 @@
                  hidePopover($("#chooseBrush"));
             });
 
+             // Button listeners
+
              //Color change functions
              $('.green-pick').click(function(){
                  setColor('#00ff00');
