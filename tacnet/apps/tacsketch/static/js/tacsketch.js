@@ -273,7 +273,7 @@ $(document).ready(function () {
         // More maps
         $('.moreMaps').click(function(){
             hidePopover($("#chooseMap"));
-            $('#myModal').modal('toggle', {
+            $('#moreMapsModal').modal('toggle', {
               keyboard: false
             });
         });

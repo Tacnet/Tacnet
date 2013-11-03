@@ -1,7 +1,7 @@
 server {
         listen *:80 default_server;
 
-        server_name ek.sylliaas.no;
+        server_name tacnet.io ek.sylliaas.no;
 
 	    #Logs
 	    access_log  /home/tacnet-www/www/logs/nginx_access.log;

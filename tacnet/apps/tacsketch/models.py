@@ -27,3 +27,13 @@ class Map (models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+class MapRequest (models.Model):
+    email = models.EmailField(verbose_name="User Mail")
+    game = models.CharField(max_length=300, verbose_name="Game")
+    map = models.CharField(max_length=300, verbose_name="Map")
+    gameMode = models.CharField(max_length=300, verbose_name="Game Mode", blank=True)
+
+    def __unicode__(self):
+        return self.game + ", " + self.map
