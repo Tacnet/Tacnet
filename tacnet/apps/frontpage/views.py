@@ -15,9 +15,3 @@ def about(request):
         context_instance=RequestContext(request)
     )
 
-
-def contact(request):
-    return render_to_response(
-        "frontpage/contact.html",
-        context_instance=RequestContext(request)
-    )
