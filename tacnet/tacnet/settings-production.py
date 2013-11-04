@@ -1,4 +1,4 @@
-DEBUG = True
+DEBUG = False
 
 with open('/home/tacnet-www/www/passwords/tacnet_db', 'rb') as f:
     db_password = f.readline()
@@ -23,3 +23,12 @@ CACHES = {
     }
 }
 '''
+
+with open('/home/tacnet-www/www/passwords/mail_password', 'rb') as f:
+    mail_password = f.readline()
+
+EMAIL_HOST = 'smtp.stud.ntnu.no'
+EMAIL_HOST_USER = 'larek'
+EMAIL_HOST_PASSWORD = mail_password.strip()
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
