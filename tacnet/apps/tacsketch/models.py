@@ -30,11 +30,11 @@ class Map (models.Model):
 
 
 class MapRequest (models.Model):
-    email = models.EmailField(verbose_name="User Mail")
+    nickname = models.CharField(max_length=300, verbose_name="Nickname", blank=True)
     game = models.CharField(max_length=300, verbose_name="Game")
     map = models.CharField(max_length=300, verbose_name="Map")
     gameMode = models.CharField(max_length=300, verbose_name="Game Mode", blank=True)
-    image = models.ImageField(upload_to="maprequests", verbose_name="Image", blank=True)
+    imageurl = models.CharField(max_length=300, verbose_name="Image Link", blank=True)
 
     def __unicode__(self):
         return self.game + ", " + self.map
