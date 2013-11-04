@@ -1,4 +1,4 @@
-Tacnet (temporary name) is a work in progress application that allows users to easily share and construct new tactics for games, without registration, installation or annoying ads. 
+Tacnet is an application that allows users to easily share and construct new tactics for games, without registration, installation or annoying ads. 
 
 Tacnet uses TogetherJS for collaboration. 
 
