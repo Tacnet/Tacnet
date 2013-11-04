@@ -41,8 +41,10 @@ def contact(request):
 
             if status:
                 return HttpResponse('True')
+            else:
+                return HttpResponse('False')
         except:
-            pass
+            return HttpResponse('False')
         return HttpResponse('False')
 
     else:
