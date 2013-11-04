@@ -400,6 +400,10 @@ $(document).ready(function () {
 
     $('.saveDrawings').click(function(){
         saveDrawings();
+        $.bootstrapGrowl("Saved drawings - please select the correct map before attempting to load.", {
+            type: 'success',
+            width: 'auto'
+        });
     })
 
     // Draw Mouse
