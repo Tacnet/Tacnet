@@ -37,9 +37,9 @@
 
               <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="visible-lg visible-md"><a href="/"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-                    <li class="visible-lg visible-md"><a href="/frontpage/about"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
-                    <li class="visible-lg visible-md"><a class="contact" href="#"><span class="glyphicon glyphicon-envelope"></span> Contact</a></li>
+                    <li><a href="/"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                    <li><a href="/frontpage/about"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+                    <li><a class="contact" href="#"><span class="glyphicon glyphicon-envelope"></span> Contact</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                   {% block nav %}{% endblock %}
@@ -48,7 +48,9 @@
             </nav>
         </div>
 
-        <div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="contact" aria-hidden="true">
+        {% include "base/messages.html" %}
+
+         <div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="contact" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
                 <form id="ContactForm" action="" method="post" role="form" enctype="multipart/form-data">{% csrf_token %}
@@ -60,7 +62,7 @@
 
                     <div class="form-group">
                         <label for="id_email">Email  *</label>
-                        <input id="id_email" maxlength="75" name="email" type="text" class="form-control">
+                        <input id="id_email" maxlength="75" name="email" type="text" class="form-control"/>
                     </div>
 
                     <div class="form-group">
@@ -68,32 +70,22 @@
                         <textarea id="mailmessage" mname="message" type="text" class="form-control" rows="10"></textarea>
                     </div>
 
-
-
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary submitContactForm">Send</button>
                   </div>
                 </form>
-            </div><!-- /.modal-content -->
-          </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
-        <script>
-            $('.contact').click(function(){
-            $('#contactModal').modal('toggle', {
-              keyboard: false
-            });
-        });</script>
-
-
-
-          {% include "base/messages.html" %}
+            </div>
+          </div>
+        </div>
 
 
         {% block container %}{% endblock %}
 
     <script src="/static/js/jquery.bootstrap-growl.min.js"></script>
     <script src="/static/js/googleanalytics.js"></script>
+    <script src="/static/js/base.js"></script>
+
   </body>
 </html>

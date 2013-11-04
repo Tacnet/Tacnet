@@ -1,3 +1,5 @@
+node_modules
+dist
 .tmp
 .sass-cache
 app/bower_components
@@ -6,7 +8,7 @@ venv
 *.pyc
 *.!sync
 .idea
-scripts
 tacnet.db
 tacnet/files/static
 passwords
+scripts
