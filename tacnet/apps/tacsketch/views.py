@@ -29,7 +29,7 @@ def index(request):
                 ),
                 message=message,
                 from_email='forms@tacnet.io',
-                ['forms@tacnet.io',],
+                recipient_list=['forms@tacnet.io',],
             )
             messages.add_message(request, messages.SUCCESS, "We have received your map suggestions. We will consider the suggestion as soon as possible.")
         else:
