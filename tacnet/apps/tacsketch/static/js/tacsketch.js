@@ -11,7 +11,7 @@ canvas.width = bgCanvas.width;
 canvas.height = bgCanvas.height;
 
 var currentBackground;
-var hello = false;
+var init = false;
 var initDrawings;
 
 setBackground('/static/img/boot.jpg');
@@ -117,18 +117,14 @@ function setBackground(background) {
             context.lineJoin = oldLineJoin;
             context.lineCap = oldLineCap;
             context.strokeStyle = oldStrokeStyle;
-            if (hello) {
-                console.log("starting hellodraw");
-                helloDraw();
+            if (init) {
+                context.drawImage(initDrawings, 0,0);
+                init = false;
             }
     }
 }
 
-function helloDraw(){
-    context.drawImage(initDrawings, 0,0);
-    hello = false;
-    console.log("done hello draw");
-}
+
 
 // Reset background and sends reset message
 function resetClicked() {
@@ -191,13 +187,18 @@ function handleFiles(e) {
     var img = new Image;
     img.src = URL.createObjectURL(e.target.files[0]);
     img.onload = function() {
+        if ((img.width != bgCanvas.width) || (img.height != bgCanvas.height)) {
+            bgCanvas.width = img.width;
+            bgCanvas.height = img.height;
+            canvas.width = img.width;
+            canvas.height = img.height;
+        }
         context.drawImage(img, 0,0);
         img = canvas.toDataURL("image/png");
         if (TogetherJS.running) {
             TogetherJS.send({
-                type: "init",
-                background: currentBackground,
-                drawings: img
+                type: "load",
+                loadobject: img
             });
         }
     }
@@ -249,10 +250,27 @@ TogetherJS.hub.on("init", function(msg) {
     }
     initDrawings = new Image();
     initDrawings.src = msg.drawings;
-    hello = true;
+    init = true;
     setBackground(msg.background);
 });
 
+TogetherJS.hub.on("load", function(msg) {
+    if (!msg.sameUrl) {
+        return;
+    }
+    var load = new Image();
+    load.src = msg.loadobject;
+    if ((load.width != bgCanvas.width) || (load.height != bgCanvas.height)) {
+        console.log(load.width, load.height);
+        bgCanvas.width = load.width;
+        bgCanvas.height = load.height;
+    }
+    canvas.width = load.width;
+    canvas.height = load.height;
+    context.drawImage(load, 0,0);
+
+
+});
 
 $(document).ready(function () {
 
