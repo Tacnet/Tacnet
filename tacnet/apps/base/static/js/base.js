@@ -56,4 +56,19 @@ $(document).ready(function () {
     }
 
 
+    // Mobile messages
+    var mobileUser = false;
+
+    if (mobileUser){
+        $('.mobile-show').show();
+        $('.mobile-hide').hide();
+    }
+    else {
+        $('.mobile-show').hide();
+        $('.mobile-hide').show();
+    }
+
+
+
+
 });
