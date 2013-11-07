@@ -79,3 +79,8 @@ body {
     -ms-user-select: none;
     user-select: none;
 }
+
+/* Hide mobile elements on site */
+.mobile-show {
+    display: none;
+}
