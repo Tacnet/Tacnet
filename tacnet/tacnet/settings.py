@@ -8,7 +8,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('Tacnet Admins', 'forms@tacnet.io'),
 )
 
 ROOTPATH = os.path.dirname(os.path.dirname(__file__))
