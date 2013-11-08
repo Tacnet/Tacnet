@@ -1,19 +1,23 @@
 {% extends "base/base.html" %}
 
+{% block nav %}
+    <li class="mobile-hide"><a href="/tacsketch"><span class="glyphicon glyphicon-pencil"></span> Tacsketch</a></li>
+{% endblock %}
+
 {% block container %}
 
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
 
-                     <div class="jumbotron">
-                        <p class="lead">Collaborate with your team and create tactics in your favorite game - no installation, no registration, no hassle.</p>
-                        <p><a href="tacsketch" class="btn btn-lg btn-success mobile-hide">Get Started</a></p>
-                    </div>
+    <div class="container mobile-hide">
 
-                </div>
-            </div>
+      <div class="row well">
+        <div class="col-lg-8 col-md-8">
+          <h4>Collaborate with your team and create tactics in your favorite game!</h4>
         </div>
+        <div class="col-lg-4 col-md-4">
+          <a class="btn btn-lg btn-success pull-right" href="/tacsketch"><span class="glyphicon glyphicon-arrow-right"></span> Create a tactic now!</a>
+        </div>
+      </div>
+    </div>
 
         <div class="container">
 

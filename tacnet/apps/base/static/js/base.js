@@ -57,7 +57,7 @@ $(document).ready(function () {
 
 
     // Mobile messages
-    var mobileUser = false;
+    var mobileUser = jQuery.browser.mobile;
 
     if (mobileUser){
         $('.mobile-show').show();

@@ -40,9 +40,9 @@
 
               <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="/"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-                    <li><a href="/frontpage/about"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
-                    <li><a class="contact" href="#"><span class="glyphicon glyphicon-envelope"></span> Contact</a></li>
+                    <li class="visible-xs visible-lg"><a href="/"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                    <li class="visible-xs visible-lg"><a href="/frontpage/about"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+                    <li class="visible-xs visible-lg"><a class="contact" href="#"><span class="glyphicon glyphicon-envelope"></span> Contact</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                   {% block nav %}{% endblock %}
@@ -109,6 +109,7 @@
         </div>
 
     <script src="/static/js/jquery.bootstrap-growl.min.js"></script>
+    <script src="/static/js/ismobile.js"></script>
     <script src="/static/js/googleanalytics.js"></script>
     <script src="/static/js/base.js"></script>
 
