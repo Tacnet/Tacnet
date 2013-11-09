@@ -24,6 +24,7 @@
   <body>
 
   {% block header %}{% endblock %}
+
         <div class="container">
             <nav class="navbar navbar-default" role="navigation">
               <!-- Brand and toggle get grouped for better mobile display -->
@@ -39,9 +40,9 @@
 
               <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="/"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-                    <li><a href="/frontpage/about"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
-                    <li><a class="contact" href="#"><span class="glyphicon glyphicon-envelope"></span> Contact</a></li>
+                    <li class="visible-xs visible-lg"><a href="/"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                    <li class="visible-xs visible-lg"><a href="/frontpage/about"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+                    <li class="visible-xs visible-lg"><a class="contact" href="#"><span class="glyphicon glyphicon-envelope"></span> Contact</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                   {% block nav %}{% endblock %}
@@ -95,7 +96,20 @@
 
         {% block container %}{% endblock %}
 
+        <!-- Footer -->
+        <div class="container footer">
+            <div class="row">
+
+                <div class="col-md-12">
+                    <hr/>
+                    <p>Tacnet.io - <a href="/frontpage/about/">Developed by the Tacnet Team</a>.</p>
+                </div>
+
+            </div>
+        </div>
+
     <script src="/static/js/jquery.bootstrap-growl.min.js"></script>
+    <script src="/static/js/ismobile.js"></script>
     <script src="/static/js/googleanalytics.js"></script>
     <script src="/static/js/base.js"></script>
 

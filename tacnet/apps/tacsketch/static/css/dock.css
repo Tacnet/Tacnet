@@ -53,3 +53,7 @@
 top: 200px !important;
 }
 
+/* Hide footer */
+.footer {
+    display: none;
+}

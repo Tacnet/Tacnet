@@ -1,17 +1,32 @@
-{% include "base/base.html" %}
+{% extends "base/base.html" %}
 
-{% block content %}
+{% block nav %}
+    <li class="mobile-hide"><a href="/tacsketch"><span class="glyphicon glyphicon-pencil"></span> Tacsketch</a></li>
+{% endblock %}
+
+{% block container %}
 
         <div class="container">
-            <div class="jumbotron">
-                <p>Tacnet was created by two computer science students with the intention of making it easier to plan tactics ahead of matches in different competitive games. If you want to contribute or just check out the code, feel free to fork our repo over at GitHub.</p>
-<iframe src="http://ghbtns.com/github-btn.html?user=ekmartin&repo=Tacnet&type=watch"
-  allowtransparency="true" frameborder="0" scrolling="0" width="55" height="20"></iframe>
-                <iframe src="http://ghbtns.com/github-btn.html?user=ekmartin&repo=Tacnet&type=fork"
-  allowtransparency="true" frameborder="0" scrolling="0" width="55" height="20"></iframe>
-                 <a href="https://twitter.com/Reactu" class="twitter-follow-button" data-show-count="false">Follow @Reactu</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 
+            <div class="row">
+                <div class="col-md-12">
+
+                     <div class="jumbotron">
+                        <p>Tacnet was created by two computer science students with the intention of making it easier to plan tactics ahead of matches in different competitive games. If you want to contribute or just check out the code, feel free to fork our repo over at GitHub.</p>
+        <iframe src="http://ghbtns.com/github-btn.html?user=ekmartin&repo=Tacnet&type=watch"
+          allowtransparency="true" frameborder="0" scrolling="0" width="55" height="20"></iframe>
+                        <iframe src="http://ghbtns.com/github-btn.html?user=ekmartin&repo=Tacnet&type=fork"
+          allowtransparency="true" frameborder="0" scrolling="0" width="55" height="20"></iframe>
+                         <a href="https://twitter.com/Reactu" class="twitter-follow-button" data-show-count="false">Follow @Reactu</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+                            <a href="https://twitter.com/eirsyl" class="twitter-follow-button" data-show-count="false">Follow @eirsyl</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+                    </div>
+
+                </div>
             </div>
+
         </div>
 
 {% endblock %}
