@@ -37,11 +37,11 @@ def index(request):
         return redirect('index')
     else:
         form = MapRequestForm
-        games = Game.objects.all()
+        games = Game.objects.all().order_by('name')
         for game in games:
-            modes = GameMode.objects.filter(game = game)
+            modes = GameMode.objects.filter(game = game).order_by('name')
             for mode in modes:
-                maps = Map.objects.filter(game = game, gameMode = mode)
+                maps = Map.objects.filter(game = game, gameMode = mode).order_by('name')
                 setattr(mode, 'maps', maps)
             setattr(game, 'modes', modes)
 
