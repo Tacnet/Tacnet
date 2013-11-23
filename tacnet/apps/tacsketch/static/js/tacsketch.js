@@ -327,12 +327,12 @@ $(document).ready(function () {
     $('#chooseBrush').on('shown.bs.popover', function () {
         $('#brushSizeForm').append('<input type="text" class="slider" id="brushSize" style="width: 360px;" />');
         $('.slider').slider({
-            min: 2,
+            min: 1,
             max: 50,
             step: 1,
             value: context.lineWidth
         }).on('slide', function (ev) {
-            setSize(ev.value);
+            setSize(ev.value+2);
         }).on('slideStop', function (ev) {
             hidePopover($("#chooseBrush"));
             ChangeMouse();
