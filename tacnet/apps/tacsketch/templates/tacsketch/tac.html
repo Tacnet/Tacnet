@@ -47,6 +47,10 @@
             <a class="btn btn-danger red-pick">Red</a>
             <a class="btn btn-info blue-pick">Blue</a>
             <a class="btn btn-inverse black-pick">Black</a>
+        </div>
+
+        <div class="btn-group btn-group-justified" style="width: 360px; margin-top: 10px;">
+            <a class="btn btn-primary user-color-pick">User Color</a>
             <a class="btn btn-default eraser">
                 <i class="fa fa-eraser"></i>
             </a>
@@ -56,9 +60,6 @@
 
     <li class="clearCanvas"><a href="#"><span class="glyphicon glyphicon-minus"></span> Clear</a></li>
     <li class="resetCanvas"><a href="#"><span class="glyphicon glyphicon-remove-sign"></span> Reset Map</a></li>
-    <li class="saveDrawings"><a href="#"><span class="glyphicon glyphicon-floppy-save"></span> Save</a></li>
-    <li><a href="javascript:onLoadClick();"><span class="glyphicon glyphicon-floppy-open"></span> Load</a></li>
-    <input type="file" id="input" style="visibility:hidden;position:absolute;top:-50;left:-50">
 
 
 {% endblock %}
@@ -135,6 +136,9 @@
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+    <input type="file" id="input" style="visibility:hidden;position:absolute;top:-50;left:-50">
+
 
     <!-- scripts -->
     <script src="/static/js/TogetherJSConfig.js"></script>
