@@ -42,13 +42,11 @@
           <div class="col-sm-6 col-md-4">
               <img src="/static/img/feature3.jpg" class="img-thumbnail">
               <div class="caption">
-                <h3><span class="glyphicon glyphicon-indent-left"></span> Under development</h3>
-                <p>Tacnet.io is under development, which can lead to instability. Work in progress features include:</p>
+                <h3><span class="glyphicon glyphicon-list"></span> Blog</h3>
                 <ul>
-                    <li>Drag and drop icons</li>
-                    <li>An improved save/load system</li>
-                    <li>Undo/redo-buttons</li>
-                    <li>User restrictions (allowing the group leader to ban people from drawing)</li>
+                    {% for post in posts %}
+                    <li><a href="/blog/{{ post.id }}">{{ post.title }} ({{ post.postDate }})</a></li>
+                    {% endfor %}
                 </ul>
               </div>
           </div>

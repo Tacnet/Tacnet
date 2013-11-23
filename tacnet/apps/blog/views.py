@@ -8,7 +8,7 @@ from models import Post
 
 def post(request, id):
 
-    posts = Post.objects.all()
+    posts = Post.objects.all().order_by('postDate').reverse()
     for p in posts:
        if str(p.id) == id:
             return render(request, 'blog/post.html', {'post': p})
@@ -17,5 +17,5 @@ def post(request, id):
 
 
 def posts(request):
-     posts = Post.objects.all()
+     posts = Post.objects.all().order_by('postDate').reverse()
      return render(request, 'blog/posts.html', {'posts':posts})

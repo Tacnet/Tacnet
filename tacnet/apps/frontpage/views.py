@@ -1,14 +1,15 @@
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, render
 from django.template import RequestContext
 from django.http import HttpResponse
 from django.core.mail import send_mail
 
+from blog.models import Post
 
 def index(request):
-    return render_to_response(
-        "frontpage/index.html",
-        context_instance=RequestContext(request)
-    )
+
+    posts = Post.objects.all().order_by('postDate').reverse()[:5]
+
+    return render(request, 'frontpage/index.html', {'posts':posts})
 
 
 def about(request):
