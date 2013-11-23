@@ -379,6 +379,13 @@ $(document).ready(function () {
             hidePopover($("#chooseBrush"));
             ChangeMouse();
         })
+         //User color
+        $('.user-color-pick').click(function() {
+            console.log(TogetherJS.require("peers").Self.color);
+            setColor(TogetherJS.require("peers").Self.color);
+            hidePopover($("#chooseBrush"));
+            ChangeMouse();
+        });
     });
 
     // Hide popover listeners
@@ -463,7 +470,7 @@ $(document).ready(function () {
 
          $('#togetherjs-chat-button').after('<button class="togetherjs-button loadDrawings" style="color: #FFF;" title="Save Map"><span class="glyphicon glyphicon-floppy-open"></span></button>');
          $('#togetherjs-chat-button').after('<button class="togetherjs-button saveDrawings" style="color: #FFF;" title="Load Map"><span class="glyphicon glyphicon-floppy-save"></span></button>');
-        
+
         $('.saveDrawings').click(function() {
             var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
             window.location.href=image;
@@ -472,6 +479,7 @@ $(document).ready(function () {
         $('.loadDrawings').click(function() {
             $("#input").click();
         });
+
     });
 
 
