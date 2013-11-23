@@ -26,6 +26,7 @@ urlpatterns = patterns('',
     #(r'^$', 'errors.views.underdevelopment'),
 
     (r'^frontpage/', include('frontpage.urls')),
+    (r'^blog/', include('blog.urls')),
     (r'^tacsketch/', include('tacsketch.urls'))
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
