@@ -140,6 +140,7 @@ INSTALLED_APPS = (
     'gunicorn',
     'tacsketch',
     'errors',
+    'blog',
 
     # Uncomment the next line to enable the admin:
     'admin',

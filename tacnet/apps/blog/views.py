@@ -1,0 +1,21 @@
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import permission_required
+from django.contrib import messages
+from datetime import datetime
+
+from models import Post
+
+
+def post(request, id):
+
+    posts = Post.objects.all()
+    for p in posts:
+       if str(p.id) == id:
+            return render(request, 'blog/post.html', {'post': p})
+
+    return render(request, 'blog/posts.html', {'posts':posts})
+
+
+def posts(request):
+     posts = Post.objects.all()
+     return render(request, 'blog/posts.html', {'posts':posts})
