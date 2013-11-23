@@ -171,15 +171,6 @@ function draw(start, end, color, size, compositeoperation) {
     context.restore();
 }
 
-function saveDrawings() {
-    var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
-    window.location.href=image;
-}
-
-function onLoadClick() {
-    $("#input").click();
-}
-
 var input = document.getElementById('input');
 input.addEventListener('change', handleFiles);
 
@@ -464,5 +455,24 @@ $(document).ready(function () {
     };
     // Init mouse
     ChangeMouse();
+
+
+    TogetherJS.on("ready", function () {
+        spinner.stop();
+        $('#loading_layer').hide();
+
+         $('#togetherjs-chat-button').after('<button class="togetherjs-button loadDrawings" style="color: #FFF;" title="Save Map"><span class="glyphicon glyphicon-floppy-open"></span></button>');
+         $('#togetherjs-chat-button').after('<button class="togetherjs-button saveDrawings" style="color: #FFF;" title="Load Map"><span class="glyphicon glyphicon-floppy-save"></span></button>');
+        
+        $('.saveDrawings').click(function() {
+            var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+            window.location.href=image;
+        });
+
+        $('.loadDrawings').click(function() {
+            $("#input").click();
+        });
+    });
+
 
 });

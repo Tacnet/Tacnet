@@ -1,3 +1,6 @@
+#togetherjs-dock {
+    height: 320px !important;
+}
 #togetherjs-dock, .togetherjs .togetherjs-window > header, .togetherjs .togetherjs-modal > header {
     /*background-color: #474747 !important;
 
@@ -51,6 +54,13 @@
 
 #togetherjs-dock.togetherjs-dock-right {
 top: 200px !important;
+}
+
+.togetherjs-button {
+    color: #838383 !important;
+}
+.togetherjs-button:hover {
+    color: #FFF !important;
 }
 
 /* Hide footer */
