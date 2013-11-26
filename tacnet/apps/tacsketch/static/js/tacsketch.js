@@ -1,4 +1,3 @@
-
 var canvas = document.getElementById ('sketch');
 var context = canvas.getContext('2d');
 
@@ -378,7 +377,7 @@ $(document).ready(function () {
             eraser();
             hidePopover($("#chooseBrush"));
             ChangeMouse();
-        })
+        });
          //User color
         $('.user-color-pick').click(function() {
             console.log(TogetherJS.require("peers").Self.color);
