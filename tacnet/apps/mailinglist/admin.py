@@ -31,6 +31,8 @@ class LetterAdmin(DjangoObjectActions, ModelAdmin):
 
         for usr in subscriblers_obj:
             subscriblers.append(usr.mail)
+            usr.received_letters += 1
+            usr.save()
 
 
         msg = EmailMessage(obj.title + ' - Tacnet.io Newsletter', obj.content, 'no-reply@tacnet.io', [], subscriblers)

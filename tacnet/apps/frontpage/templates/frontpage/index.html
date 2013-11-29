@@ -52,21 +52,29 @@
               </div>
           </div>
 
-        <div class="row">
-            <div class="col-md-offset-4 col-md-4">
-                <h5>Newsletter</h5>
-              <p>Join the mailing list and stay updated on the latest patches and blog posts.</p>
-              <form action="/" method="post" class="form-inline text-center">{% csrf_token %}
-                  <div class="form-group">
-                    <label class="sr-only" for="mail">Email address</label>
-                    <input id="id_mail" maxlength="75" name="mail" type="text" class="form-control"  placeholder="Mail" style="color: #FFF !important;"/>
-                  </div>
-                <input type="submit" value="Submit" class="btn btn-primary"/>
-              </form>
-            </div>
-        </div>
         </div>
 
         </div>
+
+{% endblock %}
+
+
+{% block newsletter %}
+
+    <div class="col-md-offset-4 col-md-4 text-right">
+
+    <form action="/" method="post" class="form-inline" style="margin-bottom: 10px;">{% csrf_token %}
+          <div class="form-group">
+            <label class="sr-only" for="mail">Email address</label>
+            <input id="id_mail" maxlength="75" name="mail" type="text" class="form-control"  placeholder="Join the Newsletter" style="color: #FFF !important; width: 260px !important;"/>
+          </div>
+        <input type="submit" value="Submit" class="btn btn-primary"/>
+      </form>
+
+    <p>Stay up to date on the latest patches and blog posts.</p>
+
+            </div>
+
+
 
 {% endblock %}
