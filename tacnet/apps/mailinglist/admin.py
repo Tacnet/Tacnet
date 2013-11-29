@@ -28,14 +28,14 @@ class LetterAdmin(DjangoObjectActions, ModelAdmin):
     def toolfunc(self, request, obj):
         subscriblers = []
         subscriblers_obj = Subscriber.objects.all()
+
         for usr in subscriblers_obj:
             subscriblers.append(usr.mail)
 
-        datatuple = (
-            (obj.title + ' - Tacnet.io Newsletter', obj.content, 'no-reply@tacnet.io', subscriblers),
-        )
 
-        send_mass_mail(datatuple)
+        msg = EmailMessage(obj.title + ' - Tacnet.io Newsletter', obj.content, 'no-reply@tacnet.io', [], subscriblers)
+        msg.content_subtype = "html"
+        msg.send()
 
         add_message(request, SUCCESS, "The newsletter is sendt!")
 
