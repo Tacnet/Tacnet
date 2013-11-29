@@ -141,11 +141,14 @@ INSTALLED_APPS = (
     'tacsketch',
     'errors',
     'blog',
+    'mailinglist',
 
     # Uncomment the next line to enable the admin:
     'admin',
     'suit',
     'django.contrib.admin',
+    'suit_redactor',
+    'django_object_actions',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )

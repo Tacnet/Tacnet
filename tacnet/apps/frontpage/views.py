@@ -1,15 +1,29 @@
-from django.shortcuts import render_to_response, render
+from django.shortcuts import render_to_response, render, redirect
 from django.template import RequestContext
 from django.http import HttpResponse
 from django.core.mail import send_mail
-
+from mailinglist.forms import MailListSubscribeForm
+from django.contrib.messages import *
+import datetime
 from blog.models import Post
 
 def index(request):
 
     posts = Post.objects.all().order_by('postDate').reverse()[:5]
 
-    return render(request, 'frontpage/index.html', {'posts':posts})
+    if request.method == 'POST':
+        form = MailListSubscribeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            add_message(request, INFO, 'Your email address was added to the mailing list.')
+            return redirect(index)
+        else:
+            add_message(request, ERROR, 'Could not add the email to mailing list.')
+            return redirect(index)
+    else:
+        form = MailListSubscribeForm
+
+    return render(request, 'frontpage/index.html', {'posts':posts, 'form':form,})
 
 
 def about(request):

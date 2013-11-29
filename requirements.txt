@@ -6,3 +6,5 @@ south
 django-suit
 psycopg2
 PIL
+django-suit-redactor
+django-object-actions
