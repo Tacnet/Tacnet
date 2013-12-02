@@ -198,14 +198,14 @@ TogetherJS.hub.on("clearCanvas", function (msg) {
     if (!msg.sameUrl) {
         return;
     }
-    clearCanvas();
+    clearCanvas(false);
 });
 
 TogetherJS.hub.on("resetBackground", function (msg) {
     if (!msg.sameUrl) {
         return;
     }
-    resetBackground();
+    resetBackground(false);
 });
 
 TogetherJS.hub.on("draw", function (msg) {
@@ -219,14 +219,14 @@ TogetherJS.hub.on("setBackground", function (msg) {
     if (!msg.sameUrl) {
         return;
     }
-    setBackground(msg.background);
+    setBackground(msg.background, false);
 });
 
 TogetherJS.hub.on("togetherjs.hello", function (msg) {
     if (!msg.sameUrl) {
         return;
     }
-    var drawings = canvas.toDataURL("image/png");
+    var drawings = sketchCanvas.toDataURL("image/png");
     TogetherJS.send({
         type: "init",
         drawings: drawings,
@@ -241,7 +241,7 @@ TogetherJS.hub.on("init", function(msg) {
     initDrawings = new Image();
     initDrawings.src = msg.drawings;
     init = true;
-    setBackground(msg.background);
+    setBackground(msg.background, false);
 });
 
 TogetherJS.hub.on("load", function(msg) {
@@ -400,17 +400,10 @@ $(document).ready(function () {
 
     // Listeners
     $('.clearCanvas').click(function(){
-        clearClicked();
+        clearCanvas(true);
     });
-    $('.resetCanvas').click(function(){
-        resetClicked();
-    });
-
-    $('.increaseBrush').click(function(){
-        increaseBrush();
-    });
-    $('.decreaseBrush').click(function(){
-        decreaseBrush();
+    $('.resetBackground').click(function(){
+        resetBackground(true);
     });
 
     $('.saveDrawings').click(function(){
