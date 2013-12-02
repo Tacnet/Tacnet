@@ -66,21 +66,15 @@
 
 {% block container %}
     <div class="container">
-
+                <canvas id="fabric" style="z-index: 1 !important;"></canvas>
                 <canvas id="background" style="z-index: -1 !important;"></canvas>
                 <canvas id="sketch" style="z-index: 0 !important;"></canvas>
-                <div class="clearfix"></div>
-
-
     </div>
-    <div class="clearfix"></div>
     <!--Map Opt values-->
 
     {% for game in games %}
         <div id="opt-{{ game.name|slugify }}" style="display: none;">
-
             <option></option>
-
             {% for mode in game.modes %}
                 <optgroup label="{{ mode.name }}">
                     {%  for map in mode.maps %}
@@ -88,9 +82,7 @@
                     {% endfor %}
                 </optgroup>
             {% endfor %}
-
         </div>
-
     {% endfor %}
 
     <!-- Modals -->
