@@ -59,16 +59,17 @@
      </div>
 
     <li class="clearCanvas"><a href="#"><span class="glyphicon glyphicon-minus"></span> Clear</a></li>
-    <li class="resetCanvas"><a href="#"><span class="glyphicon glyphicon-remove-sign"></span> Reset Map</a></li>
+    <li class="resetBackground"><a href="#"><span class="glyphicon glyphicon-remove-sign"></span> Reset Map</a></li>
 
 
 {% endblock %}
 
 {% block container %}
     <div class="container">
-                <canvas id="fabric" style="z-index: 1 !important;"></canvas>
                 <canvas id="background" style="z-index: -1 !important;"></canvas>
-                <canvas id="sketch" style="z-index: 0 !important;"></canvas>
+                <canvas id="fabric" style="z-index: 1 !important;"></canvas>
+                <canvas id="sketch" style="z-index: 0 !important; border: 1px solid grey;"></canvas>
+
     </div>
     <!--Map Opt values-->
 
@@ -132,8 +133,6 @@
     <input type="file" id="input" style="visibility:hidden;position:absolute;top:-50;left:-50">
 
 
-    <!-- scripts -->
-    <script src="/static/js/tacsketch.js"></script>
 
     <!-- fabric.js -->
     <script src="/static/js/all.min.js"></script>
@@ -150,6 +149,9 @@
     <!--Slider-->
     <link href="/static/js/slider/slider.css" rel="stylesheet"/>
     <script src="/static/js/slider/slider.js"></script>
+
+    <!-- scripts -->
+    <script src="/static/js/tacsketch.js"></script>
 
     <!--Close loading layer-->
     <script type="text/javascript" src="/static/js/loading_layer/closeLoading.js"></script>

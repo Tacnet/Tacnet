@@ -1,173 +1,198 @@
-var canvas = document.getElementById ('sketch');
-var context = canvas.getContext('2d');
+var fabricCanvas = new fabric.Canvas('fabric');
+fabricCanvas.selection = false;
+var sketchCanvas = document.getElementById ('sketch');
+var sketchContext = sketchCanvas.getContext('2d');
 
 var bgCanvas = document.getElementById ('background');
 var bgContext = bgCanvas.getContext('2d');
 
-bgCanvas.width = 800;
-bgCanvas.height = 600;
-canvas.width = bgCanvas.width;
-canvas.height = bgCanvas.height;
-
 var currentBackground;
 var init = false;
 var initDrawings;
-
-setBackground('/static/img/boot.jpg');
-
-// Brush Settings
-context.lineWidth = 1;
-context.lineJoin = 'round';
-context.lineCap = 'round';
-context.strokeStyle = '#000';
-
-// Set brush size
-function setSize(size) {
-    context.lineWidth = size;
-
-}
-
-// Sets eraser mode
-function eraser() {
-    context.globalCompositeOperation = "destination-out";
-    context.strokeStyle = "rgba(0,0,0,1)";
-
-}
-
-// Set brush color
-function setColor(color) {
-    context.globalCompositeOperation = "source-over";
-    context.strokeStyle = color;
-
-}
-
-// Initialize last mouse
 var lastMouse = {
     x: 0,
     y: 0
 };
 
+setBackground('/static/img/boot.jpg');
+
+// Brush Settings
+sketchContext.lineWidth = 1;
+sketchContext.lineJoin = 'round';
+sketchContext.lineCap = 'round';
+sketchContext.strokeStyle = '#000';
+
+// Draw Mouse
+function changeMouse(){
+    var brushSize = sketchContext.lineWidth;
+    if (brushSize < 10){
+        brushSize = 10;
+    }
+
+    var brushColor = sketchContext.strokeStyle;
+
+    var eraser = false;
+    if (sketchContext.globalCompositeOperation == "destination-out"){
+        eraser = true;
+    }
+
+    var cursorGenerator = document.createElement("canvas");
+    cursorGenerator.width = brushSize;
+    cursorGenerator.height = brushSize;
+    var ctx = cursorGenerator.getContext("2d");
+
+    var centerX = cursorGenerator.width / 2;
+    var centerY = cursorGenerator.height / 2;
+    var radius = brushSize;
+
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, (brushSize/2)-4, 0, 2 * Math.PI, false);
+    if (eraser){
+         ctx.fillStyle = 'white';
+         ctx.fill()
+    }
+
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = brushColor;
+    ctx.stroke();
+
+    $('#sketch').css( "cursor", "url(" + cursorGenerator.toDataURL("image/png") + ") " + brushSize/2 + " " + brushSize/2 + ",crosshair");
+
+
+};
+// Init mouse
+changeMouse();
+
+// Set brush size
+function setSize(size) {
+    sketchContext.lineWidth = size;
+
+}
+
+// Sets eraser mode
+function eraser() {
+    sketchContext.globalCompositeOperation = "destination-out";
+    sketchContext.strokeStyle = "rgba(0,0,0,1)";
+
+}
+
+// Set brush color
+function setColor(color) {
+    sketchContext.globalCompositeOperation = "source-over";
+    sketchContext.strokeStyle = color;
+
+}
+
+
 // Event listeners for mouse
-canvas.addEventListener('mousedown', function(e) {
-    lastMouse = {
-        x: e.pageX - this.offsetLeft,
-        y: e.pageY - this.offsetTop
-    };
-    canvas.addEventListener('mousemove', move, false);
-}, false);
+fabricCanvas.on('mouse:down', function(e) {
+    lastMouse = fabricCanvas.getPointer(e.e);
+    if (!fabricCanvas.getActiveObject()) {
+        fabricCanvas.on('mouse:move', move);
+    }
+});
 
-canvas.addEventListener('mouseout', function() {
-    canvas.removeEventListener('mousemove', move, false);
-}, false);
+fabricCanvas.on('mouse:up', function(e) {
+    fabricCanvas.off('mouse:move');
+});
 
-canvas.addEventListener('mouseup', function() {
-    canvas.removeEventListener('mousemove', move, false);
-}, false);
 
 function move(e) {
-    var mouse = {
-        x: e.pageX - this.offsetLeft,
-        y: e.pageY - this.offsetTop
-    };
-    draw(lastMouse, mouse, context.strokeStyle, context.lineWidth, context.globalCompositeOperation);
+    var mouse = fabricCanvas.getPointer(e.e);
+    draw(lastMouse, mouse, sketchContext.strokeStyle, sketchContext.lineWidth, sketchContext.globalCompositeOperation);
     if (TogetherJS.running) {
         TogetherJS.send({
             type: "draw",
             start: lastMouse,
             end: mouse,
-            color: context.strokeStyle,
-            size: context.lineWidth,
-            compositeoperation: context.globalCompositeOperation
+            color: sketchContext.strokeStyle,
+            size: sketchContext.lineWidth,
+            compositeoperation: sketchContext.globalCompositeOperation
         });
     }
     lastMouse = mouse;
 }
 
-// Sets background and sends message
-function backgroundClicked(background) {
-    setBackground(background);
-    if (TogetherJS.running) {
-        console.log("TJS bg msg sent");
-        TogetherJS.send({
-            type: "setBackground",
-            background: background
-        });
-    }
-}
 
 // Sets background
-function setBackground(background) {
+function setBackground(background, clicked) {
+    if (clicked) {
+        if (TogetherJS.running) {
+            console.log("TJS bg msg sent");
+            TogetherJS.send({
+                type: "setBackground",
+                background: background
+            });
+        }
+    }
     currentBackground = background;
-        var bgimg = new Image();
-        bgimg.src = background;
-        bgimg.onload = function() {
-            var oldLineWidth = context.lineWidth;
-            var oldLineJoin = context.lineJoin;
-            var oldLineCap = context.lineCap;
-            var oldStrokeStyle = context.strokeStyle;
+    var bgimg = new Image();
+    bgimg.src = background;
+    bgimg.onload = function() {
+        var oldLineWidth = sketchContext.lineWidth;
+        var oldLineJoin = sketchContext.lineJoin;
+        var oldLineCap = sketchContext.lineCap;
+        var oldStrokeStyle = sketchContext.strokeStyle;
 
-            bgCanvas.width = bgimg.width;
-            bgCanvas.height = bgimg.height;
-            canvas.width = bgCanvas.width;
-            canvas.height = bgCanvas.height;
-            bgContext.drawImage(bgimg,0,0);
+        bgCanvas.width = bgimg.width;
+        bgCanvas.height = bgimg.height;
+        sketchCanvas.width = bgimg.width;
+        sketchCanvas.height = bgimg.height;
+        fabricCanvas.setWidth(bgimg.width);
+        fabricCanvas.setHeight(bgimg.height);
+        bgContext.drawImage(bgimg,0,0);
 
-            context.lineWidth =  oldLineWidth;
-            context.lineJoin = oldLineJoin;
-            context.lineCap = oldLineCap;
-            context.strokeStyle = oldStrokeStyle;
-            if (init) {
-                context.drawImage(initDrawings, 0,0);
-                init = false;
-            }
+        sketchContext.lineWidth =  oldLineWidth;
+        sketchContext.lineJoin = oldLineJoin;
+        sketchContext.lineCap = oldLineCap;
+        sketchContext.strokeStyle = oldStrokeStyle;
+        if (init) {
+            sketchContext.drawImage(initDrawings, 0,0);
+            init = false;
+        }
     }
 }
 
-
-
-// Reset background and sends reset message
-function resetClicked() {
-    resetBackground();
-    if(TogetherJS.running) {
-        TogetherJS.send({
-            type: "resetBackground"
-        });
-    }
-}
 
 // Reset background
-function resetBackground() {
+function resetBackground(clicked) {
+    if (clicked) {
+        if(TogetherJS.running) {
+            TogetherJS.send({
+                type: "resetBackground"
+            });
+        }
+    }
     bgContext.clearRect(0,0 , bgCanvas.width, bgCanvas.height);
     bgContext.fillRect (0, 0, bgCanvas.width, bgCanvas.height);
-    setBackground('/static/img/boot.jpg')
-}
-// Clears and sends clear message
-function clearClicked() {
-    clearCanvas();
-    if (TogetherJS.running) {
-        TogetherJS.send({
-            type: "clearCanvas"
-        });
-    }
+    setBackground('/static/img/boot.jpg');
 }
 
-// Clears the canvas
-function clearCanvas() {
-    context.clearRect(0,0 , canvas.width, canvas.height);
+
+// Clears the sketchCanvas
+function clearCanvas(clicked) {
+    if (clicked) {
+        if (TogetherJS.running) {
+            TogetherJS.send({
+            type: "clearCanvas"
+            });
+        }
+    }
+    sketchContext.clearRect(0,0 , sketchCanvas.width, sketchCanvas.height);
 }
 
 // Draws the lines
 function draw(start, end, color, size, compositeoperation) {
-    context.save();
-    context.strokeStyle = color;
-    context.globalCompositeOperation = compositeoperation;
-    context.lineWidth = size;
-    context.beginPath();
-    context.moveTo(start.x, start.y);
-    context.lineTo(end.x, end.y);
-    context.closePath();
-    context.stroke();
-    context.restore();
+    sketchContext.save();
+    sketchContext.strokeStyle = color;
+    sketchContext.globalCompositeOperation = compositeoperation;
+    sketchContext.lineWidth = size;
+    sketchContext.beginPath();
+    sketchContext.moveTo(start.x, start.y);
+    sketchContext.lineTo(end.x, end.y);
+    sketchContext.closePath();
+    sketchContext.stroke();
+    sketchContext.restore();
 }
 
 var input = document.getElementById('input');
@@ -180,11 +205,11 @@ function handleFiles(e) {
         if ((img.width != bgCanvas.width) || (img.height != bgCanvas.height)) {
             bgCanvas.width = img.width;
             bgCanvas.height = img.height;
-            canvas.width = img.width;
-            canvas.height = img.height;
+            sketchCanvas.width = img.width;
+            sketchCanvas.height = img.height;
         }
-        context.drawImage(img, 0,0);
-        img = canvas.toDataURL("image/png");
+        sketchContext.drawImage(img, 0,0);
+        img = sketchCanvas.toDataURL("image/png");
         if (TogetherJS.running) {
             TogetherJS.send({
                 type: "load",
@@ -255,15 +280,12 @@ TogetherJS.hub.on("load", function(msg) {
         bgCanvas.width = load.width;
         bgCanvas.height = load.height;
     }
-    canvas.width = load.width;
-    canvas.height = load.height;
-    context.drawImage(load, 0,0);
-
-
+    sketchCanvas.width = load.width;
+    sketchCanvas.height = load.height;
+    sketchContext.drawImage(load, 0,0);
 });
 
 $(document).ready(function () {
-
     // Hide popover
     function hidePopover(element) {
         if (element.next('div.popover:visible').length) {
@@ -329,12 +351,12 @@ $(document).ready(function () {
             min: 1,
             max: 50,
             step: 1,
-            value: context.lineWidth
+            value: sketchContext.lineWidth
         }).on('slide', function (ev) {
             setSize(ev.value+2);
         }).on('slideStop', function (ev) {
             hidePopover($("#chooseBrush"));
-            ChangeMouse();
+            changeMouse();
         });
 
         // Button listeners
@@ -343,47 +365,46 @@ $(document).ready(function () {
         $('.green-pick').click(function () {
             setColor('#00ff00');
             hidePopover($("#chooseBrush"));
-            ChangeMouse();
+            changeMouse();
         });
 
         //Color change functions
         $('.yellow-pick').click(function () {
             setColor('#ff0');
             hidePopover($("#chooseBrush"));
-            ChangeMouse();
+            changeMouse();
         });
 
         //Color change functions
         $('.red-pick').click(function () {
             setColor('#ff0000');
             hidePopover($("#chooseBrush"));
-            ChangeMouse();
+            changeMouse();
         });
 
         //Color change functions
         $('.blue-pick').click(function () {
             setColor('#0000ff');
             hidePopover($("#chooseBrush"));
-            ChangeMouse();
+            changeMouse();
         });
 
         //Color change functions
         $('.black-pick').click(function () {
             setColor('#000');
             hidePopover($("#chooseBrush"));
-            ChangeMouse();
+            changeMouse();
         });
         $('.eraser').click(function () {
             eraser();
             hidePopover($("#chooseBrush"));
-            ChangeMouse();
+            changeMouse();
         });
          //User color
         $('.user-color-pick').click(function() {
-            console.log(TogetherJS.require("peers").Self.color);
             setColor(TogetherJS.require("peers").Self.color);
             hidePopover($("#chooseBrush"));
-            ChangeMouse();
+            changeMouse();
         });
     });
 
@@ -392,7 +413,7 @@ $(document).ready(function () {
         $('.slider').remove();
     });
 
-    // Close popovers when clicking on canvas
+    // Close popovers when clicking on sketchCanvas
     $('#sketch').mousedown(function () {
         hidePopover($("#chooseMap"));
         hidePopover($("#chooseBrush"));
@@ -412,49 +433,7 @@ $(document).ready(function () {
             type: 'success',
             width: 'auto'
         });
-    })
-
-    // Draw Mouse
-    function ChangeMouse(){
-        var brushSize = context.lineWidth;
-        if (brushSize < 10){
-            brushSize = 10;
-        }
-
-        var brushColor = context.strokeStyle;
-
-        var eraser = false;
-        if (context.globalCompositeOperation == "destination-out"){
-            eraser = true;
-        }
-
-        var cursorGenerator = document.createElement("canvas");
-        cursorGenerator.width = brushSize;
-        cursorGenerator.height = brushSize;
-        var ctx = cursorGenerator.getContext("2d");
-
-        var centerX = cursorGenerator.width / 2;
-        var centerY = cursorGenerator.height / 2;
-        var radius = brushSize;
-
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, (brushSize/2)-4, 0, 2 * Math.PI, false);
-        if (eraser){
-             ctx.fillStyle = 'white';
-             ctx.fill()
-        }
-
-        ctx.lineWidth = 3;
-        ctx.strokeStyle = brushColor;
-        ctx.stroke();
-
-        $('#sketch').css( "cursor", "url(" + cursorGenerator.toDataURL("image/png") + ") " + brushSize/2 + " " + brushSize/2 + ",crosshair");
-
-
-    };
-    // Init mouse
-    ChangeMouse();
-
+    });
 
     TogetherJS.on("ready", function () {
         spinner.stop();
@@ -464,7 +443,7 @@ $(document).ready(function () {
          $('#togetherjs-chat-button').after('<button class="togetherjs-button saveDrawings" style="color: #FFF;" title="Load Map"><span class="glyphicon glyphicon-floppy-save"></span></button>');
 
         $('.saveDrawings').click(function() {
-            var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+            var image = sketchCanvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
             window.location.href=image;
         });
 
@@ -473,6 +452,4 @@ $(document).ready(function () {
         });
 
     });
-
-
 });
