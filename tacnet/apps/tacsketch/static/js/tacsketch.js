@@ -22,47 +22,6 @@ sketchContext.lineJoin = 'round';
 sketchContext.lineCap = 'round';
 sketchContext.strokeStyle = '#000';
 
-// Draw Mouse
-function changeMouse(){
-    var brushSize = sketchContext.lineWidth;
-    if (brushSize < 10){
-        brushSize = 10;
-    }
-
-    var brushColor = sketchContext.strokeStyle;
-
-    var eraser = false;
-    if (sketchContext.globalCompositeOperation == "destination-out"){
-        eraser = true;
-    }
-
-    var cursorGenerator = document.createElement("canvas");
-    cursorGenerator.width = brushSize;
-    cursorGenerator.height = brushSize;
-    var ctx = cursorGenerator.getContext("2d");
-
-    var centerX = cursorGenerator.width / 2;
-    var centerY = cursorGenerator.height / 2;
-    var radius = brushSize;
-
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, (brushSize/2)-4, 0, 2 * Math.PI, false);
-    if (eraser){
-         ctx.fillStyle = 'white';
-         ctx.fill()
-    }
-
-    ctx.lineWidth = 3;
-    ctx.strokeStyle = brushColor;
-    ctx.stroke();
-
-    $('#sketch').css( "cursor", "url(" + cursorGenerator.toDataURL("image/png") + ") " + brushSize/2 + " " + brushSize/2 + ",crosshair");
-
-
-};
-// Init mouse
-changeMouse();
-
 // Set brush size
 function setSize(size) {
     sketchContext.lineWidth = size;
@@ -324,7 +283,7 @@ $(document).ready(function () {
         $("#mapslist").select2({
             placeholder: "Select Map"
         }).on("change", function (e) {
-            backgroundClicked(e.val);
+            setBackground(e.val, true);
             hidePopover($("#chooseMap"));
         });
 
@@ -434,6 +393,38 @@ $(document).ready(function () {
             width: 'auto'
         });
     });
+
+    function changeMouse(){
+        var cursorSize = sketchContext.lineWidth;
+        if (cursorSize < 10){
+            cursorSize = 10;
+        }
+        var cursorColor = sketchContext.strokeStyle;
+        var cursorGenerator = document.createElement("canvas");
+        cursorGenerator.width = cursorSize;
+        cursorGenerator.height = cursorSize;
+        var ctx = cursorGenerator.getContext("2d");
+
+        var centerX = cursorGenerator.width/2;
+        var centerY = cursorGenerator.height/2;
+
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, (cursorSize/2)-4, 0, 2 * Math.PI, false);
+
+        // If the user is erasing, set the fill of the cursor to white.
+        if (sketchContext.globalCompositeOperation == 'destination-over') {
+             ctx.fillStyle = 'white';
+             ctx.fill();
+        }
+
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = cursorColor;
+        ctx.stroke();
+        fabricCanvas.defaultCursor = "url(" + cursorGenerator.toDataURL("image/png") + ") " + cursorSize/2 + " " + cursorSize/2 + ",crosshair";
+    };
+    // Init mouse
+    changeMouse();
+
 
     TogetherJS.on("ready", function () {
         spinner.stop();
