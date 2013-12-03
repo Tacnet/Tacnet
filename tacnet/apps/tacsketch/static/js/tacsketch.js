@@ -44,6 +44,51 @@ function setColor(color) {
 
 }
 
+// Event listeneres for objects
+fabricCanvas.on('object:rotating', function(e) {
+    var sendObject = new Object();
+    sendObject['hash'] = e.target.hash;
+    sendObject['angle'] = e.target.angle;
+    if (TogetherJS.running) {
+        TogetherJS.send({
+            type: "sendObject",
+            sendObject: sendObject
+        });
+    }
+});
+
+fabricCanvas.on('object:scaling', function(e) {
+    var sendObject = new Object();
+    sendObject['hash'] = e.target.hash;
+    sendObject['scaleX'] = e.target.scaleX;
+    sendObject['scaleY'] = e.target.scaleY;
+    sendObject['width'] = e.target.width;
+    sendObject['height'] = e.target.height;
+    sendObject['left'] = e.target.left;
+    sendObject['top'] = e.target.top;
+    sendObject['oCoords'] = e.target.oCoords;
+    if (TogetherJS.running) {
+        TogetherJS.send({
+            type: "sendObject",
+            sendObject: sendObject
+        });
+    }
+});
+
+fabricCanvas.on('object:moving', function(e) {
+    var sendObject = new Object();
+    sendObject['hash'] = e.target.hash;
+    sendObject['left'] = e.target.left;
+    sendObject['top'] = e.target.top;
+    sendObject['oCoords'] = e.target.oCoords;
+    if (TogetherJS.running) {
+        TogetherJS.send({
+            type: "sendObject",
+            sendObject: sendObject
+        });
+    }
+});
+
 
 // Event listeners for mouse
 fabricCanvas.on('mouse:down', function(e) {
@@ -87,8 +132,8 @@ function add_icon(icon, hash) {
             left: 100,
             top: 100
         }).scale(0.5);
-        canvas.add(oImg).renderAll();
-        canvas.setActiveObject(oImg);
+        fabricCanvas.add(oImg).renderAll();
+        fabricCanvas.setActiveObject(oImg);
         icons[hash] = oImg;
         if (TogetherJS.running && !oHash) {
             TogetherJS.send({
@@ -260,6 +305,20 @@ TogetherJS.hub.on("newIcon", function(msg) {
     add_icon(msg.url, msg.hash);
 });
 
+// Sent out whenever an object changes:
+TogetherJS.hub.on("sendObject", function(msg) {
+    if (!msg.sameUrl) {
+        return;
+    }
+    var sendObject = msg.sendObject;
+    var changeObject = icons[sendObject.hash];
+    for (var key in sendObject) {
+        icons[changeObject.hash][key] = sendObject[key];
+    }
+    fabricCanvas.renderAll();
+    icons[sendObject.hash].setCoords();
+});
+
 // Hello is fired whenever you connect (so that the other clients know you connected):
 TogetherJS.hub.on("togetherjs.hello", function (msg) {
     if (!msg.sameUrl) {
@@ -419,6 +478,10 @@ $(document).ready(function () {
     });
 
     // Listeners
+    $('.addIcon').click(function(){
+    add_icon('/static/img/feature1.jpg', false);
+    });
+
     $('.clearCanvas').click(function(){
         clearCanvas(true);
     });
