@@ -1,14 +1,16 @@
 var fabricCanvas = new fabric.Canvas('fabric');
 fabricCanvas.selection = false;
+
 var sketchCanvas = document.getElementById ('sketch');
 var sketchContext = sketchCanvas.getContext('2d');
 
 var bgCanvas = document.getElementById ('background');
 var bgContext = bgCanvas.getContext('2d');
 
-var currentBackground;
+var currentBackground; // Holds the path of the current background
 var init = false;
 var initDrawings;
+var icons = {}; // Overview-object of all the objects on canvas
 var lastMouse = {
     x: 0,
     y: 0
@@ -55,7 +57,7 @@ fabricCanvas.on('mouse:up', function(e) {
     fabricCanvas.off('mouse:move');
 });
 
-
+// Function called on mouse-move, draws.
 function move(e) {
     var mouse = fabricCanvas.getPointer(e.e);
     draw(lastMouse, mouse, sketchContext.strokeStyle, sketchContext.lineWidth, sketchContext.globalCompositeOperation);
@@ -72,6 +74,31 @@ function move(e) {
     lastMouse = mouse;
 }
 
+// Adds an icon to the canvas, sends info through TJS.
+function add_icon(icon, hash) {
+    var oHash = hash; // Original hash-argument
+    fabric.Image.fromURL(icon, function(img) {
+        // If the function is called by TogetherJS:
+        if (!hash) {
+            hash = Math.random().toString(36);
+        }
+        var oImg = img.set({
+            hash: hash,
+            left: 100,
+            top: 100
+        }).scale(0.5);
+        canvas.add(oImg).renderAll();
+        canvas.setActiveObject(oImg);
+        icons[hash] = oImg;
+        if (TogetherJS.running && !oHash) {
+            TogetherJS.send({
+                type: "newIcon",
+                hash: hash,
+                url: icon
+            });
+        }
+    });
+}
 
 // Sets background
 function setBackground(background, clicked) {
@@ -178,12 +205,14 @@ function handleFiles(e) {
     }
 }
 
+// TogetherJS-button listeners:
 TogetherJS.hub.on("clearCanvas", function (msg) {
     if (!msg.sameUrl) {
         return;
     }
     clearCanvas(false);
 });
+
 
 TogetherJS.hub.on("resetBackground", function (msg) {
     if (!msg.sameUrl) {
@@ -192,39 +221,10 @@ TogetherJS.hub.on("resetBackground", function (msg) {
     resetBackground(false);
 });
 
-TogetherJS.hub.on("draw", function (msg) {
-    if (!msg.sameUrl) {
-        return;
-    }
-    draw(msg.start, msg.end, msg.color, msg.size, msg.compositeoperation);
-});
-
 TogetherJS.hub.on("setBackground", function (msg) {
     if (!msg.sameUrl) {
         return;
     }
-    setBackground(msg.background, false);
-});
-
-TogetherJS.hub.on("togetherjs.hello", function (msg) {
-    if (!msg.sameUrl) {
-        return;
-    }
-    var drawings = sketchCanvas.toDataURL("image/png");
-    TogetherJS.send({
-        type: "init",
-        drawings: drawings,
-        background: currentBackground
-    });
-});
-
-TogetherJS.hub.on("init", function(msg) {
-    if (!msg.sameUrl) {
-        return;
-    }
-    initDrawings = new Image();
-    initDrawings.src = msg.drawings;
-    init = true;
     setBackground(msg.background, false);
 });
 
@@ -242,6 +242,46 @@ TogetherJS.hub.on("load", function(msg) {
     sketchCanvas.width = load.width;
     sketchCanvas.height = load.height;
     sketchContext.drawImage(load, 0,0);
+});
+
+// Sent out whenever a user draws:
+TogetherJS.hub.on("draw", function (msg) {
+    if (!msg.sameUrl) {
+        return;
+    }
+    draw(msg.start, msg.end, msg.color, msg.size, msg.compositeoperation);
+});
+
+// Sent out whenever someone adds a new icon:
+TogetherJS.hub.on("newIcon", function(msg) {
+    if (!msg.sameUrl) {
+        return;
+    }
+    add_icon(msg.url, msg.hash);
+});
+
+// Hello is fired whenever you connect (so that the other clients know you connected):
+TogetherJS.hub.on("togetherjs.hello", function (msg) {
+    if (!msg.sameUrl) {
+        return;
+    }
+    var drawings = sketchCanvas.toDataURL("image/png");
+    TogetherJS.send({
+        type: "init",
+        drawings: drawings,
+        background: currentBackground
+    });
+});
+
+// Send the map and previous drawing to the newly connected clients (TODO: Send icons):
+TogetherJS.hub.on("init", function(msg) {
+    if (!msg.sameUrl) {
+        return;
+    }
+    initDrawings = new Image();
+    initDrawings.src = msg.drawings;
+    init = true;
+    setBackground(msg.background, false);
 });
 
 $(document).ready(function () {
