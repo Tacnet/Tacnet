@@ -7,16 +7,10 @@ var sketchContext = sketchCanvas.getContext('2d');
 var bgCanvas = document.getElementById ('background');
 var bgContext = bgCanvas.getContext('2d');
 
-<<<<<<< HEAD
 var currentBackground;
 var initDrawings;
 var initJSON;
-=======
-var currentBackground; // Holds the path of the current background
-var init = false;
-var initDrawings;
 var icons = {}; // Overview-object of all the objects on canvas
->>>>>>> b62ac2ea384c392925c359af6c64398249886d6d
 var lastMouse = {
     x: 0,
     y: 0
@@ -125,12 +119,20 @@ function move(e) {
     lastMouse = mouse;
 }
 
-<<<<<<< HEAD
 function initDraw() {
     sketchContext.drawImage(initDrawings, 0,0);
-    console.log(initJSON);
     fabricCanvas.loadFromJSON(initJSON);
-=======
+    // TODO: Make a dynamic timeout that actually waits for the images to load.
+    setTimeout(function() {
+        var canvasObjects = fabricCanvas.getObjects();
+        console.log(canvasObjects,canvasObjects.length);
+        for (var i = 0; i < canvasObjects.length; i++) {
+            icons[canvasObjects[i].hash] = canvasObjects[i];
+        }
+        fabricCanvas.renderAll();
+    }, 1000);
+}
+
 // Adds an icon to the canvas, sends info through TJS.
 function add_icon(icon, hash) {
     var oHash = hash; // Original hash-argument
@@ -155,7 +157,6 @@ function add_icon(icon, hash) {
             });
         }
     });
->>>>>>> b62ac2ea384c392925c359af6c64398249886d6d
 }
 
 // Sets background
@@ -195,8 +196,6 @@ function setBackground(background, clicked, init) {
         }
     }
 }
-
-var test = "init";
 
 // Reset background
 function resetBackground(clicked) {
@@ -337,10 +336,22 @@ TogetherJS.hub.on("togetherjs.hello", function (msg) {
     if (!msg.sameUrl) {
         return;
     }
+    for (var key in icons) {
+        console.log("k",key, "h",icons[key].hash, "i",icons[key]);
+        icons[key].toObject = (function(toObject) {
+            return function() {
+                return fabric.util.object.extend(toObject.call(this), {
+                    hash: this.hash
+                });
+            };
+        })(icons[key].toObject);
+    }
+    var fabricJSON = JSON.stringify(fabricCanvas);
     var drawings = sketchCanvas.toDataURL("image/png");
     TogetherJS.send({
         type: "init",
         drawings: drawings,
+        fabric: fabricJSON,
         background: currentBackground
     });
 });
@@ -352,9 +363,8 @@ TogetherJS.hub.on("init", function(msg) {
     }
     initDrawings = new Image();
     initDrawings.src = msg.drawings;
-    initJSON = JSON.stringify(fabricCanvas);
+    initJSON = msg.fabric;
     setBackground(msg.background, false, true);
-
 });
 
 $(document).ready(function () {
@@ -363,7 +373,7 @@ $(document).ready(function () {
         if (element.next('div.popover:visible').length) {
             element.popover('toggle');
         }
-    };
+    }
 
     // Initialize popovers
     $('#chooseMap').popover({
@@ -409,12 +419,10 @@ $(document).ready(function () {
               keyboard: false
             });
         });
-
     });
 
     $('#chooseBrush').on('show.bs.popover', function () {
         hidePopover($("#chooseMap"));
-
     });
 
     $('#chooseBrush').on('shown.bs.popover', function () {
@@ -538,7 +546,7 @@ $(document).ready(function () {
         ctx.strokeStyle = cursorColor;
         ctx.stroke();
         fabricCanvas.defaultCursor = "url(" + cursorGenerator.toDataURL("image/png") + ") " + cursorSize/2 + " " + cursorSize/2 + ",crosshair";
-    };
+    }
     // Init mouse
     changeMouse();
 
@@ -560,4 +568,4 @@ $(document).ready(function () {
         });
 
     });
-});
+}); 
