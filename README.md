@@ -1,4 +1,4 @@
-##Tacnet.io
+##[Tacnet.io](http://tacnet.io)
 Tacnet.io is a work in progress application that allows users to easily share and construct new tactics for games, without installation or annoying ads. 
 
 Tacnet uses [TogetherJS](https://github.com/mozilla/togetherjs) and [Django](https://github.com/django/django).
