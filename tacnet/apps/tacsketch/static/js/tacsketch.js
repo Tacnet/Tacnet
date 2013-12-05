@@ -7,8 +7,8 @@ var bgCanvas = document.getElementById ('background');
 var bgContext = bgCanvas.getContext('2d');
 
 var currentBackground;
-var init = false;
 var initDrawings;
+var initJSON;
 var lastMouse = {
     x: 0,
     y: 0
@@ -72,9 +72,14 @@ function move(e) {
     lastMouse = mouse;
 }
 
+function initDraw() {
+    sketchContext.drawImage(initDrawings, 0,0);
+    console.log(initJSON);
+    fabricCanvas.loadFromJSON(initJSON);
+}
 
 // Sets background
-function setBackground(background, clicked) {
+function setBackground(background, clicked, init) {
     if (clicked) {
         if (TogetherJS.running) {
             console.log("TJS bg msg sent");
@@ -106,12 +111,12 @@ function setBackground(background, clicked) {
         sketchContext.lineCap = oldLineCap;
         sketchContext.strokeStyle = oldStrokeStyle;
         if (init) {
-            sketchContext.drawImage(initDrawings, 0,0);
-            init = false;
+            initDraw();
         }
     }
 }
 
+var test = "init";
 
 // Reset background
 function resetBackground(clicked) {
@@ -224,8 +229,9 @@ TogetherJS.hub.on("init", function(msg) {
     }
     initDrawings = new Image();
     initDrawings.src = msg.drawings;
-    init = true;
-    setBackground(msg.background, false);
+    initJSON = JSON.stringify(fabricCanvas);
+    setBackground(msg.background, false, true);
+
 });
 
 TogetherJS.hub.on("load", function(msg) {
