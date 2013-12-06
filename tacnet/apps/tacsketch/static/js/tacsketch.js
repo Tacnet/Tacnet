@@ -121,16 +121,13 @@ function move(e) {
 
 function initDraw() {
     sketchContext.drawImage(initDrawings, 0,0);
-    fabricCanvas.loadFromJSON(initJSON);
-    // TODO: Make a dynamic timeout that actually waits for the images to load.
-    setTimeout(function() {
+    fabricCanvas.loadFromJSON(initJSON, function() {
+        fabricCanvas.renderAll();
         var canvasObjects = fabricCanvas.getObjects();
-        console.log(canvasObjects,canvasObjects.length);
         for (var i = 0; i < canvasObjects.length; i++) {
             icons[canvasObjects[i].hash] = canvasObjects[i];
         }
-        fabricCanvas.renderAll();
-    }, 1000);
+    });
 }
 
 // Adds an icon to the canvas, sends info through TJS.
