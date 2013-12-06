@@ -129,7 +129,13 @@ function initDraw() {
         }
     });
 }
-
+// Adds a text box to the canvas, sends info through TJS.
+var text1 = new fabric.IText("halla paara", {
+    left: 100,
+    top: 100
+});
+fabricCanvas.add(text1);
+fabricCanvas.renderAll();
 // Adds an icon to the canvas, sends info through TJS.
 function add_icon(icon, hash) {
     var oHash = hash; // Original hash-argument
