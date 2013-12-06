@@ -51,7 +51,7 @@ fabricCanvas.on('object:rotating', function(e) {
     sendObject['angle'] = e.target.angle;
     if (TogetherJS.running) {
         TogetherJS.send({
-            type: "sendObject",
+            type: "rotatedObject",
             sendObject: sendObject
         });
     }
@@ -69,7 +69,7 @@ fabricCanvas.on('object:scaling', function(e) {
     sendObject['oCoords'] = e.target.oCoords;
     if (TogetherJS.running) {
         TogetherJS.send({
-            type: "sendObject",
+            type: "scaledObject",
             sendObject: sendObject
         });
     }
@@ -83,7 +83,7 @@ fabricCanvas.on('object:moving', function(e) {
     sendObject['oCoords'] = e.target.oCoords;
     if (TogetherJS.running) {
         TogetherJS.send({
-            type: "sendObject",
+            type: "movedObject",
             sendObject: sendObject
         });
     }
@@ -315,15 +315,40 @@ TogetherJS.hub.on("newIcon", function(msg) {
 });
 
 // Sent out whenever an object changes:
-TogetherJS.hub.on("sendObject", function(msg) {
+TogetherJS.hub.on("movedObject", function(msg) {
     if (!msg.sameUrl) {
         return;
     }
     var sendObject = msg.sendObject;
-    var changeObject = icons[sendObject.hash];
-    for (var key in sendObject) {
-        icons[changeObject.hash][key] = sendObject[key];
+    icons[sendObject.hash]['left'] = sendObject['left']
+    icons[sendObject.hash]['top'] = sendObject['top']
+    icons[sendObject.hash]['oCoors'] = sendObject['oCoords']
+    fabricCanvas.renderAll();
+    icons[sendObject.hash].setCoords();
+});
+
+TogetherJS.hub.on("scaledObject", function(msg) {
+    if (!msg.sameUrl) {
+        return;
     }
+    var sendObject = msg.sendObject;
+    icons[sendObject.hash]['scaleX'] = sendObject['scaleX']
+    icons[sendObject.hash]['scaleY'] = sendObject['scaleY']
+    icons[sendObject.hash]['width'] = sendObject['width']
+    icons[sendObject.hash]['height'] = sendObject['height']
+    icons[sendObject.hash]['left'] = sendObject['left']
+    icons[sendObject.hash]['top'] = sendObject['top']
+    icons[sendObject.hash]['oCoors'] = sendObject['oCoords']
+    fabricCanvas.renderAll();
+    icons[sendObject.hash].setCoords();
+});
+
+TogetherJS.hub.on("rotatedObject", function(msg) {
+    if (!msg.sameUrl) {
+        return;
+    }
+    var sendObject = msg.sendObject;
+    icons[sendObject.hash]['angle'] = sendObject['angle']
     fabricCanvas.renderAll();
     icons[sendObject.hash].setCoords();
 });
