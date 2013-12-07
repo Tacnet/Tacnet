@@ -11,6 +11,7 @@
     <link href="/static/css/bootstrap-darkstrap.css" rel="stylesheet">
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/auth_bar.css">
 
     <!--JS-->
     <script src="https://code.jquery.com/jquery.js"></script>
@@ -22,6 +23,10 @@
     <![endif]-->
   </head>
   <body>
+
+  {% include "base/auth/auth_bar.html" %}
+
+  <div id="body_content">
 
   {% block header %}{% endblock %}
 
@@ -111,10 +116,13 @@
             </div>
         </div>
 
+  </div>
+
     <script src="/static/js/jquery.bootstrap-growl.min.js"></script>
     <script src="/static/js/jquery.mobile.js"></script>
     <script src="/static/js/googleanalytics.js"></script>
     <script src="/static/js/base.js"></script>
+    <script src="/static/js/auth.js"></script>
 
   </body>
 </html>
