@@ -1,0 +1,147 @@
+<div id="auth_bar">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-12 text-right text-holder">
+
+
+                <a class="menu" style="display: none;" id="login-button" href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+                <a class="menu" style="display: none;" id="user" href="#"><span class="glyphicon glyphicon-user"></span> <span id="user_usename"></span></a>
+                <a class="menu" style="display: none;" id="logout-button" href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+
+
+                <div class="well" id="form-holder" style="display: none;">
+
+
+                    <div class="login-form-holder">
+                        <form method="POST" action="#" id="login-form" class="form-inline">{% csrf_token %}
+
+                            <div class="text-left">
+                                <div id="allFields" class="alert alert-warning" style="display: none;">
+                                  <strong>Warning!</strong> All fields are required.
+                                </div>
+
+                                <div id="progress" class="alert alert-info" style="display: none;">
+                                  <strong>Information!</strong> Connecting to service...
+                                </div>
+
+                                <div id="error" class="alert alert-danger" style="display: none;">
+                                  <strong>Error!</strong> Couldn't log in, please try again.
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <input name="username" class="form-control" type="text" placeholder="Username">
+                            </div>
+                            <div class="form-group">
+                                <input name="password" class="form-control" type="password" placeholder="Password">
+                            </div>
+
+
+                           <div class="login-modal-text text-left">
+                               <a href="#" class="register-user-link btn btn-primary"><span class="glyphicon glyphicon-user"></span> Register user</a>
+                               <a href="#" class="forgot-user-link btn btn-primary"><span class="glyphicon glyphicon-link"></span> Forgot Password</a>
+                           </div>
+                            <div class="buttons text-right login-modal-buttons">
+                                <button type="submit" id="login-now" class="btn btn-success"><span class="glyphicon glyphicon-log-in"></span> Login</button>
+                            </div>
+
+                        </form>
+                    </div>
+
+                  <div class="register-form-holder">
+                      <form method="POST" action="#" id="register-form" class="form-inline">{% csrf_token %}
+
+                            <div class="text-left">
+                                <div id="register-allFields" class="alert alert-warning" style="display: none;">
+                                  <strong>Warning!</strong> Username and password are required.
+                                </div>
+
+                                <div id="register-progress" class="alert alert-info" style="display: none;">
+                                  <strong>Information!</strong> Connecting to service...
+                                </div>
+
+                                <div id="register-error" class="alert alert-danger" style="display: none;">
+                                  <strong>Error!</strong> Couldn't register, please try again.
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <input name="register-username" class="form-control" type="text" placeholder="Username">
+                            </div>
+                            <div class="form-group">
+                                <input name="register-password" class="form-control" type="password" placeholder="Password">
+                            </div>
+
+                            <div class="form-group">
+                                <input name="register-retypepassword" class="form-control" type="password" placeholder="Retype Password">
+                            </div>
+
+                            <div class="form-group">
+                                <input name="register-mail" class="form-control" type="text" placeholder="Mail (Optional)">
+                            </div>
+
+
+                           <div class="login-modal-text text-left">
+                               <a href="#" class="register-user-login-link btn btn-primary"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+                           </div>
+                            <div class="buttons text-right login-modal-buttons">
+                                <button type="submit" id="register-now" class="btn btn-success"><span class="glyphicon glyphicon-log-in"></span> Register</button>
+                            </div>
+
+
+                      </form>
+                  </div>
+
+
+                    <div class="forgot-form-holder">
+                      <form method="POST" action="#" id="forgot-form" class="form-inline">{% csrf_token %}
+
+                            <div class="text-left">
+                                <div id="forgot-allFields" class="alert alert-warning" style="display: none;">
+                                  <strong>Warning!</strong> Mail are required.
+                                </div>
+
+                                <div id="forgot-progress" class="alert alert-info" style="display: none;">
+                                  <strong>Information!</strong> Connecting to service...
+                                </div>
+
+                                <div id="forgot-error" class="alert alert-danger" style="display: none;">
+                                  <strong>Error!</strong> Couldn't recover user, please try again.
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <input name="forgot-mail" class="form-control" type="text" placeholder="Mail">
+                            </div>
+
+
+                           <div class="login-modal-text text-left">
+                               <a href="#" class="register-user-login-link btn btn-primary"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+                           </div>
+                            <div class="buttons text-right login-modal-buttons">
+                                <button type="submit" id="forgot-now" class="btn btn-success"><span class="glyphicon glyphicon-link"></span> Recover</button>
+                            </div>
+
+
+                      </form>
+                  </div>
+
+
+
+
+
+                </div>
+
+
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

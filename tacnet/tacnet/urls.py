@@ -27,7 +27,9 @@ urlpatterns = patterns('',
 
     (r'^frontpage/', include('frontpage.urls')),
     (r'^blog/', include('blog.urls')),
-    (r'^tacsketch/', include('tacsketch.urls'))
+    (r'^tacsketch/', include('tacsketch.urls')),
+
+    (r'^auth/', include('authentication.urls')),
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += staticfiles_urlpatterns()
