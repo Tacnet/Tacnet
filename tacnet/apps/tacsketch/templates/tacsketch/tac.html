@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="/static/js/loading_layer/loading.css">
     <script type="text/javascript" src="/static/js/loading_layer/loading.js"></script>
 
+    <link rel="stylesheet" href="/static/css/dock.css">
+
 
 {% endblock %}
 
@@ -140,12 +142,16 @@
     <input type="file" id="input" style="visibility:hidden;position:absolute;top:-50;left:-50">
 
 
+
+
+
     <!-- scripts -->
     <script src="/static/js/TogetherJSConfig.js"></script>
     <script src="https://togetherjs.com/togetherjs-min.js"></script>
 
     <script src="/static/js/tacsketch.js"></script>
-    <link rel="stylesheet" href="/static/css/dock.css">
+    <script src="/static/js/icons.js"></script>
+
 
     <!-- Select2 -->
     <link href="/static/js/select2/select2.css" rel="stylesheet"/>
@@ -161,4 +167,87 @@
 
 {% endblock %}
 
+
+{% block iconbar %}
+
+    <div id="icons">
+
+        <div class="icon-picker">
+
+            <div class="row">
+
+                <div class="col-xs-12"><h5><i class="fa fa-flag"></i> Icons</h5><hr/></div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-xs-12">
+
+                    <p><select id="gamesearch" style="width: 100%;">
+                     <option></option>
+                        {% for game in games %}
+                            <option value="opt-{{ game.name|slugify }}">{{ game.name }}</option>
+                        {% endfor %}
+                    </select></p>
+
+                </div>
+
+            </div>
+
+            <div class="scrollable">
+
+            <div class="row icon-holder">
+                <div class="col-xs-3 icon"><img src="/static/img/testicon.jpg" class="img-thumbnail"/></div>
+                <div class="col-xs-3 icon"><img src="/static/img/testicon.jpg" class="img-thumbnail"/></div>
+                <div class="col-xs-3 icon"><img src="/static/img/testicon.jpg" class="img-thumbnail"/></div>
+                <div class="col-xs-3 icon"><img src="/static/img/testicon.jpg" class="img-thumbnail"/></div>
+            </div>
+
+            <div class="row icon-holder">
+                <div class="col-xs-3 icon"><img src="/static/img/testicon.jpg" class="img-thumbnail"/></div>
+                <div class="col-xs-3 icon"><img src="/static/img/testicon.jpg" class="img-thumbnail"/></div>
+                <div class="col-xs-3 icon"><img src="/static/img/testicon.jpg" class="img-thumbnail"/></div>
+                <div class="col-xs-3 icon"><img src="/static/img/testicon.jpg" class="img-thumbnail"/></div>
+            </div>
+
+            <div class="row icon-holder">
+                <div class="col-xs-3 icon"><img src="/static/img/testicon.jpg" class="img-thumbnail"/></div>
+                <div class="col-xs-3 icon"><img src="/static/img/testicon.jpg" class="img-thumbnail"/></div>
+                <div class="col-xs-3 icon"><img src="/static/img/testicon.jpg" class="img-thumbnail"/></div>
+                <div class="col-xs-3 icon"><img src="/static/img/testicon.jpg" class="img-thumbnail"/></div>
+            </div>
+
+            <div class="row icon-holder">
+                <div class="col-xs-3 icon"><img src="/static/img/testicon.jpg" class="img-thumbnail"/></div>
+                <div class="col-xs-3 icon"><img src="/static/img/testicon.jpg" class="img-thumbnail"/></div>
+                <div class="col-xs-3 icon"><img src="/static/img/testicon.jpg" class="img-thumbnail"/></div>
+                <div class="col-xs-3 icon"><img src="/static/img/testicon.jpg" class="img-thumbnail"/></div>
+            </div>
+
+            <div class="row icon-holder">
+                <div class="col-xs-3 icon"><img src="/static/img/testicon.jpg" class="img-thumbnail"/></div>
+                <div class="col-xs-3 icon"><img src="/static/img/testicon.jpg" class="img-thumbnail"/></div>
+                <div class="col-xs-3 icon"><img src="/static/img/testicon.jpg" class="img-thumbnail"/></div>
+                <div class="col-xs-3 icon"><img src="/static/img/testicon.jpg" class="img-thumbnail"/></div>
+            </div>
+
+            </div>
+
+        </div>
+
+        <div class="dock">
+
+            <ul class="button-list">
+
+                <li class="icon-button"><i class="fa fa-flag"></i></li>
+                <li class="rights-button"><i class="fa fa-minus-circle"></i></li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+{% endblock %}
 

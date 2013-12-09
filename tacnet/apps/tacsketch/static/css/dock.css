@@ -1,5 +1,5 @@
 #togetherjs-dock {
-    height: 320px !important;
+    /*height: 320px !important;*/
 }
 #togetherjs-dock, .togetherjs .togetherjs-window > header, .togetherjs .togetherjs-modal > header {
     /*background-color: #474747 !important;
@@ -53,7 +53,10 @@
 }
 
 #togetherjs-dock.togetherjs-dock-right {
-top: 200px !important;
+    top: 200px !important;
+    right: 0px !important;
+    border-bottom-right-radius: 0px !important;
+    border-top-right-radius: 0px !important;
 }
 
 .togetherjs-button {
@@ -63,7 +66,98 @@ top: 200px !important;
     color: #FFF !important;
 }
 
+#togetherjs-dock-anchor {
+    display: none;
+}
+
 /* Hide footer */
 .footer {
     display: none;
+}
+
+
+/* Custom Dock */
+#icons {
+    position: fixed;
+    top: 200px;
+    left: 0px;
+    display: none;
+    z-index: 10;
+}
+
+#icons .dock {
+    background-color: rgb(51, 51, 51);
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.498039) 2px 4px 2px 0px;
+    float: right;
+    border-left: 1px solid rgba(0, 0, 0, 0.498039);
+}
+
+#icons .dock .button-list {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+
+#icons .dock .button-list li {
+    width: 60px;
+    height: 60px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    text-align: center;
+    font-size: 20px;
+    padding-top: 17px;
+    color: #838383;
+}
+
+#icons .dock .button-list li:hover {
+    background-color: #444444;
+    color: #FFF;
+}
+
+#icons .dock .button-list li i {
+    margin: auto;
+}
+
+#icons .dock .button-list li:last-child {
+    border-bottom: none;
+}
+
+#icons .icon-picker {
+    width: 250px;
+    height: 320px;
+    float: left;
+    background-color: rgb(51, 51, 51);
+    border-bottom-right-radius: 4px;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.498039) 2px 4px 2px 0px;
+    padding: 10px 10px;
+}
+#icons .icon-picker h5, #icons .icon-picker hr {
+    margin: 0px;
+    padding: 0px;
+}
+
+#icons .icon-picker hr {
+    padding-top: 10px;
+    margin-bottom: 10px;
+}
+
+#icons .icon-picker .scrollable {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 230px;
+}
+
+#icons .icon-picker .row .icon {
+    padding: 2px;
+}
+
+#icons .icon-picker .row .icon:hover img {
+    background-color: #808080;
+    border-color: #808080;
+}
+
+#icons .icon-picker .row.icon-holder {
+    padding-left: 15px;
+    padding-right: 15px;
 }
