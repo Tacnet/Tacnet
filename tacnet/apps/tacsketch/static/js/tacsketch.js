@@ -4,8 +4,8 @@ var context = canvas.getContext('2d');
 var bgCanvas = document.getElementById ('background');
 var bgContext = bgCanvas.getContext('2d');
 
-bgCanvas.width = 800;
-bgCanvas.height = 600;
+bgCanvas.width = 1140 ;
+bgCanvas.height = 360;
 canvas.width = bgCanvas.width;
 canvas.height = bgCanvas.height;
 
