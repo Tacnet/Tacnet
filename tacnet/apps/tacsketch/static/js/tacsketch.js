@@ -11,6 +11,7 @@ canvas.height = bgCanvas.height;
 
 var currentBackground;
 var init = false;
+var lines = [];
 var initDrawings;
 
 setBackground('/static/img/boot.jpg');
@@ -24,21 +25,18 @@ context.strokeStyle = '#000';
 // Set brush size
 function setSize(size) {
     context.lineWidth = size;
-
 }
 
 // Sets eraser mode
 function eraser() {
     context.globalCompositeOperation = "destination-out";
     context.strokeStyle = "rgba(0,0,0,1)";
-
 }
 
 // Set brush color
 function setColor(color) {
     context.globalCompositeOperation = "source-over";
     context.strokeStyle = color;
-
 }
 
 // Initialize last mouse
@@ -69,7 +67,7 @@ function move(e) {
         x: e.pageX - this.offsetLeft,
         y: e.pageY - this.offsetTop
     };
-    draw(lastMouse, mouse, context.strokeStyle, context.lineWidth, context.globalCompositeOperation);
+    draw(lastMouse, mouse, context.strokeStyle, context.lineWidth, context.globalCompositeOperation, true);
     if (TogetherJS.running) {
         TogetherJS.send({
             type: "draw",
@@ -87,7 +85,6 @@ function move(e) {
 function backgroundClicked(background) {
     setBackground(background);
     if (TogetherJS.running) {
-        console.log("TJS bg msg sent");
         TogetherJS.send({
             type: "setBackground",
             background: background
@@ -99,6 +96,7 @@ function backgroundClicked(background) {
 function setBackground(background) {
     currentBackground = background;
         var bgimg = new Image();
+        console.log(background);
         bgimg.src = background;
         bgimg.onload = function() {
             var oldLineWidth = context.lineWidth;
@@ -117,7 +115,7 @@ function setBackground(background) {
             context.lineCap = oldLineCap;
             context.strokeStyle = oldStrokeStyle;
             if (init) {
-                context.drawImage(initDrawings, 0,0);
+                reDraw(lines);
                 init = false;
             }
     }
@@ -156,8 +154,15 @@ function clearCanvas() {
     context.clearRect(0,0 , canvas.width, canvas.height);
 }
 
+// Redraws the lines from the lines-array:
+function reDraw(lines){
+    for (var i in lines) {
+        draw(lines[i][0], lines[i][1], lines[i][2], lines[i][3], lines[i][4], false);
+    }
+}
+
 // Draws the lines
-function draw(start, end, color, size, compositeoperation) {
+function draw(start, end, color, size, compositeoperation, save) {
     context.save();
     context.strokeStyle = color;
     context.globalCompositeOperation = compositeoperation;
@@ -168,6 +173,11 @@ function draw(start, end, color, size, compositeoperation) {
     context.closePath();
     context.stroke();
     context.restore();
+
+    if (save) {
+        // Won't save if draw() is called from reDraw().
+        lines.push([{x: start.x, y: start.y}, {x: end.x, y: end.y}, color, size, compositeoperation]);
+     }
 }
 
 var input = document.getElementById('input');
@@ -226,10 +236,9 @@ TogetherJS.hub.on("togetherjs.hello", function (msg) {
     if (!msg.sameUrl) {
         return;
     }
-    var drawings = canvas.toDataURL("image/png");
     TogetherJS.send({
         type: "init",
-        drawings: drawings,
+        lines: lines,
         background: currentBackground
     });
 });
@@ -238,8 +247,7 @@ TogetherJS.hub.on("init", function(msg) {
     if (!msg.sameUrl) {
         return;
     }
-    initDrawings = new Image();
-    initDrawings.src = msg.drawings;
+    lines = msg.lines;
     init = true;
     setBackground(msg.background);
 });
