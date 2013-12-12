@@ -4,7 +4,6 @@ newrelic
 django-debug-toolbar
 south
 django-suit
-psycopg2
 pil
 django-suit-redactor
 django-object-actions
