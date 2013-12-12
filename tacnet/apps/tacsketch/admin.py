@@ -26,8 +26,9 @@ class MapRequestAdmin(admin.ModelAdmin):
 admin.site.register(MapRequest, MapRequestAdmin)
 
 
-
+'''
 class IconAdmin(admin.ModelAdmin):
     list_display = ('name', 'game')
 
 admin.site.register(Icon, IconAdmin)
+'''

@@ -40,7 +40,9 @@ class MapRequest (models.Model):
         return self.game + ", " + self.map
 
 
+'''
 class Icon (models.Model):
     name = models.CharField(max_length=100, verbose_name="Name")
     game = models.ForeignKey(Game, verbose_name="Game", blank=True, null=True)
     image = models.ImageField(upload_to="icons", verbose_name="Icon")
+'''
