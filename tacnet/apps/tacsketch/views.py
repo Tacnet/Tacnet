@@ -73,7 +73,7 @@ def icons(request):
                             scheme = 'http://'
                         start_uri = scheme + request.get_host()
 
-                        image_data = {'name': file.replace("_", " ").capitalize()[0:len(file)-6], 'thumbnail': start_uri + "/icons/" + thumbnail, 'image': start_uri + "/icons/" + filename}
+                        image_data = {'name': file.replace("_", " ").capitalize()[0:len(file)-6], 'thumbnail': start_uri + "/icons/" + folder + "/" + thumbnail, 'image': start_uri + "/icons/" + folder + "/" + filename}
                         image_list.append(image_data)
 
 
