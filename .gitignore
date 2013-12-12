@@ -9,6 +9,5 @@ venv
 *.!sync
 .idea
 tacnet.db
-tacnet/files/static
 passwords
-tacnet/files/media
+files
