@@ -13,6 +13,10 @@ server {
             alias   /home/tacnet-www/www/tacnet/files/static/;
         }
 
+        location /icons/ {
+            alias   /home/tacnet-www/www/tacnet/icons/;
+        }
+
         location /media/ {
              alias   /home/tacnet-www/www/tacnet/files/media/;
         }
