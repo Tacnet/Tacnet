@@ -25,6 +25,9 @@ $(document).ready(function () {
     });
 
 
+    /* Load icons from API */
+
+
 
 
 
