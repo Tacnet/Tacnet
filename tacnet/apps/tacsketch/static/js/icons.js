@@ -1,8 +1,4 @@
 $(document).ready(function () {
-    $("#gamesearch").select2({
-        placeholder: "Select Game"
-    });
-
 
     var holder = $('.icon-picker');
     holder.css('display', 'none');
@@ -26,6 +22,35 @@ $(document).ready(function () {
 
 
     /* Load icons from API */
+
+
+    $.get( "/tacsketch/icons", function( data ) {
+
+        icons = data;
+
+        /* Apply data */
+
+        var icon_holder = $('.icon-holder');
+
+        for (var game in icons){
+
+            for (var icon in icons[game]) {
+
+                var image = icons[game][icon];
+                icon_holder.html('<div class="col-xs-3 icon" onclick="add_icon(\'' + image.image + '\', false)"><img src="' + image.thumbnail + '" class="img-thumbnail"/></div>');
+
+            };
+        };
+
+
+
+        /* Apply select 2 */
+        $("#gamesearch").select2({
+            placeholder: "Select Game"
+        });
+
+
+    });
 
 
 

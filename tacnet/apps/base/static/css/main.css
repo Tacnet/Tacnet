@@ -109,5 +109,5 @@ select, input[type="text"], input[type="password"], input[type="datetime"], inpu
 }
 
 #body_content {
-    min-height: 1000px;
+    min-height: 500px;
 }
