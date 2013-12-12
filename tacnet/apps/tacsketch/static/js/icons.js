@@ -37,7 +37,7 @@ $(document).ready(function () {
             for (var icon in icons[game]) {
 
                 var image = icons[game][icon];
-                icon_holder.html('<div class="col-xs-3 icon" onclick="add_icon(\'' + image.image + '\', false)"><img src="' + image.thumbnail + '" class="img-thumbnail"/></div>');
+                icon_holder.append('<div class="col-xs-3 icon" onclick="add_icon(\'' + image.image + '\', false)"><img src="' + image.thumbnail + '" class="img-thumbnail"/></div>');
 
             };
         };

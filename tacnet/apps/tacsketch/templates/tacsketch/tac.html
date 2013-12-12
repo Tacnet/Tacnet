@@ -60,29 +60,25 @@
 
      </div>
 
+    <li class="addIcon"><a href="#"><span class="glyphicon glyphicon-minus"></span> NADEEE</a></li>
     <li class="clearCanvas"><a href="#"><span class="glyphicon glyphicon-minus"></span> Clear</a></li>
-    <li class="resetCanvas"><a href="#"><span class="glyphicon glyphicon-remove-sign"></span> Reset Map</a></li>
+    <li class="resetBackground"><a href="#"><span class="glyphicon glyphicon-remove-sign"></span> Reset Map</a></li>
 
 
 {% endblock %}
 
 {% block container %}
     <div class="container">
-
                 <canvas id="background" style="z-index: -1 !important;"></canvas>
-                <canvas id="sketch" style="z-index: 0 !important;"></canvas>
-                <div class="clearfix"></div>
-
+                <canvas id="fabric" style="z-index: 1 !important;"></canvas>
+                <canvas id="sketch" style="z-index: 0 !important; border: 1px solid grey;"></canvas>
 
     </div>
-    <div class="clearfix"></div>
     <!--Map Opt values-->
 
     {% for game in games %}
         <div id="opt-{{ game.name|slugify }}" style="display: none;">
-
             <option></option>
-
             {% for mode in game.modes %}
                 <optgroup label="{{ mode.name }}">
                     {%  for map in mode.maps %}
@@ -90,9 +86,7 @@
                     {% endfor %}
                 </optgroup>
             {% endfor %}
-
         </div>
-
     {% endfor %}
 
     <!-- Modals -->
@@ -141,17 +135,18 @@
 
     <input type="file" id="input" style="visibility:hidden;position:absolute;top:-50;left:-50">
 
-
-
-
-
     <!-- scripts -->
-    <script src="/static/js/TogetherJSConfig.js"></script>
-    <script src="https://togetherjs.com/togetherjs-min.js"></script>
 
-    <script src="/static/js/tacsketch.js"></script>
+
     <script src="/static/js/icons.js"></script>
 
+    <!-- fabric.js -->
+    <script src="/static/js/all.min.js"></script>
+
+    <!-- TogetherJS -->
+    <link rel="stylesheet" href="/static/css/dock.css">
+    <script src="/static/js/TogetherJSConfig.js"></script>
+    <script src="https://togetherjs.com/togetherjs-min.js"></script>
 
     <!-- Select2 -->
     <link href="/static/js/select2/select2.css" rel="stylesheet"/>
@@ -160,6 +155,9 @@
     <!--Slider-->
     <link href="/static/js/slider/slider.css" rel="stylesheet"/>
     <script src="/static/js/slider/slider.js"></script>
+
+    <!-- scripts -->
+    <script src="/static/js/tacsketch.js"></script>
 
     <!--Close loading layer-->
     <script type="text/javascript" src="/static/js/loading_layer/closeLoading.js"></script>
