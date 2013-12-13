@@ -13,8 +13,10 @@ var initJSON;
 var icons = {}; 
 var elemArray = [];
 var drawing = false;
+var start = false;
 var lines = []; 
 var tempLines = [];
+var pushObj = {};
 var elemArray = [];
 var iconState = {};
 var lastMouse = {
@@ -30,12 +32,31 @@ sketchContext.lineJoin = 'round';
 sketchContext.lineCap = 'round';
 sketchContext.strokeStyle = '#000';
 
+function addState(updateObject, send) {
+    pushObj = fabric.util.object.clone(icons[updateObject.hash]);
+    console.log(pushObj);
+    for (var key in updateObject) {
+        pushObj[key] = updateObject[key];
+    }
+    elemArray.push(pushObj);
+    if (TogetherJS.running && send) {
+        TogetherJS.send({
+            type: 'addIconState',
+            updateObject: updateObject
+        });
+        console.log("sent state", updateObject);
+    }
+}
 
 // Event listeneres for objects
 fabricCanvas.on('object:rotating', function(e) {
     var sendObject = new Object();
     sendObject['hash'] = e.target.hash;
     sendObject['angle'] = e.target.angle;
+    if (start) {
+        addState(sendObject, true);
+        start = false;
+    }
     if (TogetherJS.running) {
         TogetherJS.send({
             type: "rotatedObject",
@@ -54,6 +75,10 @@ fabricCanvas.on('object:scaling', function(e) {
     sendObject['left'] = e.target.left;
     sendObject['top'] = e.target.top;
     sendObject['oCoords'] = e.target.oCoords;
+    if (start) {
+        addState(sendObject, true);
+        start = false;
+    }
     if (TogetherJS.running) {
         TogetherJS.send({
             type: "scaledObject",
@@ -68,6 +93,10 @@ fabricCanvas.on('object:moving', function(e) {
     sendObject['left'] = e.target.left;
     sendObject['top'] = e.target.top;
     sendObject['oCoords'] = e.target.oCoords;
+    if (start) {
+        addState(sendObject, true);
+        start = false;
+    }
     if (TogetherJS.running) {
         TogetherJS.send({
             type: "movedObject",
@@ -84,7 +113,7 @@ fabricCanvas.on('mouse:down', function(e) {
         fabricCanvas.on('mouse:move', move);
     }
     else {
-        iconState = fabric.util.object.clone(fabricCanvas.getActiveObject());
+        start = true;
     }
 });
 
@@ -95,9 +124,12 @@ fabricCanvas.on('mouse:up', function(e) {
         drawing = false;
         elemArray.push(tempLines);
         tempLines = [];
-    }
-    else {
-        elemArray.push(iconState);
+        if (TogetherJS.running) {
+            TogetherJS.send({
+                type: 'addLineState',
+                state: elemArray[elemArray.length-1]
+            });
+        }
     }
 });
 
@@ -126,7 +158,7 @@ function undo(send) {
             type: "undo"
         });
     }
-    console.log(elemArray);
+    console.log("arr",elemArray);
     var undoObj = elemArray[elemArray.length-1];
     if ((Object.prototype.toString.call(undoObj) === "[object Array]") && (elemArray.length != 0)) {
         for (var i = 0; i < elemArray[elemArray.length-1].length; i++) {
@@ -136,14 +168,14 @@ function undo(send) {
         } 
     }
     else if (Object.prototype.toString.call(undoObj) === "[object Object]") {
-        console.log("reverting to state:", undoObj);
-        console.log("from state:", icons[undoObj.hash]);
+        console.log("got here?");
+        // Something bugged with updating icons directly, works if you remove and readd.
         fabricCanvas.remove(icons[undoObj.hash]);
         delete icons[undoObj.hash];
+        console.log(undoObj);
         fabricCanvas.add(undoObj);
         icons[undoObj.hash] = undoObj;
         fabricCanvas.renderAll();
-        console.log("reverted, right?",icons[undoObj.hash]);
     }
     else {
         console.log(undoObj);
@@ -373,6 +405,20 @@ TogetherJS.hub.on("draw", function (msg) {
     draw(msg.start, msg.end, msg.color, msg.size, msg.compositeoperation, true);
 });
 
+TogetherJS.hub.on("addLineState", function (msg) {
+    if (!msg.sameUrl) {
+        return;
+    }
+    elemArray.push(msg.state);
+});
+
+TogetherJS.hub.on("addIconState", function(msg) {
+    if (!msg.sameUrl) {
+        return;
+    }
+    addState(msg.updateObject, false);
+});
+
 // Sent out whenever someone adds a new icon:
 TogetherJS.hub.on("newIcon", function(msg) {
     if (!msg.sameUrl) {
@@ -434,13 +480,13 @@ TogetherJS.hub.on("togetherjs.hello", function (msg) {
             };
         })(icons[key].toObject);
     }
-    console.log(lines);
     var fabricJSON = JSON.stringify(fabricCanvas);
     TogetherJS.send({
         type: "init",
         lines: lines,
         fabric: fabricJSON,
-        background: currentBackground
+        background: currentBackground,
+        elemArray: elemArray
     });
 });
 
@@ -449,7 +495,7 @@ TogetherJS.hub.on("init", function(msg) {
     if (!msg.sameUrl) {
         return;
     }
-    console.log(lines);
+    elemArray = msg.elemArray;
     lines = msg.lines;
     initJSON = msg.fabric;
     setBackground(msg.background, false, true);
