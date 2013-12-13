@@ -7,6 +7,8 @@ from django.views.decorators.cache import never_cache
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
+import os
+import json
 
 @never_cache
 def index(request):
@@ -46,3 +48,37 @@ def index(request):
             setattr(game, 'modes', modes)
 
     return render(request, 'tacsketch/tac.html', {'games': games, 'MapRequestForm': form})
+
+
+def icons(request):
+
+    response_data = {}
+
+    for folder in os.listdir(settings.ICONS_ROOT):
+        if os.path.isdir(settings.ICONS_ROOT + "/" + folder):
+
+            image_list = []
+
+            for file in os.listdir(settings.ICONS_ROOT + "/" + folder):
+                if os.path.isfile(settings.ICONS_ROOT + "/" + folder + "/" + file):
+
+                    if file.find("_b.png") != -1 or file.find("_b.jpg") != -1:
+
+                        filename = file
+                        thumbnail = file.replace("_b.", "_t.")
+
+                        if request.is_secure():
+                            scheme = 'https://'
+                        else:
+                            scheme = 'http://'
+                        start_uri = scheme + request.get_host()
+
+                        image_data = {'name': file.replace("_", " ").capitalize()[0:len(file)-6], 'thumbnail': start_uri + "/icons/" + folder + "/" + thumbnail, 'image': start_uri + "/icons/" + folder + "/" + filename}
+                        image_list.append(image_data)
+
+
+            game_name = folder.replace("_", " ").capitalize()
+            response_data[game_name] = image_list
+
+
+    return HttpResponse(json.dumps(response_data), content_type="application/json")

@@ -3,7 +3,6 @@ margin-top: 45px;
 }
 
 canvas {
-    border: 1px solid grey;
     position: absolute;
 }
 
@@ -109,5 +108,5 @@ select, input[type="text"], input[type="password"], input[type="datetime"], inpu
 }
 
 #body_content {
-    min-height: 1000px;
+    min-height: 500px;
 }
