@@ -19,6 +19,7 @@ var tempLines = [];
 var pushObj = {};
 var elemArray = [];
 var iconState = {};
+var initList
 var lastMouse = {
     x: 0,
     y: 0
@@ -33,18 +34,12 @@ sketchContext.lineCap = 'round';
 sketchContext.strokeStyle = '#000';
 
 function addState(updateObject, send) {
-    pushObj = fabric.util.object.clone(icons[updateObject.hash]);
-    console.log(pushObj);
-    for (var key in updateObject) {
-        pushObj[key] = updateObject[key];
-    }
-    elemArray.push(pushObj);
+    elemArray.push(updateObject);
     if (TogetherJS.running && send) {
         TogetherJS.send({
             type: 'addIconState',
             updateObject: updateObject
         });
-        console.log("sent state", updateObject);
     }
 }
 
@@ -120,8 +115,6 @@ fabricCanvas.on('mouse:down', function(e) {
 fabricCanvas.on('mouse:up', function(e) {
     fabricCanvas.off('mouse:move');
     if (!fabricCanvas.getActiveObject()) {
-        console.log("added line!");
-        drawing = false;
         elemArray.push(tempLines);
         tempLines = [];
         if (TogetherJS.running) {
@@ -168,13 +161,16 @@ function undo(send) {
         } 
     }
     else if (Object.prototype.toString.call(undoObj) === "[object Object]") {
-        console.log("got here?");
         // Something bugged with updating icons directly, works if you remove and readd.
+        var cloneObject = fabric.util.object.clone(icons[undoObj.hash]);
         fabricCanvas.remove(icons[undoObj.hash]);
         delete icons[undoObj.hash];
         console.log(undoObj);
-        fabricCanvas.add(undoObj);
-        icons[undoObj.hash] = undoObj;
+        for (var key in undoObj) {
+            cloneObject[key] = undoObj[key];
+        }
+        fabricCanvas.add(cloneObject);
+        icons[undoObj.hash] = cloneObject;
         fabricCanvas.renderAll();
     }
     else {
@@ -480,13 +476,14 @@ TogetherJS.hub.on("togetherjs.hello", function (msg) {
             };
         })(icons[key].toObject);
     }
+    console.log(lines);
     var fabricJSON = JSON.stringify(fabricCanvas);
     TogetherJS.send({
         type: "init",
         lines: lines,
         fabric: fabricJSON,
-        background: currentBackground,
-        elemArray: elemArray
+        elemArray: elemArray,
+        background: currentBackground
     });
 });
 
