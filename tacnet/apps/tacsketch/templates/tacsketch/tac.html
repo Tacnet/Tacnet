@@ -182,11 +182,10 @@
 
                 <div class="col-xs-12">
 
+                    <p><input type="text" id="iconsearch" class="form-control input-sm" placeholder="Search for icon"></p>
+
                     <p><select id="gamesearch" style="width: 100%;">
-                     <option></option>
-                        {% for game in games %}
-                            <option value="opt-{{ game.name|slugify }}">{{ game.name }}</option>
-                        {% endfor %}
+                     <option value="">All Games</option>
                     </select></p>
 
                 </div>
@@ -209,6 +208,9 @@
             <ul class="button-list">
 
                 <li class="icon-button"><i class="fa fa-flag"></i></li>
+
+                <li class="togetherjs-button loadDrawings" title="Save Map"><span class="glyphicon glyphicon-floppy-open"></span></li>
+                <li class="togetherjs-button saveDrawings" title="Load Map"><span class="glyphicon glyphicon-floppy-save"></span></li>
                 <!--<li class="rights-button"><i class="fa fa-minus-circle"></i></li>-->
 
             </ul>

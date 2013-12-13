@@ -583,8 +583,6 @@ $(document).ready(function () {
         spinner.stop();
         $('#loading_layer').hide();
 
-         $('#togetherjs-chat-button').after('<button class="togetherjs-button loadDrawings" style="color: #FFF;" title="Save Map"><span class="glyphicon glyphicon-floppy-open"></span></button>');
-         $('#togetherjs-chat-button').after('<button class="togetherjs-button saveDrawings" style="color: #FFF;" title="Load Map"><span class="glyphicon glyphicon-floppy-save"></span></button>');
 
         $('.saveDrawings').click(function() {
             var image = sketchCanvas.toDataURL("image/png").replace("image/png", "image/octet-stream");

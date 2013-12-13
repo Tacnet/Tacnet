@@ -125,7 +125,7 @@
 
 #icons .icon-picker {
     width: 250px;
-    height: 320px;
+    height: 365px;
     float: left;
     background-color: rgb(51, 51, 51);
     border-bottom-right-radius: 4px;
@@ -162,4 +162,9 @@
 #icons .icon-picker .row.icon-holder {
     padding-left: 15px;
     padding-right: 15px;
+}
+
+#icons #iconsearch {
+    background-color: #FFF;
+    color: #000;
 }
