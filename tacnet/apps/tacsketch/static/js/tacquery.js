@@ -132,7 +132,11 @@ $(document).ready(function () {
 
     // Listeners
     $('.addIcon').click(function(){
-    add_icon('/static/img/feature1.jpg', false);
+        add_icon('/static/img/feature1.jpg', false);
+    });
+
+    $('.undo').click(function() {
+        undo(true);
     });
 
     $('.clearCanvas').click(function(){
