@@ -139,20 +139,28 @@ $(document).ready(function () {
     });
 
     $('.undo').click(function() {
-        undo(true);
+        undo();
     });
 
-    $('.clearCanvas').click(function(){
-        //clearCanvas(true);
+    $('.redo').click(function() {
+        redo();
+    });
+
+    $('.deleteIcon').click(function() {
         if (fabricCanvas.getActiveObject()) {
             deleteIcon(fabricCanvas.getActiveObject().hash, true);
         }
     });
-    $('.resetBackground').click(function(){
+
+    $('.clearCanvas').click(function() {
+        clearCanvas(true);
+    });
+
+    $('.resetBackground').click(function() {
         resetBackground(true);
     });
 
-    $('.saveDrawings').click(function(){
+    $('.saveDrawings').click(function() {
         saveDrawings();
         $.bootstrapGrowl('Saved drawings - please select the correct map before attempting to load.', {
             type: 'success',
@@ -160,7 +168,7 @@ $(document).ready(function () {
         });
     });
 
-    function changeMouse(){
+    function changeMouse() {
         var cursorSize = sketchContext.lineWidth;
         if (cursorSize < 10){
             cursorSize = 10;

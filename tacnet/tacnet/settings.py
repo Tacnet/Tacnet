@@ -142,6 +142,7 @@ INSTALLED_APPS = (
     'errors',
     'blog',
     'mailinglist',
+    'authentication',
 
     # Uncomment the next line to enable the admin:
     'admin',

@@ -1,0 +1,48 @@
+#auth_bar {
+    background-color: #1a1a1a;
+    height: 30px;
+    width: 100%;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    border-style: solid;
+    border-color: #000;
+    border-width: 0px 0px 1px 0px;
+    z-index: 2;
+    padding-top: 5px;
+}
+
+#auth_bar .text-holder a.menu{
+    color: #FFF !important;
+    padding: 0px !important;
+    margin: 0px 10px 0px 10px !important;
+    display: inline;
+}
+
+#auth_bar .text-holder a:last-child, #auth_bar .text-holder p:last-child {
+    margin-right: 0px;
+}
+
+.form-group input {
+    color: #FFF !important;
+}
+
+.register-user-link, .register-user-login-link, .forgot-user-link {
+    display: inline;
+    float: left;
+    margin-right: 10px;
+}
+
+.login-modal-text, .login-modal-buttons {
+    display: inline !important;
+}
+
+#form-holder {
+    margin-top: 20px;
+    background-color: #2f2f2f;
+}
+
+.register-form-holder, .forgot-form-holder {
+    display: none;
+}

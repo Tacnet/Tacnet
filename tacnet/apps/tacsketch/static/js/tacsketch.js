@@ -311,7 +311,7 @@ function reDraw(lines){
     }
 }
 
-function initDraw() {
+function initDraw() {
     reDraw(lines);
     fabricCanvas.loadFromJSON(initJSON, function() {
         fabricCanvas.renderAll();
