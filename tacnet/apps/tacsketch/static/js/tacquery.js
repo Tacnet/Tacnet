@@ -34,26 +34,26 @@ $(document).ready(function () {
     // Show popovers
     $('#chooseMap').on('shown.bs.popover', function () {
 
-        $("#gameslist").select2({
-            placeholder: "Select Game"
-        }).on("change", function (e) {
+        $('#gameslist').select2({
+            placeholder: 'Select Game'
+        }).on('change', function (e) {
             var mapsList = $('#mapslist');
             mapsList.html($('#' + e.val).html());
         });
 
 
-        $("#mapslist").select2({
-            placeholder: "Select Map"
-        }).on("change", function (e) {
+        $('#mapslist').select2({
+            placeholder: 'Select Map'
+        }).on('change', function (e) {
             setBackground(e.val, true);
-            hidePopover($("#chooseMap"));
+            hidePopover($('#chooseMap'));
         });
 
-        hidePopover($("#chooseBrush"));
+        hidePopover($('#chooseBrush'));
 
         // More maps
         $('.moreMaps').click(function(){
-            hidePopover($("#chooseMap"));
+            hidePopover($('#chooseMap'));
             $('#moreMapsModal').modal('toggle', {
               keyboard: false
             });
@@ -61,7 +61,7 @@ $(document).ready(function () {
     });
 
     $('#chooseBrush').on('show.bs.popover', function () {
-        hidePopover($("#chooseMap"));
+        hidePopover($('#chooseMap'));
     });
 
     $('#chooseBrush').on('shown.bs.popover', function () {
@@ -74,7 +74,7 @@ $(document).ready(function () {
         }).on('slide', function (ev) {
             setSize(ev.value+2);
         }).on('slideStop', function (ev) {
-            hidePopover($("#chooseBrush"));
+            hidePopover($('#chooseBrush'));
             changeMouse();
         });
 
@@ -83,46 +83,46 @@ $(document).ready(function () {
         //Color change functions
         $('.green-pick').click(function () {
             setColor('#00ff00');
-            hidePopover($("#chooseBrush"));
+            hidePopover($('#chooseBrush'));
             changeMouse();
         });
 
         //Color change functions
         $('.yellow-pick').click(function () {
             setColor('#ff0');
-            hidePopover($("#chooseBrush"));
+            hidePopover($('#chooseBrush'));
             changeMouse();
         });
 
         //Color change functions
         $('.red-pick').click(function () {
             setColor('#ff0000');
-            hidePopover($("#chooseBrush"));
+            hidePopover($('#chooseBrush'));
             changeMouse();
         });
 
         //Color change functions
         $('.blue-pick').click(function () {
             setColor('#0000ff');
-            hidePopover($("#chooseBrush"));
+            hidePopover($('#chooseBrush'));
             changeMouse();
         });
 
         //Color change functions
         $('.black-pick').click(function () {
             setColor('#000');
-            hidePopover($("#chooseBrush"));
+            hidePopover($('#chooseBrush'));
             changeMouse();
         });
         $('.eraser').click(function () {
             eraser();
-            hidePopover($("#chooseBrush"));
+            hidePopover($('#chooseBrush'));
             changeMouse();
         });
          //User color
         $('.user-color-pick').click(function() {
-            setColor(TogetherJS.require("peers").Self.color);
-            hidePopover($("#chooseBrush"));
+            setColor(TogetherJS.require('peers').Self.color);
+            hidePopover($('#chooseBrush'));
             changeMouse();
         });
     });
@@ -134,13 +134,8 @@ $(document).ready(function () {
 
     // Close popovers when clicking on sketchCanvas
     $('#sketch').mousedown(function () {
-        hidePopover($("#chooseMap"));
-        hidePopover($("#chooseBrush"));
-    });
-
-    // Listeners
-    $('.addIcon').click(function(){
-        add_icon('/static/img/feature1.jpg', false);
+        hidePopover($('#chooseMap'));
+        hidePopover($('#chooseBrush'));
     });
 
     $('.undo').click(function() {
@@ -148,7 +143,10 @@ $(document).ready(function () {
     });
 
     $('.clearCanvas').click(function(){
-        clearCanvas(true);
+        //clearCanvas(true);
+        if (fabricCanvas.getActiveObject()) {
+            deleteIcon(fabricCanvas.getActiveObject().hash, true);
+        }
     });
     $('.resetBackground').click(function(){
         resetBackground(true);
@@ -156,7 +154,7 @@ $(document).ready(function () {
 
     $('.saveDrawings').click(function(){
         saveDrawings();
-        $.bootstrapGrowl("Saved drawings - please select the correct map before attempting to load.", {
+        $.bootstrapGrowl('Saved drawings - please select the correct map before attempting to load.', {
             type: 'success',
             width: 'auto'
         });
@@ -168,10 +166,10 @@ $(document).ready(function () {
             cursorSize = 10;
         }
         var cursorColor = sketchContext.strokeStyle;
-        var cursorGenerator = document.createElement("canvas");
+        var cursorGenerator = document.createElement('canvas');
         cursorGenerator.width = cursorSize;
         cursorGenerator.height = cursorSize;
-        var ctx = cursorGenerator.getContext("2d");
+        var ctx = cursorGenerator.getContext('2d');
 
         var centerX = cursorGenerator.width/2;
         var centerY = cursorGenerator.height/2;
@@ -188,13 +186,13 @@ $(document).ready(function () {
         ctx.lineWidth = 3;
         ctx.strokeStyle = cursorColor;
         ctx.stroke();
-        fabricCanvas.defaultCursor = "url(" + cursorGenerator.toDataURL("image/png") + ") " + cursorSize/2 + " " + cursorSize/2 + ",crosshair";
+        fabricCanvas.defaultCursor = 'url(' + cursorGenerator.toDataURL('image/png') + ') ' + cursorSize/2 + ' ' + cursorSize/2 + ',crosshair';
     }
     // Init mouse
     changeMouse();
 
 
-    TogetherJS.on("ready", function () {
+    TogetherJS.on('ready', function () {
         spinner.stop();
         $('#loading_layer').hide();
 
@@ -202,12 +200,12 @@ $(document).ready(function () {
          $('#togetherjs-chat-button').after('<button class="togetherjs-button saveDrawings" style="color: #FFF;" title="Load Map"><span class="glyphicon glyphicon-floppy-save"></span></button>');
 
         $('.saveDrawings').click(function() {
-            var image = sketchCanvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+            var image = sketchCanvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
             window.location.href=image;
         });
 
         $('.loadDrawings').click(function() {
-            $("#input").click();
+            $('#input').click();
         });
 
     });
