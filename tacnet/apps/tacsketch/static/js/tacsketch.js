@@ -15,7 +15,7 @@ var elemArray = [];
 var drawing = false;
 var start = false;
 var lines = []; 
-var tempLines = [];
+var tempLines = {};
 var pushObj = {};
 var elemArray = [];
 var iconState = {};
@@ -102,27 +102,28 @@ fabricCanvas.on('object:moving', function(e) {
 
 
 // Event listeners for mouse
+
+var lastState = 0;
 fabricCanvas.on('mouse:down', function(e) {
     lastMouse = fabricCanvas.getPointer(e.e);
     if (!fabricCanvas.getActiveObject()) {
+        lastState = Object.keys(lines).length;
         fabricCanvas.on('mouse:move', move);
     }
     else {
-        start = true;
+
     }
 });
 
 fabricCanvas.on('mouse:up', function(e) {
     fabricCanvas.off('mouse:move');
     if (!fabricCanvas.getActiveObject()) {
-        elemArray.push(tempLines);
-        tempLines = [];
-        if (TogetherJS.running) {
-            TogetherJS.send({
-                type: 'addLineState',
-                state: elemArray[elemArray.length-1]
-            });
+        console.log(lastState, Object.keys(lines).length);
+        if (lastState != Object.keys(lines).length) {
+            console.log("ADDED BIGLINE");
+            elemArray.push(tempLines);
         }
+        tempLines = {};
     }
 });
 
@@ -146,42 +147,49 @@ function setColor(color) {
 }
 
 function undo(send) {
-    if (send && TogetherJS.running) {
-        TogetherJS.send({
-            type: "undo"
-        });
-    }
-    console.log("arr",elemArray);
-    var undoObj = elemArray[elemArray.length-1];
-    if ((Object.prototype.toString.call(undoObj) === "[object Array]") && (elemArray.length != 0)) {
-        for (var i = 0; i < elemArray[elemArray.length-1].length; i++) {
-            console.log("erasing:", undoObj[i][0], elemArray[elemArray.length-1][i][1], "rgba(0,0,0,1)", undoObj[i][3]+1, "destination-out");
-            draw(undoObj[i][0], undoObj[i][1], "rgba(0,0,0,1)", undoObj[i][3]+1, "destination-out", false);
-            console.log(lines.pop());
-        } 
-    }
-    else if (Object.prototype.toString.call(undoObj) === "[object Object]") {
-        // Something bugged with updating icons directly, works if you remove and readd.
-        var cloneObject = fabric.util.object.clone(icons[undoObj.hash]);
-        fabricCanvas.remove(icons[undoObj.hash]);
-        delete icons[undoObj.hash];
-        console.log(undoObj);
-        for (var key in undoObj) {
-            cloneObject[key] = undoObj[key];
+    console.log(elemArray);
+    if (elemArray[0] != null) {
+        var undoObj = elemArray[elemArray.length-1];
+        if (undoObj.hash) {
+            // Something bugged with updating icons directly, works if you remove and readd.
+            console.log("angrer: ", undoObj.hash, icons[undoObj.hash]);
+            var cloneObject = fabric.util.object.clone(icons[undoObj.hash]);
+            fabricCanvas.remove(icons[undoObj.hash]);
+            delete icons[undoObj.hash];
+            console.log(undoObj);
+            fabricCanvas.add(cloneObject);
+            icons[undoObj.hash] = cloneObject;
+            fabricCanvas.renderAll();
         }
-        fabricCanvas.add(cloneObject);
-        icons[undoObj.hash] = cloneObject;
-        fabricCanvas.renderAll();
+        else {
+            console.log("starting");
+            console.log("lines: ",lines);
+            for (var key in undoObj) {
+                delete lines[key];
+            }
+            reDraw(lines);
+            var hashArray = [];
+            for (var key in undoObj) {
+                hashArray.push(key);
+            }
+            console.log(hashArray);
+            if (TogetherJS.running) {
+                TogetherJS.send({
+                    type: 'undoLine',
+                    hashArray: hashArray
+                });
+            }
+        }
+        elemArray.pop();
     }
-    else {
-        console.log(undoObj);
-    }
-    elemArray.pop();
 }
 // Function called on mouse-move, draws.
 function move(e) {
-    drawing = true;
+    var hash = Math.random().toString(36);
     var mouse = fabricCanvas.getPointer(e.e);
+    lines[hash] = [lastMouse, mouse, sketchContext.strokeStyle, sketchContext.lineWidth, sketchContext.globalCompositeOperation];
+    tempLines[hash] = [lastMouse, mouse, sketchContext.strokeStyle, sketchContext.lineWidth, sketchContext.globalCompositeOperation];
+    console.log(lines);
     draw(lastMouse, mouse, sketchContext.strokeStyle, sketchContext.lineWidth, sketchContext.globalCompositeOperation, true);
     if (TogetherJS.running) {
         TogetherJS.send({
@@ -190,7 +198,8 @@ function move(e) {
             end: mouse,
             color: sketchContext.strokeStyle,
             size: sketchContext.lineWidth,
-            compositeoperation: sketchContext.globalCompositeOperation
+            compositeoperation: sketchContext.globalCompositeOperation,
+            hash: hash
         });
     }
     lastMouse = mouse;
@@ -198,8 +207,9 @@ function move(e) {
 
 // Redraws the lines from the lines-array:
 function reDraw(lines){
-    for (var i in lines) {
-        draw(lines[i][0], lines[i][1], lines[i][2], lines[i][3], lines[i][4], false);
+    clearCanvas(false);
+    for (var key in lines) {
+        draw(lines[key][0], lines[key][1], lines[key][2], lines[key][3], lines[key][4], false);
     }
 }
 
@@ -318,10 +328,6 @@ function draw(start, end, color, size, compositeoperation, save) {
     sketchContext.closePath();
     sketchContext.stroke();
     sketchContext.restore();
-    if (save) {
-        lines.push([{x: start.x, y: start.y}, {x: end.x, y: end.y}, color, size, compositeoperation]);
-        tempLines.push([{x: start.x, y: start.y}, {x: end.x, y: end.y}, color, size, compositeoperation]);
-    }
 }
 
 var input = document.getElementById('input');
@@ -356,11 +362,16 @@ TogetherJS.hub.on("clearCanvas", function (msg) {
     clearCanvas(false);
 });
 
-TogetherJS.hub.on("undo", function(msg) {
+TogetherJS.hub.on("undoLine", function(msg) {
     if (!msg.sameUrl) {
         return;
     }
-    undo(false);
+    console.log("local lines",lines);
+    console.log("undoing line", msg.hashArray);
+    for (var i in msg.hashArray) {
+        delete lines[msg.hashArray[i]];
+    }
+    reDraw(lines);
 });
 
 TogetherJS.hub.on("resetBackground", function (msg) {
@@ -398,21 +409,9 @@ TogetherJS.hub.on("draw", function (msg) {
     if (!msg.sameUrl) {
         return;
     }
+    lines[msg.hash] = [msg.start, msg.end, msg.color, msg.size, msg.compositeoperation];
+    console.log(lines);
     draw(msg.start, msg.end, msg.color, msg.size, msg.compositeoperation, true);
-});
-
-TogetherJS.hub.on("addLineState", function (msg) {
-    if (!msg.sameUrl) {
-        return;
-    }
-    elemArray.push(msg.state);
-});
-
-TogetherJS.hub.on("addIconState", function(msg) {
-    if (!msg.sameUrl) {
-        return;
-    }
-    addState(msg.updateObject, false);
 });
 
 // Sent out whenever someone adds a new icon:
@@ -476,11 +475,14 @@ TogetherJS.hub.on("togetherjs.hello", function (msg) {
             };
         })(icons[key].toObject);
     }
-    console.log(lines);
+    var lineArr = [];
+    for (var key in lines) {
+        lineArr.push([lines[key][0], lines[key][1], lines[key][2], lines[key][3], lines[key][4], key]);
+    }
     var fabricJSON = JSON.stringify(fabricCanvas);
     TogetherJS.send({
         type: "init",
-        lines: lines,
+        lines: lineArr,
         fabric: fabricJSON,
         elemArray: elemArray,
         background: currentBackground
@@ -492,8 +494,10 @@ TogetherJS.hub.on("init", function(msg) {
     if (!msg.sameUrl) {
         return;
     }
-    elemArray = msg.elemArray;
-    lines = msg.lines;
+    var linesArr = msg.lines;
+    for (var i = 0; i < linesArr.length; i++) {
+        lines[linesArr[i][5]] = linesArr[i];
+    }
     initJSON = msg.fabric;
     setBackground(msg.background, false, true);
 });

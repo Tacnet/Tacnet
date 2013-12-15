@@ -6,6 +6,14 @@ $(document).ready(function () {
         }
     }
 
+    $(window).keypress(function (e) {
+        if (e.which == 26) {
+            undo();
+        }
+        else if (e.which == 25) {
+            redo();
+        }
+    });
     // Initialize popovers
     $('#chooseMap').popover({
         html: true,
