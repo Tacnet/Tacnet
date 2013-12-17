@@ -201,6 +201,7 @@ function undo() {
                 });
             }
         }
+        undoArray.pop();
     }
 }
 
@@ -442,6 +443,11 @@ function clearCanvas(clicked) {
         }
     }
     sketchContext.clearRect(0,0 , sketchCanvas.width, sketchCanvas.height);
+}
+
+function saveDrawings() {
+    var image = sketchCanvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+    window.location.href=image;
 }
 
 var input = document.getElementById('input');
