@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
     // Hide popover
     function hidePopover(element) {
         if (element.next('div.popover:visible').length) {
@@ -199,19 +200,18 @@ $(document).ready(function () {
     // Init mouse
     changeMouse();
 
+    $('.saveDrawings').click(function() {
+        var image = sketchCanvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+        window.location.href=image;
+    });
+
+    $('.loadDrawings').click(function() {
+        $('#input').click();
+    });
+
 
     TogetherJS.on('ready', function () {
         spinner.stop();
         $('#loading_layer').hide();
-
-        $('.saveDrawings').click(function() {
-            var image = sketchCanvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
-            window.location.href=image;
-        });
-
-        $('.loadDrawings').click(function() {
-            $('#input').click();
-        });
-
     });
 }); 

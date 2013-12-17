@@ -168,9 +168,21 @@
 
 {% block iconbar %}
 
-    <div id="icons">
 
-        <div class="icon-picker">
+
+
+
+    <div id="sidebar">
+
+        <div id="select-map" class="bar-element">
+             <div class="row">
+
+                <div class="col-xs-12"><h5><i class="fa fa-globe"></i> Maps</h5><hr/></div>
+
+            </div>
+        </div>
+
+        <div id="icon-picker" class="bar-element">
 
             <div class="row">
 
@@ -207,10 +219,12 @@
 
             <ul class="button-list">
 
-                <li class="icon-button"><i class="fa fa-flag"></i></li>
+                <li class="icon-button select-map"><i class="fa fa-globe"></i></li>
+                <li class="icon-button select-icon"><i class="fa fa-map-marker"></i></li>
 
-                <li class="togetherjs-button loadDrawings" title="Save Map"><span class="glyphicon glyphicon-floppy-open"></span></li>
                 <li class="togetherjs-button saveDrawings" title="Load Map"><span class="glyphicon glyphicon-floppy-save"></span></li>
+                <li class="togetherjs-button loadDrawings" title="Save Map"><span class="glyphicon glyphicon-floppy-open"></span></li>
+
                 <!--<li class="rights-button"><i class="fa fa-minus-circle"></i></li>-->
 
             </ul>

@@ -1,12 +1,13 @@
 $(document).ready(function () {
 
-    var holder = $('.icon-picker');
+    /*
+    var holder = $('.bar-element');
     holder.css('display', 'none');
 
-    $('#icons').css('display', 'block');
+    $('#sidebar').css('display', 'block');
 
 
-    $('#body_content').click(function(){
+    $('#sketch').click(function(){
         holder.css('display', 'none');
     });
 
@@ -19,10 +20,32 @@ $(document).ready(function () {
             holder.css('display', 'none');
         }
     });
-
+    */
 
     /* Load icons from API */
 
+    var select_map = $('#select-map');
+    var select_icons = $('#icon-picker');
+
+    var toggle_map = $('.select-map');
+    var toggle_icons = $('.select-icon');
+
+    /* OpenTabs */
+    toggle_map.click(function(){
+        select_map.show();
+        select_icons.hide();
+    });
+    toggle_icons.click(function(){
+        select_icons.show();
+        select_map.hide();
+    });
+
+    /* Close when click on canvas */
+    var canvas = $('#sketch');
+    canvas.click(function(){
+        select_icons.hide();
+        select_map.hide();
+    });
 
     $.get( "/tacsketch/icons", function( data ) {
 
@@ -42,6 +65,8 @@ $(document).ready(function () {
 
                 var image = icons[game][icon];
                 icon_holder.append('<div alt="' + game + '" name="' + image.name + '" class="col-xs-3 icon" onclick="add_icon(\'' + image.image + '\', false)"><img src="' + image.thumbnail + '" class="img-thumbnail"/></div>');
+
+                icon_holder.html("HELLO");
 
             };
         };
