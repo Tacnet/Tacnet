@@ -41,12 +41,34 @@ $(document).ready(function () {
     });
 
     /* Close when click on canvas */
-    var canvas = $('#sketch');
-    canvas.click(function(){
+    var ex = $('.upper-canvas');
+    ex.click(function(){
         select_icons.hide();
         select_map.hide();
     });
 
+    /* Load Maps tab */
+     $('#gameslist').select2({
+        placeholder: 'Select Game'
+    }).on('change', function (e) {
+        var mapsList = $('#mapslist');
+        mapsList.html($('#' + e.val).html());
+    });
+
+    $('#mapslist').select2({
+        placeholder: 'Select Map'
+    }).on('change', function (e) {
+        setBackground(e.val, true);
+    });
+
+    // More maps
+    $('.moreMaps').click(function(){
+        $('#moreMapsModal').modal('toggle', {
+          keyboard: false
+        });
+    });
+
+    /* Load Icons tab */
     $.get( "/tacsketch/icons", function( data ) {
 
         icons = data;
@@ -65,8 +87,6 @@ $(document).ready(function () {
 
                 var image = icons[game][icon];
                 icon_holder.append('<div alt="' + game + '" name="' + image.name + '" class="col-xs-3 icon" onclick="add_icon(\'' + image.image + '\', false)"><img src="' + image.thumbnail + '" class="img-thumbnail"/></div>');
-
-                icon_holder.html("HELLO");
 
             };
         };
@@ -126,6 +146,7 @@ $(document).ready(function () {
 
 
     });
+
 
 
 
