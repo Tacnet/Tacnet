@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
     // Hide popover
     function hidePopover(element) {
         if (element.next('div.popover:visible').length) {
@@ -15,13 +16,6 @@ $(document).ready(function () {
         }
     });
     // Initialize popovers
-    $('#chooseMap').popover({
-        html: true,
-        placement: 'bottom',
-        content: function () {
-            return $('#chooseMap_content_wrapper').html();
-        }
-    });
 
     $('#chooseBrush').popover({
         html: true,
@@ -32,36 +26,9 @@ $(document).ready(function () {
     });
 
     // Show popovers
-    $('#chooseMap').on('shown.bs.popover', function () {
-
-        $('#gameslist').select2({
-            placeholder: 'Select Game'
-        }).on('change', function (e) {
-            var mapsList = $('#mapslist');
-            mapsList.html($('#' + e.val).html());
-        });
-
-
-        $('#mapslist').select2({
-            placeholder: 'Select Map'
-        }).on('change', function (e) {
-            setBackground(e.val, true);
-            hidePopover($('#chooseMap'));
-        });
-
-        hidePopover($('#chooseBrush'));
-
-        // More maps
-        $('.moreMaps').click(function(){
-            hidePopover($('#chooseMap'));
-            $('#moreMapsModal').modal('toggle', {
-              keyboard: false
-            });
-        });
-    });
 
     $('#chooseBrush').on('show.bs.popover', function () {
-        hidePopover($('#chooseMap'));
+        //Close other popovers
     });
 
     $('#chooseBrush').on('shown.bs.popover', function () {
@@ -134,7 +101,6 @@ $(document).ready(function () {
 
     // Close popovers when clicking on sketchCanvas
     $('#sketch').mousedown(function () {
-        hidePopover($('#chooseMap'));
         hidePopover($('#chooseBrush'));
     });
 
@@ -199,19 +165,18 @@ $(document).ready(function () {
     // Init mouse
     changeMouse();
 
+    $('.saveDrawings').click(function() {
+        var image = sketchCanvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+        window.location.href=image;
+    });
+
+    $('.loadDrawings').click(function() {
+        $('#input').click();
+    });
+
 
     TogetherJS.on('ready', function () {
         spinner.stop();
         $('#loading_layer').hide();
-
-        $('.saveDrawings').click(function() {
-            var image = sketchCanvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
-            window.location.href=image;
-        });
-
-        $('.loadDrawings').click(function() {
-            $('#input').click();
-        });
-
     });
 }); 

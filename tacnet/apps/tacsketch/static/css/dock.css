@@ -77,15 +77,14 @@
 
 
 /* Custom Dock */
-#icons {
+#sidebar {
     position: fixed;
     top: 200px;
     left: 0px;
-    display: none;
     z-index: 10;
 }
 
-#icons .dock {
+#sidebar .dock {
     background-color: rgb(51, 51, 51);
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
@@ -94,13 +93,13 @@
     border-left: 1px solid rgba(0, 0, 0, 0.498039);
 }
 
-#icons .dock .button-list {
+#sidebar .dock .button-list {
     margin: 0px;
     padding: 0px;
     list-style: none;
 }
 
-#icons .dock .button-list li {
+#sidebar .dock .button-list li {
     width: 60px;
     height: 60px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
@@ -110,20 +109,20 @@
     color: #838383;
 }
 
-#icons .dock .button-list li:hover {
+#sidebar .dock .button-list li:hover {
     background-color: #444444;
     color: #FFF;
 }
 
-#icons .dock .button-list li i {
+#sidebar .dock .button-list li i {
     margin: auto;
 }
 
-#icons .dock .button-list li:last-child {
+#sidebar .dock .button-list li:last-child {
     border-bottom: none;
 }
 
-#icons .icon-picker {
+#sidebar .bar-element {
     width: 250px;
     height: 365px;
     float: left;
@@ -131,18 +130,19 @@
     border-bottom-right-radius: 4px;
     -webkit-box-shadow: rgba(0, 0, 0, 0.498039) 2px 4px 2px 0px;
     padding: 10px 10px;
+    display: none;
 }
-#icons .icon-picker h5, #icons .icon-picker hr {
+#sidebar .bar-element h5, #sidebar .bar-element hr {
     margin: 0px;
     padding: 0px;
 }
 
-#icons .icon-picker hr {
+#sidebar .bar-element hr {
     padding-top: 10px;
     margin-bottom: 10px;
 }
 
-#icons .icon-picker .scrollable {
+#sidebar .bar-element .scrollable {
     overflow-y: scroll;
     overflow-x: hidden;
     height: 230px;
@@ -150,21 +150,21 @@
     padding: 5px;
 }
 
-#icons .icon-picker .row .icon {
+#sidebar .bar-element .row .icon {
     padding: 2px;
 }
 
-#icons .icon-picker .row .icon:hover img {
+#sidebar .bar-element .row .icon:hover img {
     background-color: #808080;
     border-color: #808080;
 }
 
-#icons .icon-picker .row.icon-holder {
+#sidebar .bar-element .row.icon-holder {
     padding-left: 15px;
     padding-right: 15px;
 }
 
-#icons #iconsearch {
+#sidebar #iconsearch {
     background-color: #FFF;
     color: #000;
 }

@@ -54,31 +54,33 @@ def icons(request):
 
     response_data = {}
 
-    for folder in os.listdir(settings.ICONS_ROOT):
-        if os.path.isdir(settings.ICONS_ROOT + "/" + folder):
+    if settings.DEBUG == False:
 
-            image_list = []
+        for folder in os.listdir(settings.ICONS_ROOT):
+            if os.path.isdir(settings.ICONS_ROOT + "/" + folder):
 
-            for file in os.listdir(settings.ICONS_ROOT + "/" + folder):
-                if os.path.isfile(settings.ICONS_ROOT + "/" + folder + "/" + file):
+                image_list = []
 
-                    if file.find("_b.png") != -1 or file.find("_b.jpg") != -1:
+                for file in os.listdir(settings.ICONS_ROOT + "/" + folder):
+                    if os.path.isfile(settings.ICONS_ROOT + "/" + folder + "/" + file):
 
-                        filename = file
-                        thumbnail = file.replace("_b.", "_t.")
+                        if file.find("_b.png") != -1 or file.find("_b.jpg") != -1:
 
-                        if request.is_secure():
-                            scheme = 'https://'
-                        else:
-                            scheme = 'http://'
-                        start_uri = scheme + request.get_host()
+                            filename = file
+                            thumbnail = file.replace("_b.", "_t.")
 
-                        image_data = {'name': file.replace("_", " ").capitalize()[0:len(file)-6], 'thumbnail': start_uri + "/icons/" + folder + "/" + thumbnail, 'image': start_uri + "/icons/" + folder + "/" + filename}
-                        image_list.append(image_data)
+                            if request.is_secure():
+                                scheme = 'https://'
+                            else:
+                                scheme = 'http://'
+                            start_uri = scheme + request.get_host()
+
+                            image_data = {'name': file.replace("_", " ").capitalize()[0:len(file)-6], 'thumbnail': start_uri + "/icons/" + folder + "/" + thumbnail, 'image': start_uri + "/icons/" + folder + "/" + filename}
+                            image_list.append(image_data)
 
 
-            game_name = folder.replace("_", " ").capitalize()
-            response_data[game_name] = image_list
+                game_name = folder.replace("_", " ").capitalize()
+                response_data[game_name] = image_list
 
 
     return HttpResponse(json.dumps(response_data), content_type="application/json")
