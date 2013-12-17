@@ -11,3 +11,5 @@ venv
 tacnet.db
 passwords
 files
+scripts/iconcreator/input
+scripts/iconcreator/output
