@@ -35,31 +35,39 @@
      </div>
 
     <li id="chooseBrush"  data-original-title="Select Brush"><a href="#"><span class="glyphicon glyphicon-pencil"></span> Select Brush</a></li>
-     <div id="chooseBrush_content_wrapper" style="display: none">
+        <div id="chooseBrush_content_wrapper" style="display: none">
+             <div class="form-group" id="brushSizeForm">
+                <label for="brushSize">Brush Size</label>
+                <!--Slider comes here.-->
+              </div>
 
-         <div class="form-group" id="brushSizeForm">
-            <label for="brushSize">Brush Size</label>
-            <!--Slider comes here.-->
-          </div>
+            <div class="btn-group btn-group-justified" style="width: 360px;">
+                <a class="btn btn-success green-pick">Green</a>
+                <a class="btn btn-warning yellow-pick">Yellow</a>
+                <a class="btn btn-danger red-pick">Red</a>
+                <a class="btn btn-info blue-pick">Blue</a>
+                <a class="btn btn-inverse black-pick">Black</a>
+            </div>
 
-
-        <div class="btn-group btn-group-justified" style="width: 360px;">
-            <a class="btn btn-success green-pick">Green</a>
-            <a class="btn btn-warning yellow-pick">Yellow</a>
-            <a class="btn btn-danger red-pick">Red</a>
-            <a class="btn btn-info blue-pick">Blue</a>
-            <a class="btn btn-inverse black-pick">Black</a>
+            <div class="btn-group btn-group-justified" style="width: 360px; margin-top: 10px;">
+                <a class="btn btn-primary user-color-pick">User Color</a>
+                <a class="btn btn-default eraser"><i class="fa fa-eraser"></i></a>
+            </div>
         </div>
+    </li>
+
+    <li id="clearMenu"  data-original-title="Clear"><a href="#"><span class="glyphicon glyphicon-remove-sign"></span> Clear</a></li>
+     <div id="clearMenu_content_wrapper" style="display: none">
+        <button class="btn btn-default clearCanvas" style="width: 360px;">Clear Drawings</button>
 
         <div class="btn-group btn-group-justified" style="width: 360px; margin-top: 10px;">
-            <a class="btn btn-primary user-color-pick">User Color</a>
-            <a class="btn btn-default eraser"><i class="fa fa-eraser"></i></a>
+            <a class="btn btn-warning resetFabric">Reset Icons</a>
+            <a class="btn btn-danger resetBackground">Reset Background</a>
         </div>
 
-     </div>
+        </div>
+    </li>
 
-    <li class="clearCanvas"><a href="#"><span class="glyphicon glyphicon-minus"></span> Clear</a></li>
-    <li class="resetBackground"><a href="#"><span class="glyphicon glyphicon-remove-sign"></span> Reset Map</a></li>
     <li class="undo"><a href="#"><i class="fa fa-undo"></i> Undo</a></li>
     <li class="redo"><a href="#"><i class="fa fa-repeat"></i> Redo</a></li>
     <li class="deleteIcon"><a href="#"><span class="glyphicon glyphicon-trash"></span> Delete</a></li>
@@ -135,8 +143,7 @@
     <input type="file" id="input" style="visibility:hidden;position:absolute;top:-50;left:-50">
 
     <!-- scripts -->
-
-
+    <script src="/static/js/bootstrap-confirmation.js"></script>
 
     <!-- fabric.js -->
     <script src="/static/js/all.min.js"></script>

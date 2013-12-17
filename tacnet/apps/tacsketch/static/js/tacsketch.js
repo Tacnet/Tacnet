@@ -355,6 +355,8 @@ function addIcon(icon, hash, init) {
     return dfd;
 }
 
+addIcon('/static/img/testicon.jpg', false, true);
+
 // Removes icons from hash, sends message over TGJS if send is true.
 function deleteIcon(hash, send) {
     stateObject = {};
@@ -435,16 +437,23 @@ function resetBackground(clicked) {
 
 // Clears the sketchCanvas
 function clearCanvas(clicked) {
-    if (clicked) {
-        if (TogetherJS.running) {
-            TogetherJS.send({
-            type: 'clearCanvas'
-            });
-        }
+    if (clicked && TogetherJS.running) {
+        TogetherJS.send({
+        type: 'clearCanvas'
+        });
     }
     sketchContext.clearRect(0,0 , sketchCanvas.width, sketchCanvas.height);
 }
 
+function resetFabric(clicked) {
+    if (clicked && TogetherJS.running) {
+        TogetherJS.send({
+        type: 'resetFabric'
+        });
+    }
+    fabricCanvas.clear();
+    icons = {};
+}
 function saveDrawings() {
     var image = sketchCanvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
     window.location.href=image;

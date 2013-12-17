@@ -6,6 +6,13 @@ TogetherJS.hub.on('clearCanvas', function (msg) {
     clearCanvas(false);
 });
 
+TogetherJS.hub.on('resetFabric', function (msg) {
+    if (!msg.sameUrl) {
+        return;
+    }
+    resetFabric(false);
+});
+
 TogetherJS.hub.on('resetBackground', function (msg) {
     if (!msg.sameUrl) {
         return;

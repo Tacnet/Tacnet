@@ -14,6 +14,7 @@ $(document).ready(function () {
             redo();
         }
     });
+    
     // Initialize popovers
     $('#chooseMap').popover({
         html: true,
@@ -31,8 +32,18 @@ $(document).ready(function () {
         }
     });
 
+    $('#clearMenu').popover({
+        html: true,
+        placement: 'bottom',
+        content: function () {
+            return $('#clearMenu_content_wrapper').html();
+        }
+    });
+
     // Show popovers
     $('#chooseMap').on('shown.bs.popover', function () {
+        hidePopover($('#chooseBrush'));
+        hidePopover($('#clearMenu'));
 
         $('#gameslist').select2({
             placeholder: 'Select Game'
@@ -49,8 +60,6 @@ $(document).ready(function () {
             hidePopover($('#chooseMap'));
         });
 
-        hidePopover($('#chooseBrush'));
-
         // More maps
         $('.moreMaps').click(function(){
             hidePopover($('#chooseMap'));
@@ -60,11 +69,28 @@ $(document).ready(function () {
         });
     });
 
-    $('#chooseBrush').on('show.bs.popover', function () {
+    $('#clearMenu').on('shown.bs.popover', function () {
+        hidePopover($('#chooseBrush'));
         hidePopover($('#chooseMap'));
+
+        $('.clearCanvas').click(function() {
+            clearCanvas(true);
+            hidePopover($('#clearMenu'));
+        });
+
+        $('.resetFabric').click(function () {
+            resetFabric(true);
+            hidePopover($('#clearMenu'));
+        });
+        $('.resetBackground').click(function() {
+            resetBackground(true);
+            hidePopover($('#clearMenu'));
+        });
     });
 
     $('#chooseBrush').on('shown.bs.popover', function () {
+        hidePopover($('#chooseMap'));
+        hidePopover($('#clearMenu'));
         $('#brushSizeForm').append('<input type="text" class="slider" id="brushSize" style="width: 360px;" />');
         $('.slider').slider({
             min: 1,
@@ -74,7 +100,6 @@ $(document).ready(function () {
         }).on('slide', function (ev) {
             setSize(ev.value+2);
         }).on('slideStop', function (ev) {
-            hidePopover($('#chooseBrush'));
             changeMouse();
         });
 
@@ -133,10 +158,12 @@ $(document).ready(function () {
     });
 
     // Close popovers when clicking on sketchCanvas
-    $('#sketch').mousedown(function () {
+    $('.upper-canvas').click(function () {
         hidePopover($('#chooseMap'));
         hidePopover($('#chooseBrush'));
+        hidePopover($('#clearMenu'));
     });
+
 
     $('.undo').click(function() {
         undo();
@@ -150,14 +177,6 @@ $(document).ready(function () {
         if (fabricCanvas.getActiveObject()) {
             deleteIcon(fabricCanvas.getActiveObject().hash, true);
         }
-    });
-
-    $('.clearCanvas').click(function() {
-        clearCanvas(true);
-    });
-
-    $('.resetBackground').click(function() {
-        resetBackground(true);
     });
 
     $('.saveDrawings').click(function() {
