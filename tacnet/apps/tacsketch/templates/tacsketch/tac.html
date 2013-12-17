@@ -15,25 +15,6 @@
 
 {% block nav %}
 
-    <li id="chooseMap" data-original-title="Select Map"><a href="#"><span class="glyphicon glyphicon-tower"></span> Select Map</a></li>
-     <div id="chooseMap_content_wrapper" style="display: none">
-
-        <p><select id="gameslist" style="width: 100%;">
-         <option></option>
-            {% for game in games %}
-                <option value="opt-{{ game.name|slugify }}">{{ game.name }}</option>
-            {% endfor %}
-        </select></p>
-
-
-        <p><select id="mapslist" style="width: 100%;">
-            <option></option>
-        </select></p>
-
-        <p class="text-right"><span class="glyphicon glyphicon-tower"></span> <a href="#" class="moreMaps">Suggest a map</a></p>
-
-     </div>
-
     <li id="chooseBrush"  data-original-title="Select Brush"><a href="#"><span class="glyphicon glyphicon-pencil"></span> Select Brush</a></li>
         <div id="chooseBrush_content_wrapper" style="display: none">
              <div class="form-group" id="brushSizeForm">
@@ -97,7 +78,6 @@
         </div>
     {% endfor %}
 
-    <!-- Modals -->
     <!-- Modal -->
     <div class="modal fade" id="moreMapsModal" tabindex="-1" role="dialog" aria-labelledby="moreMaps" aria-hidden="true">
       <div class="modal-dialog">
@@ -176,9 +156,42 @@
 
 {% block iconbar %}
 
-    <div id="icons">
 
-        <div class="icon-picker">
+
+
+
+    <div id="sidebar">
+
+        <div id="select-map" class="bar-element">
+             <div class="row">
+
+                <div class="col-xs-12"><h5><i class="fa fa-gamepad"></i> Maps</h5><hr/></div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12">
+                  <p><select id="gameslist" style="width: 100%;">
+         <option></option>
+            {% for game in games %}
+                <option value="opt-{{ game.name|slugify }}">{{ game.name }}</option>
+            {% endfor %}
+        </select></p>
+
+
+        <p><select id="mapslist" style="width: 100%;">
+            <option></option>
+        </select></p>
+
+        <p style="text-align: justify; margin-top: 20px;">We try to support as many games as possible, if you've got any additional suggestions, feel free to contact us through the form below.</p>
+        <p class="text-right"><i class="fa fa-gamepad"></i> <a href="#" class="moreMaps">Suggest a map</a></p>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div id="icon-picker" class="bar-element">
 
             <div class="row">
 
@@ -215,10 +228,12 @@
 
             <ul class="button-list">
 
-                <li class="icon-button"><i class="fa fa-flag"></i></li>
+                <li class="icon-button select-map"><i class="fa fa-gamepad"></i></li>
+                <li class="icon-button select-icon"><i class="fa fa-flag"></i></li>
 
-                <li class="togetherjs-button loadDrawings" title="Save Map"><span class="glyphicon glyphicon-floppy-open"></span></li>
                 <li class="togetherjs-button saveDrawings" title="Load Map"><span class="glyphicon glyphicon-floppy-save"></span></li>
+                <li class="togetherjs-button loadDrawings" title="Save Map"><span class="glyphicon glyphicon-floppy-open"></span></li>
+
                 <!--<li class="rights-button"><i class="fa fa-minus-circle"></i></li>-->
 
             </ul>

@@ -1,12 +1,13 @@
 $(document).ready(function () {
 
-    var holder = $('.icon-picker');
+    /*
+    var holder = $('.bar-element');
     holder.css('display', 'none');
 
-    $('#icons').css('display', 'block');
+    $('#sidebar').css('display', 'block');
 
 
-    $('#body_content').click(function(){
+    $('#sketch').click(function(){
         holder.css('display', 'none');
     });
 
@@ -19,11 +20,55 @@ $(document).ready(function () {
             holder.css('display', 'none');
         }
     });
-
+    */
 
     /* Load icons from API */
 
+    var select_map = $('#select-map');
+    var select_icons = $('#icon-picker');
 
+    var toggle_map = $('.select-map');
+    var toggle_icons = $('.select-icon');
+
+    /* OpenTabs */
+    toggle_map.click(function(){
+        select_map.show();
+        select_icons.hide();
+    });
+    toggle_icons.click(function(){
+        select_icons.show();
+        select_map.hide();
+    });
+
+    /* Close when click on canvas */
+    var ex = $('.upper-canvas');
+    ex.click(function(){
+        select_icons.hide();
+        select_map.hide();
+    });
+
+    /* Load Maps tab */
+     $('#gameslist').select2({
+        placeholder: 'Select Game'
+    }).on('change', function (e) {
+        var mapsList = $('#mapslist');
+        mapsList.html($('#' + e.val).html());
+    });
+
+    $('#mapslist').select2({
+        placeholder: 'Select Map'
+    }).on('change', function (e) {
+        setBackground(e.val, true);
+    });
+
+    // More maps
+    $('.moreMaps').click(function(){
+        $('#moreMapsModal').modal('toggle', {
+          keyboard: false
+        });
+    });
+
+    /* Load Icons tab */
     $.get( "/tacsketch/icons", function( data ) {
 
         icons = data;
@@ -101,6 +146,7 @@ $(document).ready(function () {
 
 
     });
+
 
 
 
