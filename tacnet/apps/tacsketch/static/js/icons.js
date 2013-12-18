@@ -86,10 +86,10 @@ $(document).ready(function () {
             for (var icon in icons[game]) {
                 var image = icons[game][icon];
                 console.log(image.name);
-                icon_holder.append('<div alt="' + game + '" name="' + image.name + '" class="col-xs-3 icon" onclick="addIcon(\'' + image.image + '\', false)"><a href="#" title="' + image.name + '" rel="tooltip"><img src="' + image.thumbnail + '" class="img-thumbnail"/></a></div>');
+                icon_holder.append('<div alt="' + game + '" name="' + image.name + '" class="col-xs-3 icon" onclick="addIcon(\'' + image.image + '\', false)"><a href="#" title="' + image.name + '" rel="tooltip" data-placement="bottom" data-toggle="tooltip"><img src="' + image.thumbnail + '" class="img-thumbnail"/></a></div>');
             };
         };
-        $('a').tooltip({'placement': 'bottom','content':'html'});
+        $("[rel=tooltip]").tooltip();
 
 
         /* Apply select 2 */
