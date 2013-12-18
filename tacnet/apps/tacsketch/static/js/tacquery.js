@@ -34,7 +34,6 @@ $(document).ready(function () {
 
     $('#clearMenu').on('shown.bs.popover', function () {
         hidePopover($('#chooseBrush'));
-        hidePopover($('#chooseMap'));
 
         $('.clearCanvas').click(function() {
             clearCanvas(true);
