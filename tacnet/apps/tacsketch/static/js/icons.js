@@ -32,11 +32,11 @@ $(document).ready(function () {
 
     /* OpenTabs */
     toggle_map.click(function(){
-        select_map.show();
+        select_map.toggle();
         select_icons.hide();
     });
     toggle_icons.click(function(){
-        select_icons.show();
+        select_icons.toggle();
         select_map.hide();
     });
 
