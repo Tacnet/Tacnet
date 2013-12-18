@@ -2,12 +2,16 @@ import PIL
 from PIL import Image
 import os, shutil
 
-
+modes = ("1", "2")
 print("Tacnet.io Icon Converter")
 print("")
 print("1. Create two folders in the same directory as this file, input and output.")
 print("2. Paste the images in the input folder. The images must end with .png or .jpg")
-raw_input("Press Enter when ready...")
+print("Mode 1: Regular converting. Underscores will be removed for tooltips etc., so namepart1_namepart2 will be shown as Namepart1 Namepart2 later on.")
+print("Mode 2: Image names are on the form, name_type.png, example: grenade_icon.png --> grenade.png")
+mode = raw_input("Enter mode: ")
+while mode not in modes:
+    mode = raw_input("Enter mode: ")
 
 #try:
 
@@ -25,8 +29,13 @@ for file in os.listdir("input/"):
 
 
         filename_end = file[len(file)-4:len(file)]
-        t_filename = file.lower().replace(" " , "_")[0:len(file)-4] + "_t" + filename_end
-        b_filename = file.lower().replace(" " , "_")[0:len(file)-4] + "_b" + filename_end
+        if mode == "2":
+            iconname = file.lower().split("_")[0] # Removes anything that comes after an underscore
+        else:
+            iconname = file.replace(" ", "_")[0:len(file)-4].lower()
+
+        t_filename = iconname + "_t" + filename_end
+        b_filename = iconname + "_b" + filename_end
 
         img.save("output/" + t_filename)
 
