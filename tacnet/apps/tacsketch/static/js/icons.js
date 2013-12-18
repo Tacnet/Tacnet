@@ -84,13 +84,12 @@ $(document).ready(function () {
             select.append('<option value="' + game + '">' + game + '</option>');
 
             for (var icon in icons[game]) {
-
                 var image = icons[game][icon];
-                icon_holder.append('<div alt="' + game + '" name="' + image.name + '" class="col-xs-3 icon" onclick="add_icon(\'' + image.image + '\', false)"><img src="' + image.thumbnail + '" class="img-thumbnail"/></div>');
-
+                console.log(image.name);
+                icon_holder.append('<div alt="' + game + '" name="' + image.name + '" class="col-xs-3 icon" onclick="addIcon(\'' + image.image + '\', false)"><a href="#" title="' + image.name + '" rel="tooltip"><img src="' + image.thumbnail + '" class="img-thumbnail"/></a></div>');
             };
         };
-
+        $('a').tooltip({'placement': 'bottom','content':'html'});
 
 
         /* Apply select 2 */

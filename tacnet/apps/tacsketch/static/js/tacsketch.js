@@ -355,8 +355,6 @@ function addIcon(icon, hash, init) {
     return dfd;
 }
 
-addIcon('/static/img/testicon.jpg', false, true);
-
 // Removes icons from hash, sends message over TGJS if send is true.
 function deleteIcon(hash, send) {
     stateObject = {};
