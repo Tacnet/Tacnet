@@ -14,7 +14,7 @@ $(document).ready(function () {
             redo();
         }
     });
-    
+
     // Initialize popovers
     $('#chooseBrush').popover({
         html: true,
@@ -132,6 +132,17 @@ $(document).ready(function () {
 
     $('.redo').click(function() {
         redo();
+    });
+
+    $('.toggleTrailing').click(function () {
+        if (iconTrail) {
+            $('.trailingText').css('color', '#c6c6c6');
+            iconTrail = false;
+        }
+        else {
+            $('.trailingText').css('color', 'green');
+            iconTrail = true;
+        }
     });
 
     $('.deleteIcon').click(function() {
