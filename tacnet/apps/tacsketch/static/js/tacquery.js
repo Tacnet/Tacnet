@@ -1,3 +1,4 @@
+var oldColor = "";
 $(document).ready(function () {
     // Hide popover
     function hidePopover(element) {
@@ -19,6 +20,7 @@ $(document).ready(function () {
     $('#chooseBrush').popover({
         html: true,
         placement: 'bottom',
+        template: '<div class="popover largePopover"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>',
         content: function () {
             return $('#chooseBrush_content_wrapper').html();
         }
@@ -27,6 +29,7 @@ $(document).ready(function () {
     $('#clearMenu').popover({
         html: true,
         placement: 'bottom',
+        template: '<div class="popover smallPopover"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>',
         content: function () {
             return $('#clearMenu_content_wrapper').html();
         }
@@ -53,7 +56,7 @@ $(document).ready(function () {
 
     $('#chooseBrush').on('shown.bs.popover', function () {
         hidePopover($('#clearMenu'));
-        $('#brushSizeForm').append('<input type="text" class="slider" id="brushSize" style="width: 360px;" />');
+        $('#brushSizeForm').append('<input type="text" class="slider" id="brushSize" style="width: 440px;" />');
         $('.slider').slider({
             min: 1,
             max: 50,
@@ -70,48 +73,80 @@ $(document).ready(function () {
         //Color change functions
         $('.green-pick').click(function () {
             setColor('#00ff00');
-            hidePopover($('#chooseBrush'));
+            $('.btn').removeClass('active');
+            $(this).button('toggle');
+
             changeMouse();
         });
 
         //Color change functions
         $('.yellow-pick').click(function () {
             setColor('#ff0');
-            hidePopover($('#chooseBrush'));
+            $('.btn').removeClass('active');
+            $(this).button('toggle');
+
             changeMouse();
         });
 
         //Color change functions
         $('.red-pick').click(function () {
             setColor('#ff0000');
-            hidePopover($('#chooseBrush'));
+            $('.btn').removeClass('active');
+            $(this).button('toggle');
+
             changeMouse();
         });
 
         //Color change functions
         $('.blue-pick').click(function () {
             setColor('#0000ff');
-            hidePopover($('#chooseBrush'));
+            $('.btn').removeClass('active');
+            $(this).button('toggle');
+
             changeMouse();
         });
 
         //Color change functions
         $('.black-pick').click(function () {
             setColor('#000');
-            hidePopover($('#chooseBrush'));
+            $('.btn').removeClass('active');
+            $(this).button('toggle');
+
             changeMouse();
         });
         $('.eraser').click(function () {
-            eraser();
-            hidePopover($('#chooseBrush'));
+            $('.btn').removeClass('active');
+            $(this).button('toggle');
+            if (sketchContext.globalCompositeOperation != 'destination-out') {
+                oldColor = sketchContext.strokeStyle;
+                sketchContext.globalCompositeOperation = 'destination-out';
+                sketchContext.strokeStyle = 'rgba(0,0,0,1)';
+            }
+            else {
+                sketchContext.globalCompositeOperation = 'source-over';
+                sketchContext.strokeStyle = oldColor;
+            }
             changeMouse();
         });
          //User color
         $('.user-color-pick').click(function() {
             setColor(TogetherJS.require('peers').Self.color);
-            hidePopover($('#chooseBrush'));
+            $('.btn').removeClass('active');
+            $(this).button('toggle');
+
             changeMouse();
         });
+
+        $('.toggleTrailing').click(function() {
+            $(this).button('toggle');
+
+            if (iconTrail) {
+                iconTrail = false;
+            }
+            else {
+                iconTrail = true;
+            }
+        });        
     });
 
     // Hide popover listeners
@@ -132,17 +167,6 @@ $(document).ready(function () {
 
     $('.redo').click(function() {
         redo();
-    });
-
-    $('.toggleTrailing').click(function () {
-        if (iconTrail) {
-            $('.trailingText').css('color', '#c6c6c6');
-            iconTrail = false;
-        }
-        else {
-            $('.trailingText').css('color', 'green');
-            iconTrail = true;
-        }
     });
 
     $('.deleteIcon').click(function() {

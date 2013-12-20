@@ -32,7 +32,6 @@ margin-bottom: 30px;
 }
 
 .drawotron {
-
   font-size: 22.5px;
   font-weight: 200;
   line-height: 2.1428571435;
@@ -69,44 +68,49 @@ margin-bottom: 30px;
 }
 
 /* Map Selector */
-.popover {
-            max-width: 500px !important;
-            width: 395px;
-        }
+.smallPopover {
+  max-width: 500px !important;
+  width: 395px;
+}
+
+.largePopover {
+  max-width: 570px !important;
+  width: 470px;
+}
 
 /* Remove select color */
 body {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 
 /* Show Search text */
 select, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input, .form-control {
-    color: black !important;
+  color: black !important;
 }
 
 /* Hide mobile elements on site */
 .mobile-show {
-    display: none;
+  display: none;
 }
 
 
 .right-text {
-    margin-top: 30px;
+  margin-top: 30px;
 }
 
 .post {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 .intro-text {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 #body_content {
-    min-height: 500px;
+  min-height: 500px;
 }

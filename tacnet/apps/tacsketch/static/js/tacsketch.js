@@ -130,13 +130,6 @@ function setSize(size) {
 
 }
 
-// Sets eraser mode
-function eraser() {
-    sketchContext.globalCompositeOperation = 'destination-out';
-    sketchContext.strokeStyle = 'rgba(0,0,0,1)';
-
-}
-
 // Set brush color
 function setColor(color) {
     sketchContext.globalCompositeOperation = 'source-over';
