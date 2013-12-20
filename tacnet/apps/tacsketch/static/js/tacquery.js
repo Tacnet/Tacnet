@@ -11,14 +11,18 @@ var buttonStates = {
 };
 
 $(document).ready(function () {
-    function toggleState(button) {
-        if (buttonStates[button]) { 
-            buttonStates[button] = '';
+    function toggleState(button, buttonClass) {
+        console.log(button, buttonClass, buttonStates[buttonClass]);
+        if (buttonStates[buttonClass]) { 
+            buttonStates[buttonClass] = '';
+            $(button).removeClass('active');
         }
         else {
-            buttonStates[button] = 'active';
+            buttonStates[buttonClass] = 'active';
+            $(button).addClass('active');
         }
-        $(this).button('toggle');
+
+        console.log(button, buttonClass, buttonStates[buttonClass]);
     }
     // Hide popover
     function hidePopover(element) {
@@ -75,6 +79,7 @@ $(document).ready(function () {
     });
 
     $('#chooseBrush').on('shown.bs.popover', function () {
+        console.log(buttonStates);
         for (var key in buttonStates) {
             if (buttonStates[key]) {
                 $(key).addClass('active');
@@ -99,7 +104,7 @@ $(document).ready(function () {
         $('.green-pick').click(function () {
             setColor('#00ff00');
             $('.brush').removeClass('active');
-            toggleState(this);
+            toggleState(this, '.green-pick');
             changeMouse();
         });
 
@@ -107,7 +112,7 @@ $(document).ready(function () {
         $('.yellow-pick').click(function () {
             setColor('#ff0');
             $('.brush').removeClass('active');
-            toggleState(this);
+            toggleState(this, '.yellow-pick');
             changeMouse();
         });
 
@@ -115,7 +120,7 @@ $(document).ready(function () {
         $('.red-pick').click(function () {
             setColor('#ff0000');
             $('.brush').removeClass('active');
-            toggleState(this);
+            toggleState(this, '.red-pick');
             changeMouse();
         });
 
@@ -123,7 +128,7 @@ $(document).ready(function () {
         $('.blue-pick').click(function () {
             setColor('#0000ff');
             $('.brush').removeClass('active');
-            toggleState(this);
+            toggleState(this, '.blue-pick');
             changeMouse();
         });
 
@@ -131,7 +136,7 @@ $(document).ready(function () {
         $('.black-pick').click(function () {
             setColor('#000');
             $('.brush').removeClass('active');
-            toggleState(this);
+            toggleState(this, '.black-pick');
             changeMouse();
         });
         $('.eraser').click(function () {
@@ -152,12 +157,12 @@ $(document).ready(function () {
         $('.user-color-pick').click(function() {
             setColor(TogetherJS.require('peers').Self.color);
             $('.brush').removeClass('active');
-            toggleState(this);
+            toggleState(this, '.user-color-pick');
             changeMouse();
         });
 
         $('.toggleTrailing').click(function() {
-            toggleState(this);
+            toggleState(this, '.toggleTrailing');
             if (iconTrail) {
                 iconTrail = false;
             }

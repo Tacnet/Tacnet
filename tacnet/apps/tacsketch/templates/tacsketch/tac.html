@@ -124,11 +124,7 @@
     <input type="file" id="input" style="visibility:hidden;position:absolute;top:-50;left:-50">
 
     <!-- scripts -->
-    {% if debug %}
-        <script src="/static/js/togetherjs-min.js"></script>
-    {% else %}
-        <script src="https://togetherjs.com/togetherjs-min.js"></script>
-    {% endif %}
+
 
     <script src="/static/js/bootstrap-confirmation.js"></script>
 
@@ -138,6 +134,11 @@
     <!-- TogetherJS -->
     <link rel="stylesheet" href="/static/css/dock.css">
     <script src="/static/js/TogetherJSConfig.js"></script>
+    {% if debug %}
+        <script src="/static/js/togetherjs-min.js"></script>
+    {% else %}
+        <script src="https://togetherjs.com/togetherjs-min.js"></script>
+    {% endif %}
 
     <!-- Select2 -->
     <link href="/static/js/select2/select2.css" rel="stylesheet"/>
