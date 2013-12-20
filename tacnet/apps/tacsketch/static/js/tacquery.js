@@ -1,5 +1,25 @@
 var oldColor = "";
+var buttonStates = {
+    '.green-pick': '',
+    '.yellow-pick': '',
+    '.blue-pick': '',
+    '.red-pick': '',
+    '.black-pick': '',
+    '.eraser': '',
+    '.toggleTrailing': '',
+    '.user-color-pick': ''
+};
+
 $(document).ready(function () {
+    function toggleState(button) {
+        if (buttonStates[button]) { 
+            buttonStates[button] = '';
+        }
+        else {
+            buttonStates[button] = 'active';
+        }
+        $(this).button('toggle');
+    }
     // Hide popover
     function hidePopover(element) {
         if (element.next('div.popover:visible').length) {
@@ -55,6 +75,11 @@ $(document).ready(function () {
     });
 
     $('#chooseBrush').on('shown.bs.popover', function () {
+        for (var key in buttonStates) {
+            if (buttonStates[key]) {
+                $(key).addClass('active');
+            }
+        }
         hidePopover($('#clearMenu'));
         $('#brushSizeForm').append('<input type="text" class="slider" id="brushSize" style="width: 440px;" />');
         $('.slider').slider({
@@ -73,50 +98,45 @@ $(document).ready(function () {
         //Color change functions
         $('.green-pick').click(function () {
             setColor('#00ff00');
-            $('.btn').removeClass('active');
-            $(this).button('toggle');
-
+            $('.brush').removeClass('active');
+            toggleState(this);
             changeMouse();
         });
 
         //Color change functions
         $('.yellow-pick').click(function () {
             setColor('#ff0');
-            $('.btn').removeClass('active');
-            $(this).button('toggle');
-
+            $('.brush').removeClass('active');
+            toggleState(this);
             changeMouse();
         });
 
         //Color change functions
         $('.red-pick').click(function () {
             setColor('#ff0000');
-            $('.btn').removeClass('active');
-            $(this).button('toggle');
-
+            $('.brush').removeClass('active');
+            toggleState(this);
             changeMouse();
         });
 
         //Color change functions
         $('.blue-pick').click(function () {
             setColor('#0000ff');
-            $('.btn').removeClass('active');
-            $(this).button('toggle');
-
+            $('.brush').removeClass('active');
+            toggleState(this);
             changeMouse();
         });
 
         //Color change functions
         $('.black-pick').click(function () {
             setColor('#000');
-            $('.btn').removeClass('active');
-            $(this).button('toggle');
-
+            $('.brush').removeClass('active');
+            toggleState(this);
             changeMouse();
         });
         $('.eraser').click(function () {
-            $('.btn').removeClass('active');
-            $(this).button('toggle');
+            $('.brush').removeClass('active');
+            toggleState(this);
             if (sketchContext.globalCompositeOperation != 'destination-out') {
                 oldColor = sketchContext.strokeStyle;
                 sketchContext.globalCompositeOperation = 'destination-out';
@@ -131,15 +151,13 @@ $(document).ready(function () {
          //User color
         $('.user-color-pick').click(function() {
             setColor(TogetherJS.require('peers').Self.color);
-            $('.btn').removeClass('active');
-            $(this).button('toggle');
-
+            $('.brush').removeClass('active');
+            toggleState(this);
             changeMouse();
         });
 
         $('.toggleTrailing').click(function() {
-            $(this).button('toggle');
-
+            toggleState(this);
             if (iconTrail) {
                 iconTrail = false;
             }
