@@ -18,6 +18,12 @@ var undoArray = [];
 var redoArray = [];
 var stateObject = {};
 
+var iconTrail = false;
+
+var mouse = {
+    x: 0,
+    y: 0
+};
 var lastMouse = {
     x: 0,
     y: 0
@@ -63,6 +69,10 @@ fabricCanvas.on('object:scaling', function(e) {
 });
 
 fabricCanvas.on('object:moving', function(e) {
+    if (iconTrail) {
+        lastState = Object.keys(lines).length;
+        fabricCanvas.on('mouse:move', move);
+    }
     var sendObject = new Object();
     sendObject['hash'] = e.target.hash;
     sendObject['left'] = e.target.left;
@@ -117,13 +127,6 @@ fabricCanvas.on('mouse:up', function(e) {
 // Set brush size
 function setSize(size) {
     sketchContext.lineWidth = size;
-
-}
-
-// Sets eraser mode
-function eraser() {
-    sketchContext.globalCompositeOperation = 'destination-out';
-    sketchContext.strokeStyle = 'rgba(0,0,0,1)';
 
 }
 
@@ -286,7 +289,16 @@ function draw(start, end, color, size, compositeoperation, save) {
 // Function called on mouse-move, draws.
 function move(e) {
     var hash = Math.random().toString(36);
-    var mouse = fabricCanvas.getPointer(e.e);
+    var fObj = fabricCanvas.getActiveObject();
+    if (iconTrail && fObj) {
+        mouse = {
+            x: fObj.left+(fObj.getWidth()/2),
+            y: fObj.top+(fObj.getHeight()/2)
+        }
+    }
+    else {
+        mouse = fabricCanvas.getPointer(e.e);
+    }
     lines[hash] = [lastMouse, mouse, sketchContext.strokeStyle, sketchContext.lineWidth, sketchContext.globalCompositeOperation];
     tempLines[hash] = [lastMouse, mouse, sketchContext.strokeStyle, sketchContext.lineWidth, sketchContext.globalCompositeOperation];
     draw(lastMouse, mouse, sketchContext.strokeStyle, sketchContext.lineWidth, sketchContext.globalCompositeOperation, true);

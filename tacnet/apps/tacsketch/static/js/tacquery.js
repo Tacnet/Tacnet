@@ -1,4 +1,29 @@
+var oldColor = "";
+var buttonStates = {
+    '.green-pick': '',
+    '.yellow-pick': '',
+    '.blue-pick': '',
+    '.red-pick': '',
+    '.black-pick': '',
+    '.eraser': '',
+    '.toggleTrailing': '',
+    '.user-color-pick': ''
+};
+
 $(document).ready(function () {
+    function toggleState(button, buttonClass) {
+        console.log(button, buttonClass, buttonStates[buttonClass]);
+        if (buttonStates[buttonClass]) { 
+            buttonStates[buttonClass] = '';
+            $(button).removeClass('active');
+        }
+        else {
+            buttonStates[buttonClass] = 'active';
+            $(button).addClass('active');
+        }
+
+        console.log(button, buttonClass, buttonStates[buttonClass]);
+    }
     // Hide popover
     function hidePopover(element) {
         if (element.next('div.popover:visible').length) {
@@ -14,11 +39,12 @@ $(document).ready(function () {
             redo();
         }
     });
-    
+
     // Initialize popovers
     $('#chooseBrush').popover({
         html: true,
         placement: 'bottom',
+        template: '<div class="popover largePopover"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>',
         content: function () {
             return $('#chooseBrush_content_wrapper').html();
         }
@@ -27,6 +53,7 @@ $(document).ready(function () {
     $('#clearMenu').popover({
         html: true,
         placement: 'bottom',
+        template: '<div class="popover smallPopover"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>',
         content: function () {
             return $('#clearMenu_content_wrapper').html();
         }
@@ -52,8 +79,14 @@ $(document).ready(function () {
     });
 
     $('#chooseBrush').on('shown.bs.popover', function () {
+        console.log(buttonStates);
+        for (var key in buttonStates) {
+            if (buttonStates[key]) {
+                $(key).addClass('active');
+            }
+        }
         hidePopover($('#clearMenu'));
-        $('#brushSizeForm').append('<input type="text" class="slider" id="brushSize" style="width: 360px;" />');
+        $('#brushSizeForm').append('<input type="text" class="slider" id="brushSize" style="width: 440px;" />');
         $('.slider').slider({
             min: 1,
             max: 50,
@@ -70,48 +103,73 @@ $(document).ready(function () {
         //Color change functions
         $('.green-pick').click(function () {
             setColor('#00ff00');
-            hidePopover($('#chooseBrush'));
+            $('.brush').removeClass('active');
+            toggleState(this, '.green-pick');
             changeMouse();
         });
 
         //Color change functions
         $('.yellow-pick').click(function () {
             setColor('#ff0');
-            hidePopover($('#chooseBrush'));
+            $('.brush').removeClass('active');
+            toggleState(this, '.yellow-pick');
             changeMouse();
         });
 
         //Color change functions
         $('.red-pick').click(function () {
             setColor('#ff0000');
-            hidePopover($('#chooseBrush'));
+            $('.brush').removeClass('active');
+            toggleState(this, '.red-pick');
             changeMouse();
         });
 
         //Color change functions
         $('.blue-pick').click(function () {
             setColor('#0000ff');
-            hidePopover($('#chooseBrush'));
+            $('.brush').removeClass('active');
+            toggleState(this, '.blue-pick');
             changeMouse();
         });
 
         //Color change functions
         $('.black-pick').click(function () {
             setColor('#000');
-            hidePopover($('#chooseBrush'));
+            $('.brush').removeClass('active');
+            toggleState(this, '.black-pick');
             changeMouse();
         });
         $('.eraser').click(function () {
-            eraser();
-            hidePopover($('#chooseBrush'));
+            $('.brush').removeClass('active');
+            toggleState(this);
+            if (sketchContext.globalCompositeOperation != 'destination-out') {
+                oldColor = sketchContext.strokeStyle;
+                sketchContext.globalCompositeOperation = 'destination-out';
+                sketchContext.strokeStyle = 'rgba(0,0,0,1)';
+            }
+            else {
+                sketchContext.globalCompositeOperation = 'source-over';
+                sketchContext.strokeStyle = oldColor;
+            }
             changeMouse();
         });
          //User color
         $('.user-color-pick').click(function() {
             setColor(TogetherJS.require('peers').Self.color);
-            hidePopover($('#chooseBrush'));
+            $('.brush').removeClass('active');
+            toggleState(this, '.user-color-pick');
             changeMouse();
         });
+
+        $('.toggleTrailing').click(function() {
+            toggleState(this, '.toggleTrailing');
+            if (iconTrail) {
+                iconTrail = false;
+            }
+            else {
+                iconTrail = true;
+            }
+        });        
     });
 
     // Hide popover listeners
