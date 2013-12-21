@@ -54,7 +54,7 @@ def icons(request):
 
     response_data = {}
 
-    if settings.DEBUG == False:
+    if settings.DEBUG == True:
 
         for folder in os.listdir(settings.ICONS_ROOT):
             if os.path.isdir(settings.ICONS_ROOT + "/" + folder):
@@ -74,8 +74,43 @@ def icons(request):
                             else:
                                 scheme = 'http://'
                             start_uri = scheme + request.get_host()
+                            containsNumbers = False
+                            vocals = "aeiouy"
+                            nameList = file[0:len(file)-6].split("_")
+                            newNameList = []
 
-                            image_data = {'name': file.replace("_", " ").capitalize()[0:len(file)-6], 'thumbnail': start_uri + "/icons/" + folder + "/" + thumbnail, 'image': start_uri + "/icons/" + folder + "/" + filename}
+                            for name in nameList:
+                                for i in name:
+                                    if i.isdigit():
+                                        containsNumbers = True
+                                        break
+                                if containsNumbers:
+                                    name = name.upper()
+                                elif "-" in name:
+                                    names = name.split("-")
+                                    for i in range(len(names)):
+                                        names[i] = names[i].title()
+                                    name = "-".join(names)
+                                else:
+                                    hasVocals = False
+                                    for i in name:
+                                        if i in vocals:
+                                            hasVocals = True
+                                            break
+                                    if hasVocals:
+                                        name = name.title()
+                                    else:
+                                        name = name.upper()
+                                containsNumbers = False
+                                newNameList.append(name)
+                                
+                            name = " ".join(newNameList)
+
+                            image_data = {
+                                'name': name,
+                                'thumbnail': start_uri + "/icons/" + folder + "/" + thumbnail, 
+                                'image': start_uri + "/icons/" + folder + "/" + filename
+                            }
                             image_list.append(image_data)
 
 

@@ -13,7 +13,16 @@ mode = raw_input("Enter mode: ")
 while mode not in modes:
     mode = raw_input("Enter mode: ")
 
+deletePrompt = raw_input("Do you want to delete everything in the output-folder? [y/n]")
+while deletePrompt not in ("y","n"):
+    deletePrompt = raw_input("Do you want to delete everything in the output-folder? [y/n]")
+
 try:
+    if deletePrompt.lower() == "y":
+        print("Deleting output-folder..")
+        shutil.rmtree("output/")
+        print("Remaking output-folder..")
+        os.makedirs("output/")
 
     for file in os.listdir("input/"):
         if os.path.isfile("input/" + file) and (file[len(file)-4:len(file)] == ".png" or file[len(file)-4:len(file)] == ".jpg"):
@@ -42,6 +51,7 @@ try:
             shutil.copy2("input/" + file, "output/" + b_filename)
 
             print("Converted " + file + "..")
-
+    print("Converting finished, now move the content of the output-folder to icons/gamename.")
+    
 except:
     print("Error! Have you created the folders and activated virtualenv?")

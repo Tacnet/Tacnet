@@ -79,16 +79,13 @@ $(document).ready(function () {
         var select = $('#gamesearch');
         var iconsearch = $('#iconsearch');
 
-        for (var game in icons){
-
+        for (var game in icons) {
             select.append('<option value="' + game + '">' + game + '</option>');
-
             for (var icon in icons[game]) {
                 var image = icons[game][icon];
-                console.log(image.name);
                 icon_holder.append('<div alt="' + game + '" name="' + image.name + '" class="col-xs-3 icon" onclick="addIcon(\'' + image.image + '\', false)"><a href="#" title="' + image.name + '" rel="tooltip" data-placement="bottom" data-toggle="tooltip"><img src="' + image.thumbnail + '" class="img-thumbnail"/></a></div>');
-            };
-        };
+            }
+        }
         $("[rel=tooltip]").tooltip();
 
 
