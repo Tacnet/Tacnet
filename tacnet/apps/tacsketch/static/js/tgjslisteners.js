@@ -24,7 +24,7 @@ TogetherJS.hub.on('setBackground', function (msg) {
     if (!msg.sameUrl) {
         return;
     }
-    setBackground(msg.background, false);
+    setBackground(msg.background, false, false);
 });
 
 TogetherJS.hub.on('load', function (msg) {

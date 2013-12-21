@@ -29,7 +29,7 @@ var lastMouse = {
     y: 0
 };
 
-setBackground('/static/img/boot.jpg');
+setBackground('/static/img/boot.jpg', false, false);
 
 // Brush Settings
 sketchContext.lineWidth = 3;
@@ -427,6 +427,9 @@ function setBackground(background, clicked, init) {
         if (init) {
             initDraw();
         }
+        else {
+            lines = {};
+        }
     }
 }
 
@@ -441,7 +444,7 @@ function resetBackground(clicked) {
     }
     bgContext.clearRect(0,0 , bgCanvas.width, bgCanvas.height);
     bgContext.fillRect (0, 0, bgCanvas.width, bgCanvas.height);
-    setBackground('/static/img/boot.jpg');
+    setBackground('/static/img/boot.jpg', false, false);
 }
 
 

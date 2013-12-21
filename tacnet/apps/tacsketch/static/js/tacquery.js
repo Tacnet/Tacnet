@@ -12,7 +12,6 @@ var buttonStates = {
 
 $(document).ready(function () {
     function toggleState(button, buttonClass) {
-        console.log(button, buttonClass, buttonStates[buttonClass]);
         if (buttonStates[buttonClass]) { 
             buttonStates[buttonClass] = '';
             $(button).removeClass('active');
@@ -21,8 +20,6 @@ $(document).ready(function () {
             buttonStates[buttonClass] = 'active';
             $(button).addClass('active');
         }
-
-        console.log(button, buttonClass, buttonStates[buttonClass]);
     }
     // Hide popover
     function hidePopover(element) {
@@ -79,7 +76,6 @@ $(document).ready(function () {
     });
 
     $('#chooseBrush').on('shown.bs.popover', function () {
-        console.log(buttonStates);
         for (var key in buttonStates) {
             if (buttonStates[key]) {
                 $(key).addClass('active');

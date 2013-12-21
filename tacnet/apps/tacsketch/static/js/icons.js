@@ -58,7 +58,10 @@ $(document).ready(function () {
     $('#mapslist').select2({
         placeholder: 'Select Map'
     }).on('change', function (e) {
-        setBackground(e.val, true);
+        console.log(e.val);
+        if (e.val) {
+            setBackground(e.val, true, false);
+        }
     });
 
     // More maps
