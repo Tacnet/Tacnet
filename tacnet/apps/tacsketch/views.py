@@ -113,7 +113,7 @@ def icons(request):
                             image_list.append(image_data)
 
 
-                game_name = folder.replace("_", " ").capitalize()
+                game_name = folder.replace("_", " ").title()
                 response_data[game_name] = image_list
 
 

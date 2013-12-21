@@ -11,6 +11,10 @@ var buttonStates = {
 };
 
 $(document).ready(function () {
+    $.bootstrapGrowl('You can now select maps form the left-hand menu, together with the movable icons that can be added from the flag-menu.', {
+        type: 'success',
+        width: 'auto'
+    });
     function toggleState(button, buttonClass) {
         if (buttonStates[buttonClass]) { 
             buttonStates[buttonClass] = '';
