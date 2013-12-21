@@ -54,8 +54,7 @@ def icons(request):
 
     response_data = {}
 
-    if settings.DEBUG == True:
-
+    if not settings.DEBUG:
         for folder in os.listdir(settings.ICONS_ROOT):
             if os.path.isdir(settings.ICONS_ROOT + "/" + folder):
 
@@ -103,7 +102,7 @@ def icons(request):
                                         name = name.upper()
                                 containsNumbers = False
                                 newNameList.append(name)
-                                
+
                             name = " ".join(newNameList)
 
                             image_data = {
