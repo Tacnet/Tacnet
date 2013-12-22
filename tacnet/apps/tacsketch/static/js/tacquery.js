@@ -11,7 +11,7 @@ var buttonStates = {
 };
 
 $(document).ready(function () {
-    $.bootstrapGrowl('You can now select maps form the left-hand menu, together with the movable icons that can be added from the flag-menu.', {
+    $.bootstrapGrowl('Movable icons can now be added from the flag-menu on the left side of the page.', {
         type: 'success',
         width: 'auto'
     });
