@@ -17,6 +17,7 @@ deletePrompt = raw_input("Do you want to delete everything in the output-folder?
 while deletePrompt not in ("y","n"):
     deletePrompt = raw_input("Do you want to delete everything in the output-folder? [y/n]")
 
+
 try:
     if deletePrompt.lower() == "y":
         print("Deleting output-folder..")
@@ -31,7 +32,7 @@ try:
             basewidth = 60
 
             img = Image.open("input/" + file)
-
+            png_info = img.info
             wpercent = (basewidth/float(img.size[0]))
             hsize = int((float(img.size[1])*float(wpercent)))
             img = img.resize((basewidth,hsize), PIL.Image.ANTIALIAS)
@@ -46,7 +47,7 @@ try:
             t_filename = iconname + "_t" + filename_end
             b_filename = iconname + "_b" + filename_end
 
-            img.save("output/" + t_filename)
+            img.save("output/" + t_filename, **png_info)
 
             shutil.copy2("input/" + file, "output/" + b_filename)
 
