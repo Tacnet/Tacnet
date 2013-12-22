@@ -114,13 +114,17 @@ fabricCanvas.on('mouse:down', function(e) {
 
 fabricCanvas.on('mouse:up', function(e) {
     fabricCanvas.off('mouse:move');
-    if (!fabricCanvas.getActiveObject() || iconTrail) {
+    if (!fabricCanvas.getActiveObject()) {
         if (lastState != Object.keys(lines).length) {
             undoArray.push(tempLines);
         }
         tempLines = {};
     }
     else {
+        if (iconTrail && (lastState != Object.keys(lines).length)) {
+            undoArray.push(tempLines);
+            tempLines = {};    
+        }
         undoArray.push(stateObject);
     }
 });
