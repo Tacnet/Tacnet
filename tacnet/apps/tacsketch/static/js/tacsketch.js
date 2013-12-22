@@ -97,6 +97,7 @@ fabricCanvas.on('mouse:down', function(e) {
         fabricCanvas.on('mouse:move', move);
     }
     else {
+        lastState = Object.keys(lines).length;
         stateObject = {};
         stateObject.hash = fabricCanvas.getActiveObject().hash;
         stateObject.left = fabricCanvas.getActiveObject().left;
@@ -113,7 +114,7 @@ fabricCanvas.on('mouse:down', function(e) {
 
 fabricCanvas.on('mouse:up', function(e) {
     fabricCanvas.off('mouse:move');
-    if (!fabricCanvas.getActiveObject()) {
+    if (!fabricCanvas.getActiveObject() || iconTrail) {
         if (lastState != Object.keys(lines).length) {
             undoArray.push(tempLines);
         }
