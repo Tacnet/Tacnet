@@ -26,18 +26,27 @@ $(document).ready(function () {
 
     var select_map = $('#select-map');
     var select_icons = $('#icon-picker');
+    var select_save = $('#save-menu');
 
     var toggle_map = $('.select-map');
     var toggle_icons = $('.select-icon');
+    var toggle_save = $('.select-save');
 
     /* OpenTabs */
     toggle_map.click(function(){
         select_map.toggle();
         select_icons.hide();
+        select_save.hide();
     });
     toggle_icons.click(function(){
         select_icons.toggle();
+        select_save.hide();
         select_map.hide();
+    });
+    toggle_save.click(function(){
+        select_save.toggle();
+        select_map.hide();
+        select_icons.hide();
     });
 
     /* Close when click on canvas */
@@ -45,6 +54,7 @@ $(document).ready(function () {
     ex.click(function(){
         select_icons.hide();
         select_map.hide();
+        select_save.hide();
     });
 
     /* Load Maps tab */
@@ -58,7 +68,6 @@ $(document).ready(function () {
     $('#mapslist').select2({
         placeholder: 'Select Map'
     }).on('change', function (e) {
-        console.log(e.val);
         if (e.val) {
             setBackground(e.val, true, false);
         }

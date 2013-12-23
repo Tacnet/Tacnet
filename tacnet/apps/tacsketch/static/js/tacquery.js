@@ -198,14 +198,6 @@ $(document).ready(function () {
         }
     });
 
-    $('.saveDrawings').click(function() {
-        saveDrawings();
-        $.bootstrapGrowl('Saved drawings - please select the correct map before attempting to load.', {
-            type: 'success',
-            width: 'auto'
-        });
-    });
-
     function changeMouse() {
         var cursorSize = sketchContext.lineWidth;
         if (cursorSize < 10){
@@ -238,8 +230,34 @@ $(document).ready(function () {
     changeMouse();
 
     $('.saveDrawings').click(function() {
-        var image = sketchCanvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
-        window.location.href=image;
+        var dlHref = sketchCanvas.toDataURL('image/png').replace("image/png", "image/octet-stream");
+        $('.saveDrawings').attr('href', dlHref).attr('download', currentBackground.slice(12,currentBackground.length-4)+'.png');
+        $.bootstrapGrowl('Saved drawings - please select the correct map before attempting to load.', {
+            type: 'success',
+            width: 'auto'
+        });
+    });
+
+    $('.saveScreenshot').click(function() {
+        var downloadCanvas = document.createElement('canvas');
+        var downloadContext = downloadCanvas.getContext('2d');
+        var bgImg = new Image();
+        var drawings = new Image();
+        var fabric = new Image();
+        bgImg.src = bgCanvas.toDataURL('image/png');
+        fabric.src = fabricCanvas.toDataURL('image/png');
+        drawings.src = sketchCanvas.toDataURL('image/png');
+        downloadCanvas.width = bgImg.width;
+        downloadCanvas.height = bgImg.height;
+        downloadContext.drawImage(bgImg, 0,0);
+        downloadContext.drawImage(drawings, 0,0);
+        downloadContext.drawImage(fabric, 0,0);
+        var dlHref = downloadCanvas.toDataURL('image/png').replace("image/png", "image/octet-stream");
+        $('.saveScreenshot').attr('href', dlHref).attr('download', currentBackground.slice(12,currentBackground.length-4)+'_screenshot.png');
+        $.bootstrapGrowl($('Saved screenshot.', {
+            type: 'success',
+            width: 'auto'
+        });
     });
 
     $('.loadDrawings').click(function() {

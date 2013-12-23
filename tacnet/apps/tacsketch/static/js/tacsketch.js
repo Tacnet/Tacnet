@@ -463,6 +463,8 @@ function clearCanvas(clicked) {
     sketchContext.clearRect(0,0 , sketchCanvas.width, sketchCanvas.height);
 }
 
+addIcon('/static/img/testicon.jpg', false, false);
+
 function resetFabric(clicked) {
     if (clicked && TogetherJS.running) {
         TogetherJS.send({
@@ -471,10 +473,6 @@ function resetFabric(clicked) {
     }
     fabricCanvas.clear();
     icons = {};
-}
-function saveDrawings() {
-    var image = sketchCanvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
-    window.location.href=image;
 }
 
 var input = document.getElementById('input');
