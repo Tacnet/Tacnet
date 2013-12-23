@@ -463,8 +463,6 @@ function clearCanvas(clicked) {
     sketchContext.clearRect(0,0 , sketchCanvas.width, sketchCanvas.height);
 }
 
-addIcon('/static/img/testicon.jpg', false, false);
-
 function resetFabric(clicked) {
     if (clicked && TogetherJS.running) {
         TogetherJS.send({
