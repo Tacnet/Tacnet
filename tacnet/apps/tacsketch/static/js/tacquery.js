@@ -254,7 +254,7 @@ $(document).ready(function () {
         downloadContext.drawImage(fabric, 0,0);
         var dlHref = downloadCanvas.toDataURL('image/png').replace("image/png", "image/octet-stream");
         $('.saveScreenshot').attr('href', dlHref).attr('download', currentBackground.slice(12,currentBackground.length-4)+'_screenshot.png');
-        $.bootstrapGrowl($('Saved screenshot.', {
+        $.bootstrapGrowl('Saved screenshot.', {
             type: 'success',
             width: 'auto'
         });
