@@ -229,6 +229,37 @@ $(document).ready(function () {
     // Init mouse
     changeMouse();
 
+    // Save/Load  Cloud
+    $('.cloudSave').click(function () {
+        var tacName = $('.tacticName').val();
+        console.log("login: ", loggedIn);
+        if (!tacName) {
+            // Maybe just save the tactic with the mapname as name? Or at least use something else than growl, the warning 
+            // should come in the box itself, or close.
+            $.bootstrapGrowl('Please enter a tactic name.', {
+                type: 'warning', 
+                width: 'auto'
+            });
+        }
+        if (!loggedIn) {
+            show_bar();
+            $.bootstrapGrowl('You need to be logged in to cloud save.', {
+                type: 'warning',
+                width: 'auto'
+            });
+        }
+        else {
+            $.post( "/tacsketch/save_tac", {name: tacName}, function( data ) {
+              alert(data);
+            });
+        }
+    
+    });
+
+
+
+
+
     $('.saveDrawings').click(function() {
         var dlHref = sketchCanvas.toDataURL('image/png').replace("image/png", "image/octet-stream");
         $('.saveDrawings').attr('href', dlHref).attr('download', currentBackground.slice(12,currentBackground.length-4)+'.png');
@@ -268,4 +299,6 @@ $(document).ready(function () {
         spinner.stop();
         $('#loading_layer').hide();
     });
+
+
 }); 

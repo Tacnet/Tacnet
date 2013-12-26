@@ -27,26 +27,37 @@ $(document).ready(function () {
     var select_map = $('#select-map');
     var select_icons = $('#icon-picker');
     var select_save = $('#save-menu');
+    var select_cloud = $('#cloud-menu');
 
     var toggle_map = $('.select-map');
     var toggle_icons = $('.select-icon');
     var toggle_save = $('.select-save');
+    var toggle_cloud = $('.select-cloud');
 
     /* OpenTabs */
     toggle_map.click(function(){
         select_map.toggle();
         select_icons.hide();
         select_save.hide();
+        select_cloud.hide();
     });
     toggle_icons.click(function(){
         select_icons.toggle();
         select_save.hide();
         select_map.hide();
+        select_cloud.hide();
     });
     toggle_save.click(function(){
         select_save.toggle();
         select_map.hide();
         select_icons.hide();
+        select_cloud.hide();
+    });
+    toggle_cloud.click(function(){
+        select_cloud.toggle();
+        select_map.hide();
+        select_icons.hide();
+        select_save.hide();
     });
 
     /* Close when click on canvas */
@@ -55,6 +66,7 @@ $(document).ready(function () {
         select_icons.hide();
         select_map.hide();
         select_save.hide();
+        select_cloud.hide();
     });
 
     /* Load Maps tab */
@@ -69,7 +81,11 @@ $(document).ready(function () {
         placeholder: 'Select Map'
     }).on('change', function (e) {
         if (e.val) {
-            setBackground(e.val, true, false);
+
+            var img = e.val.split('|')[0];
+            var id = e.val.split('|')[1];
+            currentBackgroundID = id;
+            setBackground(img, true, false);
         }
     });
 

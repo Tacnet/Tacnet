@@ -4,4 +4,4 @@ var TogetherJSConfig_suppressJoinConfirmation = true;
 var TogetherJSConfig_siteName = "Tacnet";
 var TogetherJSConfig_toolName = "Tacnet";
 var TogetherJSConfig_disableWebRTC = true;
-var TogetherJSConfig_dontShowClicks = ":not(canvas"
+//var TogetherJSConfig_dontShowClicks = ":not(canvas"

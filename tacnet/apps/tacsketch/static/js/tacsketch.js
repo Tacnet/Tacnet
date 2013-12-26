@@ -8,6 +8,7 @@ var bgCanvas = document.getElementById ('background');
 var bgContext = bgCanvas.getContext('2d');
 
 var currentBackground;
+var currentBackgroundID = '-';
 var initJSON;
 
 var icons = {}; 
@@ -450,6 +451,7 @@ function resetBackground(clicked) {
     bgContext.clearRect(0,0 , bgCanvas.width, bgCanvas.height);
     bgContext.fillRect (0, 0, bgCanvas.width, bgCanvas.height);
     setBackground('/static/img/boot.jpg', false, false);
+    currentBackgroundID = '-';
 }
 
 

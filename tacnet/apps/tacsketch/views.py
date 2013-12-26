@@ -118,3 +118,29 @@ def icons(request):
 
 
     return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+def save_tac(request):
+    if request.method == "POST":
+        '''
+        user = request.user
+        name = request.POST['name']
+        gameMap = request.POST['map']
+        fabricData = request.POST['fabric']
+        linesData = request.POST['lines']'''
+
+        return HttpResponse("asdas")
+
+    else:
+        raise Http404
+
+
+def load_tac(request):
+    if request.method == "POST":
+        pass
+    else:
+        raise Http404
+
+
+
+

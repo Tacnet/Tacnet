@@ -43,6 +43,6 @@ class MapRequest (models.Model):
 class TacSave(models.Model):
     name = models.CharField(max_length=200, verbose_name="Name")
     user = models.ForeignKey(User, verbose_name="User")
-    map = models.FoeignKey(Map, verbose_name="Map")
-    fabric_data = models.TextField(verbose_name = "Fabric Data")
-    lines_data = models.TextField(verbose_name = "Lines Data")
+    gameMap = models.ForeignKey(Map, verbose_name="Map")
+    fabricData = models.TextField(verbose_name = "Fabric Data")
+    linesData = models.TextField(verbose_name = "Lines Data")
