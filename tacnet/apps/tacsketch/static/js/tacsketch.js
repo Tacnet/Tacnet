@@ -13,7 +13,7 @@ var initJSON;
 var icons = {}; 
 var lines = []; 
 var tempLines = {};
-var startText = ""; 
+var startText = "TEXT"; 
 
 var undoArray = [];
 var redoArray = [];
@@ -99,9 +99,11 @@ fabricCanvas.on('text:changed', function (e) {
 
 fabricCanvas.on('text:editing:entered', function (e) {
     startText = e.target.text;
+    console.log("set starttext to", startText); 
 });
 
 fabricCanvas.on('text:editing:exited', function (e) {
+    console.log("text difference", startText, e.target.text);
     if (e.target.text != startText) {
         console.log("adding", startText);
         undoArray.push({
@@ -133,6 +135,7 @@ fabricCanvas.on('mouse:down', function(e) {
         stateObject.oCoords = fabricCanvas.getActiveObject().oCoords;
         if (typeof fabricCanvas.getActiveObject().text !== 'undefined') { 
             stateObject.text = fabricCanvas.getActiveObject().text;
+            stateObject.fill = fabricCanvas.getActiveObject().fill;
         }
         else {
             stateObject.src = fabricCanvas.getActiveObject()._element.src;
@@ -212,13 +215,11 @@ function undo() {
             redoObj.angle = icons[undoObj].angle;
             redoObj.oCoords = icons[undoObj].oCoords;
             redoObj.fill = icons[undoObj].fill;
-            if (icons[undoObj]._element) {
-                console.log("checking src?");
-                redoObj.src = icons[undoObj]._element.src;
+            if (icons[undoObj].text !== 'undefined') {
+                redoObj.text = icons[undoObj].text;
             }
             else {
-                console.log("text instead");
-                redoObj.text = icons[undoObj].text;
+                redoObj.src = icons[undoObj]._element.src;
             }
             fabricCanvas.remove(icons[undoObj]);
             delete icons[undoObj];
@@ -232,6 +233,24 @@ function undo() {
         }
         else if (undoObj.hash) {
             var setIcon = function () {
+                var redoObj = {};
+                redoObj.hash = undoObj.hash;
+                redoObj.left = icons[undoObj.hash].left;
+                redoObj.top = icons[undoObj.hash].top;
+                redoObj.width = icons[undoObj.hash].width;
+                redoObj.height = icons[undoObj.hash].height;
+                redoObj.scaleX = icons[undoObj.hash].scaleX;
+                redoObj.scaleY = icons[undoObj.hash].scaleY;
+                redoObj.angle = icons[undoObj.hash].angle;
+                redoObj.oCoords = icons[undoObj.hash].oCoords;
+                redoObj.fill = icons[undoObj.hash].fill;
+                if (icons[undoObj.hash].text !== 'undefined') {
+                    redoObj.text = icons[undoObj.hash].text;
+                    redoObj.fill = icons[undoObj.hash].fill;
+                }
+                else {
+                    redoObj.src = icons[undoObj.hash]._element.src;
+                }
                 icons[undoObj.hash].set({
                     left: undoObj.left,
                     top: undoObj.top,
@@ -256,16 +275,18 @@ function undo() {
                     });
                 }
                 fabricCanvas.renderAll();
-                redoArray.push(undoObj);
+                redoArray.push(redoObj);
                 if (TogetherJS.running) {
                     TogetherJS.send({
                         type: 'undoIcon',
                         state: undoObj
                     });
                 }
+                console.log(icons[undoObj.hash]);
             };
             console.log(icons[undoObj.hash], icons, undoObj.hash);
             if (!icons[undoObj.hash]) {
+                console.log("got to missing");
                 if (undoObj.src) {
                     addIcon(undoObj.src, undoObj.hash, false).done(setIcon);
                 }
@@ -274,6 +295,7 @@ function undo() {
                 }
             }
             else setIcon();
+
         }
         else {
             for (var key in undoObj) {
@@ -316,6 +338,26 @@ function redo() {
         }
         else if (redoObj.hash) {
             var setIcon = function() {
+                // Need to save the current icon state, so that it can be pushed to the undo-array. This could really be done in an easier way (TODO).
+                var undoObj = {};
+                undoObj.hash = redoObj.hash;
+                undoObj.left = icons[redoObj.hash].left;
+                undoObj.top = icons[redoObj.hash].top;
+                undoObj.width = icons[redoObj.hash].width;
+                undoObj.height = icons[redoObj.hash].height;
+                undoObj.scaleX = icons[redoObj.hash].scaleX;
+                undoObj.scaleY = icons[redoObj.hash].scaleY;
+                undoObj.angle = icons[redoObj.hash].angle;
+                undoObj.oCoords = icons[redoObj.hash].oCoords;
+                undoObj.fill = icons[redoObj.hash].fill;
+                if (icons[redoObj.hash].text !== 'undefined') {
+                    undoObj.text = icons[redoObj.hash].text;
+                    undoObj.fill = icons[redoObj.hash].fill;
+                }
+                else {
+                    undoObj.src = icons[redoObj.hash]._element.src;
+                }
+
                 icons[redoObj.hash].set({
                     left: redoObj.left,
                     top: redoObj.top,
@@ -340,6 +382,7 @@ function redo() {
                         src: redoObj.src
                     });
                 }
+                undoArray.push(undoObj);
                 fabricCanvas.renderAll();
             };
 
@@ -355,8 +398,8 @@ function redo() {
                 }
                 undoArray.push(redoObj.hash);
             }
+
             else setIcon();
-            undoArray.push(redoObj);
             if (TogetherJS.running) {
                 TogetherJS.send({
                     type: 'redoIcon',
@@ -540,14 +583,14 @@ function deleteIcon(hash, send) {
     stateObject.scaleY = icons[hash].scaleY;
     stateObject.angle = icons[hash].angle;
     stateObject.oCoords = icons[hash].oCoords;
-    if (icons[hash]._element) {
-        stateObject.src = icons[hash]._element.src;
+    if (icons[hash].text !== 'undefined') {
+        stateObject.text = icons[hash].text;
+        stateObject.fill = icons[hash].fill;
     }
     else {
-        stateObject.text = icons[hash].text;
+        stateObject.src = icons[hash]._element.src;
     }
     undoArray.push(stateObject);
-    stateObject = {};
     fabricCanvas.remove(icons[hash]);
     delete icons[hash];
     fabricCanvas.renderAll();
