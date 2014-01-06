@@ -192,6 +192,10 @@ $(document).ready(function () {
         redo();
     });
 
+    $('.addText').click(function() {
+        addText('TEXT', sketchContext.strokeStyle, false, true);
+    });
+
     $('.deleteIcon').click(function() {
         if (fabricCanvas.getActiveObject()) {
             deleteIcon(fabricCanvas.getActiveObject().hash, true);

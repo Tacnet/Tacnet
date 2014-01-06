@@ -54,7 +54,6 @@
     <li class="redo"><a href="#"><i class="fa fa-repeat"></i> Redo</a></li>
     <li class="deleteIcon"><a href="#"><span class="glyphicon glyphicon-trash"></span> Delete</a></li>
 
-
 {% endblock %}
 
 {% block container %}
@@ -126,7 +125,7 @@
     <!-- scripts -->
     
     <!-- fabric.js -->
-    <script src="/static/js/all.min.js"></script>
+    <script src="/static/js/fabric.min.js"></script>
 
     <!-- TogetherJS -->
     <link rel="stylesheet" href="/static/css/dock.css">
@@ -199,7 +198,7 @@
 
             <div class="row">
 
-                <div class="col-xs-12"><h5><i class="fa fa-flag"></i> Icons</h5><hr/></div>
+                <div class="col-xs-12"><h5><i class="fa fa-flag"></i> Icons/Text</h5><hr/></div>
 
             </div>
 
@@ -218,13 +217,16 @@
             </div>
 
             <div class="scrollable">
-
-            <div class="row icon-holder">
-
-
+                <div class="row icon-holder"></div>
             </div>
 
+            <div class="row">
+                <div class="col-xs-12">
+                    <a href="#" type="button" class="btn btn-primary addText" style="width: 230px; margin-top: 6px; margin-right: 10px;">Add Text</a>
+                </div>
             </div>
+
+
 
         </div>
 
