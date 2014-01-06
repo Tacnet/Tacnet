@@ -13,6 +13,7 @@ var initJSON;
 var icons = {}; 
 var lines = []; 
 var tempLines = {};
+var startText = ""; 
 
 var undoArray = [];
 var redoArray = [];
@@ -86,7 +87,29 @@ fabricCanvas.on('object:moving', function(e) {
     }
 });
 
+fabricCanvas.on('text:changed', function (e) {
+    if (TogetherJS.running) {
+        TogetherJS.send({
+            type: 'editText',
+            hash: e.target.hash,
+            text: e.target.text
+        });
+    }
+});
 
+fabricCanvas.on('text:editing:entered', function (e) {
+    startText = e.target.text;
+});
+
+fabricCanvas.on('text:editing:exited', function (e) {
+    if (e.target.text != startText) {
+        console.log("adding", startText);
+        undoArray.push({
+            undoText: startText,
+            hash: e.target.hash
+        });
+    }
+})
 // Event listeners for mouse
 
 var lastState = 0;
@@ -108,7 +131,12 @@ fabricCanvas.on('mouse:down', function(e) {
         stateObject.scaleY = fabricCanvas.getActiveObject().scaleY;
         stateObject.angle = fabricCanvas.getActiveObject().angle;
         stateObject.oCoords = fabricCanvas.getActiveObject().oCoords;
-        stateObject.src = fabricCanvas.getActiveObject()._element.src;
+        if (typeof fabricCanvas.getActiveObject().text !== 'undefined') { 
+            stateObject.text = fabricCanvas.getActiveObject().text;
+        }
+        else {
+            stateObject.src = fabricCanvas.getActiveObject()._element.src;
+        }
     }
 });
 
@@ -125,7 +153,15 @@ fabricCanvas.on('mouse:up', function(e) {
             undoArray.push(tempLines);
             tempLines = {};    
         }
-        undoArray.push(stateObject);
+        var currentObj = fabricCanvas.getActiveObject();
+        var identical = true;
+        for (var key in stateObject) {
+            if (currentObj[key] != stateObject[key] && key != 'oCoords' && key != 'src') {
+                identical = false;
+                break;
+            }
+        }
+        if (!identical) undoArray.push(stateObject);
     }
 });
 
@@ -142,9 +178,29 @@ function setColor(color) {
 }
 
 function undo() {
+    console.log(undoArray);
     if (undoArray[0] != null) {
         var undoObj = undoArray[undoArray.length-1];
-        if (typeof undoObj === 'string') {
+        console.log(undoObj);
+        if (undoObj.undoText) {
+            var redoObj = {
+                undoText: icons[undoObj.hash].text,
+                hash: undoObj.hash
+            };
+            icons[undoObj.hash].set({
+                text: undoObj.undoText
+            });
+            redoArray.push(redoObj);
+            if (TogetherJS.running) {
+                TogetherJS.send({
+                    type: "editText",
+                    text: undoObj.undoText,
+                    hash: undoObj.hash
+                });
+            }
+            fabricCanvas.renderAll();
+        }
+        else if (typeof undoObj === 'string') {
             var redoObj = {};
             redoObj.hash = undoObj;
             redoObj.left = icons[undoObj].left;
@@ -155,7 +211,15 @@ function undo() {
             redoObj.scaleY = icons[undoObj].scaleY;
             redoObj.angle = icons[undoObj].angle;
             redoObj.oCoords = icons[undoObj].oCoords;
-            redoObj.src = icons[undoObj]._element.src;
+            redoObj.fill = icons[undoObj].fill;
+            if (icons[undoObj]._element) {
+                console.log("checking src?");
+                redoObj.src = icons[undoObj]._element.src;
+            }
+            else {
+                console.log("text instead");
+                redoObj.text = icons[undoObj].text;
+            }
             fabricCanvas.remove(icons[undoObj]);
             delete icons[undoObj];
             redoArray.push(redoObj);
@@ -178,6 +242,19 @@ function undo() {
                     angle: undoObj.angle,
                     oCoords: undoObj.oCoords
                 });
+                if (undoObj.text !== 'undefined') {
+                    console.log("setting text here");
+                    icons[undoObj.hash].set({
+                        text: undoObj.text,
+                        fill: undoObj.fill
+                    });
+                }
+                else {
+                    console.log("setting src");
+                    icons[undoObj.hash].set({
+                        src: undoObj.src
+                    });
+                }
                 fabricCanvas.renderAll();
                 redoArray.push(undoObj);
                 if (TogetherJS.running) {
@@ -187,8 +264,14 @@ function undo() {
                     });
                 }
             };
+            console.log(icons[undoObj.hash], icons, undoObj.hash);
             if (!icons[undoObj.hash]) {
-                addIcon(undoObj.src, undoObj.hash, false).done(setIcon);
+                if (undoObj.src) {
+                    addIcon(undoObj.src, undoObj.hash, false).done(setIcon);
+                }
+                else {
+                    addText(undoObj.text, undoObj.fill, undoObj.hash, false).done(setIcon);
+                }
             }
             else setIcon();
         }
@@ -216,7 +299,22 @@ function undo() {
 function redo() {
     if (redoArray[0] != null) {
         var redoObj = redoArray[redoArray.length-1];
-        if (redoObj.hash) {
+        if (redoObj.undoText) {
+            console.log("setting text to", redoObj.undoText);
+            icons[redoObj.hash].set({
+                text: redoObj.undoText
+            });
+            undoArray.push(redoObj);
+            if (TogetherJS.running) {
+                TogetherJS.send({
+                    type: "editText",
+                    text: redoObj.undoText,
+                    hash: redoObj.hash
+                });
+            }
+            fabricCanvas.renderAll();
+        }
+        else if (redoObj.hash) {
             var setIcon = function() {
                 icons[redoObj.hash].set({
                     left: redoObj.left,
@@ -228,12 +326,37 @@ function redo() {
                     angle: redoObj.angle,
                     oCoords: redoObj.oCoords
                 });
+                if (redoObj.text !== 'undefined') {
+                    console.log("setting text in redo");
+                    icons[redoObj.hash].set({
+                        text: redoObj.text,
+                        fill: redoObj.fill
+                        //need to set more shit
+                    })
+                }
+                else {
+                    console.log("setting src in redo");
+                    icons[redoObj.hash].set({
+                        src: redoObj.src
+                    });
+                }
                 fabricCanvas.renderAll();
             };
+
+            // Check if the icon already exists, if it doesn't, add it. 
             if (!icons[redoObj.hash]) {
-                addIcon(redoObj.src, redoObj.hash, false).done(setIcon);
+                if (redoObj.src) {
+                    console.log("adding normal icon (missing)");
+                    addIcon(redoObj.src, redoObj.hash, false).done(setIcon);
+                }
+                else {
+                    console.log("adding text icon (missing)");
+                    addText(redoObj.text, redoObj.fill, redoObj.hash, false).done(setIcon);
+                }
+                undoArray.push(redoObj.hash);
             }
             else setIcon();
+            undoArray.push(redoObj);
             if (TogetherJS.running) {
                 TogetherJS.send({
                     type: 'redoIcon',
@@ -344,20 +467,20 @@ function initDraw() {
 function addIcon(icon, hash, init) {
     var dfd = $.Deferred();
     var oHash = hash; // Original hash-argument
-    fabric.Image.fromURL(icon, function(img) {
+    fabric.Image.fromURL(icon, function (img) {
         // If the function is called by TogetherJS:
         if (!hash) {
             hash = Math.random().toString(36);
         }
         var oImg = img.set({
             hash: hash,
-            left: 100,
-            top: 100
+            left: 150,
+            top: (fabricCanvas.height/2)-(img.height/4)
         }).scale(0.5);
         fabricCanvas.add(oImg).renderAll();
         fabricCanvas.setActiveObject(oImg);
         icons[hash] = oImg;
-        if (init) {
+        if (init && !oHash) {
             undoArray.push(hash);
         }
         if (TogetherJS.running && !oHash) {
@@ -369,6 +492,39 @@ function addIcon(icon, hash, init) {
         }
         dfd.resolve();
     });
+    return dfd;
+}
+
+function addText(text, color, hash, init) {
+    var dfd = $.Deferred();
+    var oHash = hash; // Original hash-argument
+    if (!hash) {
+        hash = Math.random().toString(36);
+    }
+    var fabricText = new fabric.IText(text, {
+        hash: hash,
+        fontFamily: 'Helvetica Neue',
+        left: fabricCanvas.width-250,
+        top: fabricCanvas.height/2-20,
+        fill: color
+    });
+
+    fabricCanvas.add(fabricText).renderAll();
+    fabricCanvas.setActiveObject(fabricText);
+    icons[hash] = fabricText;
+    console.log(hash, icons[hash], icons);
+    if (init && !oHash) {
+        undoArray.push(hash);
+    }
+    if (TogetherJS.running && !oHash) {
+        TogetherJS.send({
+            type: 'newText',
+            hash: hash,
+            text: text,
+            fill: sketchContext.strokeStyle
+        });
+    }
+    dfd.resolve();
     return dfd;
 }
 
@@ -384,7 +540,12 @@ function deleteIcon(hash, send) {
     stateObject.scaleY = icons[hash].scaleY;
     stateObject.angle = icons[hash].angle;
     stateObject.oCoords = icons[hash].oCoords;
-    stateObject.src = icons[hash]._element.src;
+    if (icons[hash]._element) {
+        stateObject.src = icons[hash]._element.src;
+    }
+    else {
+        stateObject.text = icons[hash].text;
+    }
     undoArray.push(stateObject);
     stateObject = {};
     fabricCanvas.remove(icons[hash]);
@@ -462,6 +623,9 @@ function clearCanvas(clicked) {
     }
     sketchContext.clearRect(0,0 , sketchCanvas.width, sketchCanvas.height);
 }
+
+
+addIcon("/static/img/testicon.jpg", true, true);
 
 function resetFabric(clicked) {
     if (clicked && TogetherJS.running) {
