@@ -613,7 +613,6 @@ function resetBackground(clicked) {
     setBackground('/static/img/boot.jpg', false, false);
 }
 
-
 // Clears the sketchCanvas
 function clearCanvas(clicked) {
     if (clicked && TogetherJS.running) {
@@ -623,9 +622,6 @@ function clearCanvas(clicked) {
     }
     sketchContext.clearRect(0,0 , sketchCanvas.width, sketchCanvas.height);
 }
-
-
-addIcon("/static/img/testicon.jpg", true, true);
 
 function resetFabric(clicked) {
     if (clicked && TogetherJS.running) {
