@@ -267,7 +267,18 @@ $(document).ready(function () {
                     lines: JSON.stringify(lines) 
                 }
             }).done(function (msg) {      
-                alert(msg);
+                if (msg == "True") {
+                    $.bootstrapGrowl('FIKS MARTIN OK', {
+                        type: 'success',
+                        width: 'auto'
+                    });
+                }
+                else {
+                    $.bootstrapGrowl('FIKS MARTIN, kunne ikke lagre', {
+                        type: 'danger',
+                        width: 'auto'
+                    });
+                }
             });
         }
     });
