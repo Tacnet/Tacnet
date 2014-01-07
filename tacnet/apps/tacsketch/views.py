@@ -143,16 +143,25 @@ def load_tac_list(request):
     try:
         response_data = {}
 
-        tacs = TacSave.objects.filter(user = request.user)
+        tacs = TacSave.objects.filter(user = request.user).order_by('datetime')
         for tac in tacs:
-            response_data[tac.name] = {'mapID': tac.gameMap.id, 'mapURI': str(tac.gameMap.image), 'mapName': tac.gameMap.name, 'gameName': tac.gameMap.game.name, 'datetime': str(tac.datetime), 'fabric': tac.fabricData, 'lines': tac.linesData}
+            response_data[tac.name] = {'id':tac.id, 'name':tac.name, 'mapID': tac.gameMap.id, 'mapURI': str(tac.gameMap.image), 'mapName': tac.gameMap.name, 'gameName': tac.gameMap.game.name, 'datetime': str(tac.datetime), 'fabric': tac.fabricData, 'lines': tac.linesData}
 
         return HttpResponse(json.dumps(response_data), content_type="application/json")
     except:
         return HttpResponse("False")
 
 
+def delete_tac (request):
+    try:
+        id = request.POST['id']
+        obj = TacSave.objects.get(id=id)
+        if obj.user == request.user:
+            obj.delete()
+            return HttpResponse('True')
+    except:
+        pass
 
-
+    return HttpResponse('False')
 
 

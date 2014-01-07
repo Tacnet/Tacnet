@@ -325,16 +325,67 @@ $(document).ready(function () {
 
 
     $('#loadCloudTactic').on('shown.bs.modal', function (e) {
-        alert("ascsa");
+
+        $('.tac-table-content').html('<tr><td colspan="4">Loading...</td></tr>');
         $.get( "/tacsketch/get_tacs", {  } )
         .done(function( data ) {
             if (data != "False") {
 
+                $('.tac-table-content').html('');
+                jQuery.each(data, function() {
+                    // Fabric data = this.fabric
+                    // Lines data = this.lines
+                    $('.tac-table-content').append('<tr class="tac-element-' + this.id + '"><td style="cursor:pointer;" onclick="currentBackgroundID=' + this.mapID + '; setBackground(\'/media/' + this.mapURI + '\', true, false); $(\'#loadCloudTactic\').modal(\'hide\')">' + this.name + '</td><td>' + this.mapName + '</td><td>' + this.gameName + '</td><td><button type="button" class="btn btn-danger btn-xs confirmation" data-id="' + this.id + '"><span class="glyphicon glyphicon-remove-circle"></span> Delete</button></td></tr>');
+
+
+                });
+
+
+                $('.confirmation').click(function(){
+
+                    if ($(this).hasClass('stage')) {
+
+                        var dataID = $(this).attr('data-id');
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/tacsketch/delete_tac",
+                                xhrFields: {
+                                    withCredentials: true
+                            },
+                            data: {
+                                csrfmiddlewaretoken: csrf_token,
+                                id: dataID
+                            }
+                            }).done(function (msg) {
+                                if (msg == "True") {
+                                    console.log($('.tac-element-' + dataID));
+                                    $('.tac-element-' + dataID).hide();
+                                }
+                                else {
+                                    $.bootstrapGrowl('FIKS MARTIN, kunne ikke slette', {
+                                        type: 'danger',
+                                        width: 'auto'
+                                    });
+                                }
+                            });
+
+
+                    }
+                    else {
+                        $(this).addClass('stage');
+                        $(this).html('Are you sure?');
+                    }
+
+                });
+
             }
            else {
-                $('.tac-table-content').html("");
+                $('.tac-table-content').html('<tr><td colspan="4">Please login!</td></tr>');
             }
         });
+
+
     });
 
 
