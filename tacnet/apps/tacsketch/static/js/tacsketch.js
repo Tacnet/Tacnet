@@ -517,8 +517,8 @@ function addIcon(icon, hash, init) {
         }
         var oImg = img.set({
             hash: hash,
-            left: 150,
-            top: (fabricCanvas.height/2)-(img.height/4)
+            left: fabricCanvas.width/3,
+            top: 100
         }).scale(0.5);
         fabricCanvas.add(oImg).renderAll();
         fabricCanvas.setActiveObject(oImg);
@@ -547,8 +547,8 @@ function addText(text, color, hash, init) {
     var fabricText = new fabric.IText(text, {
         hash: hash,
         fontFamily: 'Helvetica Neue',
-        left: fabricCanvas.width-250,
-        top: fabricCanvas.height/2-20,
+        left: fabricCanvas.width-fabricCanvas.width/3,
+        top: 100,
         fill: color
     });
 
