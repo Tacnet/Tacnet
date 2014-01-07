@@ -13,6 +13,10 @@
 
     <link rel="stylesheet" href="/static/css/dock.css">
 
+    <script type="text/javascript"> 
+        var csrf_token = "{{ csrf_token }}";
+    </script>
+
 
 {% endblock %}
 
@@ -56,7 +60,7 @@
     <li class="undo"><a href="#"><i class="fa fa-undo"></i> Undo</a></li>
     <li class="redo"><a href="#"><i class="fa fa-repeat"></i> Redo</a></li>
     <li class="deleteIcon"><a href="#"><span class="glyphicon glyphicon-trash"></span> Delete</a></li>
-
+    <li class="debug"><a href="#">debug</a></li>
 
 {% endblock %}
 
@@ -164,10 +168,6 @@
 
 {% block iconbar %}
 
-
-
-
-
     <div id="sidebar">
 
         <div id="select-map" class="bar-element">
@@ -239,8 +239,8 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="btn-group btn-group-justified" style="width: 230px; margin-right: 10px;">
-                        <a href="#" type="button" class="btn btn-info saveOpen"><span class="glyphicon glyphicon-cloud-download"></span> Save</a>
-                        <a href="#" type="button" class="btn btn-default loadOpen"><span class="glyphicon glyphicon-cloud-upload"></span> Load</a>
+                        <a href="#" type="button" class="btn btn-info select-cloud-save"><span class="glyphicon glyphicon-cloud-download"></span> Save</a>
+                        <a href="#" type="button" class="btn btn-default select-cloud-load"><span class="glyphicon glyphicon-cloud-upload"></span> Load</a>
                     </div>
                 </div>
             </div>

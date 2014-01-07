@@ -34,6 +34,9 @@ $(document).ready(function () {
     var toggle_save = $('.select-save');
     var toggle_cloud = $('.select-cloud');
 
+    var toggle_cloud_save = $('.select-cloud-save');
+    var toggle_cloud_load = $('.select-cloud-load');
+
     /* OpenTabs */
     toggle_map.click(function(){
         select_map.toggle();
@@ -81,7 +84,6 @@ $(document).ready(function () {
         placeholder: 'Select Map'
     }).on('change', function (e) {
         if (e.val) {
-
             var img = e.val.split('|')[0];
             var id = e.val.split('|')[1];
             currentBackgroundID = id;
@@ -144,7 +146,6 @@ $(document).ready(function () {
         /* Searches */
         iconsearch.keyup(function(){
             $( ".icon-holder div" ).each(function( index ) {
-
                if (select.val() == "") {
                     $(this).css('display', 'block');
                 }
@@ -156,24 +157,11 @@ $(document).ready(function () {
                 }
 
                 if ($(this).css('display')=="block") {
-
                     if ($(this).attr('name').toLowerCase().indexOf(iconsearch.val().toLowerCase()) == -1) {
                         $(this).css('display', 'none');
                     }
-
                 }
-
-
             });
         });
-
-
-
     });
-
-
-
-
-
-
 });

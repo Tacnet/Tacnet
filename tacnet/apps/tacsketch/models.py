@@ -46,3 +46,4 @@ class TacSave(models.Model):
     gameMap = models.ForeignKey(Map, verbose_name="Map")
     fabricData = models.TextField(verbose_name = "Fabric Data")
     linesData = models.TextField(verbose_name = "Lines Data")
+

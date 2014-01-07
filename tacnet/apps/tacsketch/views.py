@@ -122,17 +122,20 @@ def icons(request):
 
 def save_tac(request):
     if request.method == "POST":
-        '''
         user = request.user
         name = request.POST['name']
         gameMap = request.POST['map']
         fabricData = request.POST['fabric']
-        linesData = request.POST['lines']'''
+        linesData = request.POST['lines']
 
-        return HttpResponse("asdas")
+        
 
     else:
         raise Http404
+
+
+def load_tac_list(request):
+    pass
 
 
 def load_tac(request):

@@ -198,6 +198,10 @@ $(document).ready(function () {
         }
     });
 
+    $('.debug').click(function() {
+        addIcon('/static/img/testicon.jpg', false, true);
+    });
+
     function changeMouse() {
         var cursorSize = sketchContext.lineWidth;
         if (cursorSize < 10){
@@ -249,16 +253,24 @@ $(document).ready(function () {
             });
         }
         else {
-            $.post( "/tacsketch/save_tac", {name: tacName}, function( data ) {
-              alert(data);
+            $.ajax({
+                type: "POST",
+                url: "/tacsketch/save_tac",
+                    xhrFields: {
+                        withCredentials: true
+                },
+                data: { 
+                    csrfmiddlewaretoken: csrf_token, 
+                    name: tacName,
+                    map: currentBackgroundID,
+                    fabric: JSON.stringify(fabricCanvas),
+                    lines: JSON.stringify(lines) 
+                }
+            }).done(function (msg) {      
+                alert(msg);
             });
         }
-    
     });
-
-
-
-
 
     $('.saveDrawings').click(function() {
         var dlHref = sketchCanvas.toDataURL('image/png').replace("image/png", "image/octet-stream");
