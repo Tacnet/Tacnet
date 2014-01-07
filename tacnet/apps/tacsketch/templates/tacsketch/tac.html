@@ -134,7 +134,7 @@
     <script src="/static/js/auth.js"></script>
 
     <!-- fabric.js -->
-    <script src="/static/js/all.min.js"></script>
+    <script src="/static/js/fabric.min.js"></script>
 
     <!-- TogetherJS -->
     <link rel="stylesheet" href="/static/css/dock.css">
@@ -234,34 +234,19 @@
 
         <div id="cloud-menu" class="bar-element">
             <div class="row">
-                <div class="col-xs-12"><h5><i class="fa fa-flag"></i> Cloud Save/Load</h5><hr/></div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="btn-group btn-group-justified" style="width: 230px; margin-right: 10px;">
-                        <a href="#" type="button" class="btn btn-info select-cloud-save"><span class="glyphicon glyphicon-cloud-download"></span> Save</a>
-                        <a href="#" type="button" class="btn btn-default select-cloud-load"><span class="glyphicon glyphicon-cloud-upload"></span> Load</a>
-                    </div>
-                </div>
+                <div class="col-xs-12"><h5><i class="fa fa-flag"></i> Cloud Save</h5><hr/></div>
             </div>
 
-            <div class="row save_tac_cloud">
+            <div class="row" id="save-cloud">
                 <div class="col-xs-12">
+                    <h5 style="text-align: center; margin-top: 25px;">Tactic Name:</h5>
+                    <input type="text" class="form-control tacticName" style="margin-top: 20px; height: 50px; color: #FFF !important; font-size: 24px !important;" placeholder="Enter tactic name..">
+
                     <p style="margin-top: 20px;">Note that you need to be logged in to cloud save tactics.</p>
 
-                    <h5 style="text-align: center; margin-top: 40px;">Save:</h5>
-                    <input type="text" class="form-control tacticName" style="margin-top: 15px; height: 50px; color: #FFF !important;" placeholder="Enter tactic name..">
-
-                    <button class="btn btn-success cloudSave" style="margin-top: 15px; margin-left: 40px; width: 150px; height: 50px; margin-right: 40px;"><i class="fa fa-check"></i> Submit</button>
+                    <button class="btn btn-success cloudSave" style="margin-top: 40px; margin-left: 40px; width: 150px; height: 50px; margin-right: 40px; font-size: 20px !important;"><span class="glyphicon glyphicon-cloud-upload"></span> Save</button>
                 </div>
             </div>
-            <div class="row load_tac_cloud">
-                <div class="col-xs-12">
-                    
-                    
-                </div>
-            </div>
-
         </div>
 
         <div id="save-menu" class="bar-element">
@@ -293,7 +278,8 @@
 
                 <li class="icon-button select-map" data-toggle="tooltip" data-placement="right" title="Select Map" rel="tooltip"><i class="fa fa-gamepad"></i></li>
                 <li class="icon-button select-icon" data-toggle="tooltip" data-placement="right" title="Icons" rel="tooltip"><i class="fa fa-flag"></i></li>
-                <li class="icon-button select-cloud" data-toggle="tooltip" data-placement="right" title="Cloud Saving" rel="tooltip"><span class="glyphicon glyphicon-cloud"></span></li>
+                <li class="icon-button select-cloud-save" data-toggle="tooltip" data-placement="right" title="Cloud Saving" rel="tooltip"><span class="glyphicon glyphicon-cloud-upload"></span></li>
+                <li class="icon-button select-cloud-load" data-toggle="tooltip" data-placement="right" title="Cloud Loading" rel="tooltip"><span class="glyphicon glyphicon-cloud-download"></span></li>
                 <li class="icon-button select-save" data-toggle="tooltip" data-placement="right" title="Save Drawings" rel="tooltip"><span class="glyphicon glyphicon-floppy-disk"></span></li>
 
 

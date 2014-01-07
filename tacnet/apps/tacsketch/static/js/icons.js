@@ -32,35 +32,41 @@ $(document).ready(function () {
     var toggle_map = $('.select-map');
     var toggle_icons = $('.select-icon');
     var toggle_save = $('.select-save');
-    var toggle_cloud = $('.select-cloud');
-
     var toggle_cloud_save = $('.select-cloud-save');
     var toggle_cloud_load = $('.select-cloud-load');
 
     /* OpenTabs */
-    toggle_map.click(function(){
+    toggle_map.click(function (){
         select_map.toggle();
         select_icons.hide();
         select_save.hide();
         select_cloud.hide();
     });
-    toggle_icons.click(function(){
+    toggle_icons.click(function (){
         select_icons.toggle();
         select_save.hide();
         select_map.hide();
         select_cloud.hide();
     });
-    toggle_save.click(function(){
+    toggle_save.click(function (){
         select_save.toggle();
         select_map.hide();
         select_icons.hide();
         select_cloud.hide();
     });
-    toggle_cloud.click(function(){
+
+    toggle_cloud_save.click(function (){
         select_cloud.toggle();
         select_map.hide();
         select_icons.hide();
         select_save.hide();
+    });
+
+    toggle_cloud_load.click(function() {
+        select_save.hide();
+        select_map.hide();
+        select_cloud.hide();
+        select_icons.hide();        
     });
 
     /* Close when click on canvas */
