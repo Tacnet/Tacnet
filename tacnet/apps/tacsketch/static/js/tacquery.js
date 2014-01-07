@@ -324,4 +324,9 @@ $(document).ready(function () {
     });
 
 
+    $('#loadCloudTactic').on('shown.bs.modal', function (e) {
+
+    });
+
+
 }); 

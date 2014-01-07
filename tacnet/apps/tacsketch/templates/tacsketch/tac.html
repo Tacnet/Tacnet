@@ -128,6 +128,51 @@
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
+    <!-- Load tactics modal -->
+    <div class="modal fade" id="loadCloudTactic" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Load Tactic from Cloud</h4>
+          </div>
+          <div class="modal-body">
+
+
+              <div style="height: 200px; overflow-y: scroll;">
+
+              <table class="tac-save-table table table-striped">
+
+
+                  <thead>
+            <tr>
+              <th>Name</th>
+              <th>Map</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+
+        <tbody class="tac-table-content">
+          <tr>
+            <td>1</td>
+            <td>Mark</td>
+            <td>Otto</td>
+          </tr>
+
+        </tbody>
+
+
+              </table>
+
+</div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <input type="file" id="input" style="visibility:hidden;position:absolute;top:-50;left:-50">
 
     <!-- scripts -->
@@ -281,6 +326,7 @@
                 <li class="icon-button select-cloud-save" data-toggle="tooltip" data-placement="right" title="Cloud Saving" rel="tooltip"><span class="glyphicon glyphicon-cloud-upload"></span></li>
                 <li class="icon-button select-cloud-load" data-toggle="tooltip" data-placement="right" title="Cloud Loading" rel="tooltip"><span class="glyphicon glyphicon-cloud-download"></span></li>
                 <li class="icon-button select-save" data-toggle="tooltip" data-placement="right" title="Save Drawings" rel="tooltip"><span class="glyphicon glyphicon-floppy-disk"></span></li>
+                <li class="icon-button" data-toggle="modal" data-target="#loadCloudTactic">MODAL</li>
 
 
                 <!--<li class="rights-button"><i class="fa fa-minus-circle"></i></li>-->
