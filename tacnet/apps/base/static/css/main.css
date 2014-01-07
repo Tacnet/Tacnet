@@ -6,6 +6,10 @@ canvas {
     position: absolute;
 }
 
+.canvas-container {
+  position: absolute !important;
+}
+
 .navbar {
 margin-bottom: 30px;
 }
