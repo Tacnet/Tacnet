@@ -128,21 +128,30 @@ def save_tac(request):
         fabricData = request.POST['fabric']
         linesData = request.POST['lines']
 
-        
+        try:
+            map = Map.objects.get(id = int(gameMap))
+            obj = TacSave.add_object(name, user, map,fabricData,linesData)
+            return HttpResponse("True")
+        except:
+            return HttpResponse("False")
 
     else:
         raise Http404
 
 
 def load_tac_list(request):
-    pass
+    try:
+        response_data = {}
+
+        tacs = TacSave.objects.filter(user = request.user)
+        for tac in tacs:
+            response_data[tac.name] = {'mapID': tac.gameMap.id, 'mapURI': str(tac.gameMap.image), 'datetime': str(tac.datetime), 'fabric': tac.fabricData, 'lines': tac.linesData}
+
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
+    except:
+        return HttpResponse("False")
 
 
-def load_tac(request):
-    if request.method == "POST":
-        pass
-    else:
-        raise Http404
 
 
 
