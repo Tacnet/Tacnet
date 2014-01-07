@@ -26,9 +26,9 @@ class MapRequestAdmin(admin.ModelAdmin):
 admin.site.register(MapRequest, MapRequestAdmin)
 
 
-'''
-class IconAdmin(admin.ModelAdmin):
-    list_display = ('name', 'game')
 
-admin.site.register(Icon, IconAdmin)
-'''
+class TACSAVEAdmin(admin.ModelAdmin):
+    list_display = ('name', 'user')
+
+admin.site.register(TacSave, TACSAVEAdmin)
+
