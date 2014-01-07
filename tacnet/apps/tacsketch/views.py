@@ -145,7 +145,7 @@ def load_tac_list(request):
 
         tacs = TacSave.objects.filter(user = request.user)
         for tac in tacs:
-            response_data[tac.name] = {'mapID': tac.gameMap.id, 'mapURI': str(tac.gameMap.image), 'datetime': str(tac.datetime), 'fabric': tac.fabricData, 'lines': tac.linesData}
+            response_data[tac.name] = {'mapID': tac.gameMap.id, 'mapURI': str(tac.gameMap.image), 'mapName': tac.gameMap.name, 'gameName': tac.gameMap.game.name, 'datetime': str(tac.datetime), 'fabric': tac.fabricData, 'lines': tac.linesData}
 
         return HttpResponse(json.dumps(response_data), content_type="application/json")
     except:

@@ -325,7 +325,16 @@ $(document).ready(function () {
 
 
     $('#loadCloudTactic').on('shown.bs.modal', function (e) {
+        alert("ascsa");
+        $.get( "/tacsketch/get_tacs", {  } )
+        .done(function( data ) {
+            if (data != "False") {
 
+            }
+           else {
+                $('.tac-table-content').html("");
+            }
+        });
     });
 
 
