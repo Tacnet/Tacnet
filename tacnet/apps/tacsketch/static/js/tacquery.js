@@ -11,10 +11,6 @@ var buttonStates = {
 };
 
 $(document).ready(function () {
-    $.bootstrapGrowl('Movable icons can now be added from the flag-menu on the left side of the page.', {
-        type: 'success',
-        width: 'auto'
-    });
     function toggleState(button, buttonClass) {
         if (buttonStates[buttonClass]) { 
             buttonStates[buttonClass] = '';
