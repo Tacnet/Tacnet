@@ -92,8 +92,7 @@ $(document).ready(function () {
         if (e.val) {
             var img = e.val.split('|')[0];
             var id = e.val.split('|')[1];
-            currentBackgroundID = id;
-            setBackground(img, true, false);
+            setBackground(img, id, true, false, false);
         }
     });
 

@@ -12,7 +12,7 @@ var currentBackgroundID = '-';
 var initJSON;
 
 var icons = {}; 
-var lines = []; 
+var lines = {}; 
 var tempLines = {};
 
 var undoArray = [];
@@ -330,7 +330,7 @@ function reDraw(lines){
     }
 }
 
-function initDraw() {
+function initDraw(sendInit) {
     reDraw(lines);
     fabricCanvas.loadFromJSON(initJSON, function() {
         fabricCanvas.renderAll();
@@ -338,6 +338,31 @@ function initDraw() {
         for (var i = 0; i < canvasObjects.length; i++) {
             icons[canvasObjects[i].hash] = canvasObjects[i];
         }
+        if (sendInit) initSend();
+    });
+}
+
+function initSend() {
+    for (var key in icons) {
+        icons[key].toObject = (function(toObject) {
+            return function() {
+                return fabric.util.object.extend(toObject.call(this), {
+                    hash: this.hash
+                });
+            };
+        })(icons[key].toObject);
+    }
+    var lineArr = [];
+    for (var key in lines) {
+        lineArr.push([lines[key][0], lines[key][1], lines[key][2], lines[key][3], lines[key][4], key]);
+    }
+    var fabricJSON = JSON.stringify(fabricCanvas);
+    TogetherJS.send({
+        type: 'init',
+        lines: lineArr,
+        fabric: fabricJSON,
+        undoArray: undoArray,
+        background: currentBackground
     });
 }
 
@@ -400,16 +425,19 @@ function deleteIcon(hash, send) {
 }
 
 // Sets background
-function setBackground(background, clicked, init) {
+function setBackground(background, backgroundID, clicked, init, sendInit) {
     if (clicked) {
         if (TogetherJS.running) {
             TogetherJS.send({
                 type: 'setBackground',
-                background: background
+                background: background,
+                backgroundID: backgroundID
             });
         }
     }
+
     currentBackground = background;
+    currentBackgroundID = backgroundID;
     var bgimg = new Image();
     bgimg.src = background;
     bgimg.onload = function() {
@@ -431,7 +459,7 @@ function setBackground(background, clicked, init) {
         sketchContext.lineCap = oldLineCap;
         sketchContext.strokeStyle = oldStrokeStyle;
         if (init) {
-            initDraw();
+            initDraw(sendInit);
         }
         else {
             lines = {};
@@ -450,7 +478,7 @@ function resetBackground(clicked) {
     }
     bgContext.clearRect(0,0 , bgCanvas.width, bgCanvas.height);
     bgContext.fillRect (0, 0, bgCanvas.width, bgCanvas.height);
-    setBackground('/static/img/boot.jpg', false, false);
+    setBackground('/static/img/boot.jpg', '-', false, false, false);
     currentBackgroundID = '-';
 }
 

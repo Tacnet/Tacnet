@@ -74,6 +74,8 @@ $(document).ready(function () {
         });
 
         $('.resetBackground').click(function() {
+            $("#gameslist").select2("val", "");
+            $("#mapslist").select2("val", "");
             resetBackground(true);
             hidePopover($('#clearMenu'));
         });
@@ -198,10 +200,6 @@ $(document).ready(function () {
         }
     });
 
-    $('.debug').click(function() {
-        addIcon('/static/img/testicon.jpg', false, true);
-    });
-
     function changeMouse() {
         var cursorSize = sketchContext.lineWidth;
         if (cursorSize < 10){
@@ -236,7 +234,6 @@ $(document).ready(function () {
     // Save/Load  Cloud
     $('.cloudSave').click(function () {
         var tacName = $('.tacticName').val();
-        console.log("login: ", loggedIn);
         if (!tacName) {
             // Maybe just save the tactic with the mapname as name? Or at least use something else than growl, the warning 
             // should come in the box itself, or close.
@@ -245,14 +242,29 @@ $(document).ready(function () {
                 width: 'auto'
             });
         }
-        if (!loggedIn) {
+        else if (!loggedIn) {
             show_bar();
             $.bootstrapGrowl('You need to be logged in to cloud save.', {
                 type: 'warning',
                 width: 'auto'
             });
         }
+        else if (currentBackgroundID == '-') {
+            $.bootstrapGrowl('Please select a map before attempting to save tactics.', {
+                type: 'warning',
+                width: 'auto'
+            });
+        }
         else {
+            for (var key in icons) {
+                icons[key].toObject = (function(toObject) {
+                    return function() {
+                        return fabric.util.object.extend(toObject.call(this), {
+                            hash: this.hash
+                        });
+                    };
+                })(icons[key].toObject);
+            }
             $.ajax({
                 type: "POST",
                 url: "/tacsketch/save_tac",
@@ -264,17 +276,17 @@ $(document).ready(function () {
                     name: tacName,
                     map: currentBackgroundID,
                     fabric: JSON.stringify(fabricCanvas),
-                    lines: JSON.stringify(lines) 
+                    lines: JSON.stringify(lines),
                 }
             }).done(function (msg) {      
                 if (msg == "True") {
-                    $.bootstrapGrowl('FIKS MARTIN OK', {
+                    $.bootstrapGrowl('Tactic successfully saved. ', {
                         type: 'success',
                         width: 'auto'
                     });
                 }
                 else {
-                    $.bootstrapGrowl('FIKS MARTIN, kunne ikke lagre', {
+                    $.bootstrapGrowl('Couldn\'t save tactic, please try again.', {
                         type: 'danger',
                         width: 'auto'
                     });
@@ -348,13 +360,10 @@ $(document).ready(function () {
                     jQuery.each(data, function() {
 
                         if(this.id == id) {
-
-                            currentBackgroundID=this.mapID;
                             lines = JSON.parse(this.lines);
                             initJSON = JSON.parse(this.fabric);
-                            setBackground('/media/' + this.mapURI, true, true);
+                            setBackground('/media/' + this.mapURI, this.mapID, false, true, true);
                             $('#loadCloudTactic').modal('hide');
-
                         }
 
                     });
@@ -381,11 +390,10 @@ $(document).ready(function () {
                             }
                             }).done(function (msg) {
                                 if (msg == "True") {
-                                    console.log($('.tac-element-' + dataID));
                                     $('.tac-element-' + dataID).hide();
                                 }
                                 else {
-                                    $.bootstrapGrowl('FIKS MARTIN, kunne ikke slette', {
+                                    $.bootstrapGrowl('Error: Can\'t delete tactic.', {
                                         type: 'danger',
                                         width: 'auto'
                                     });
