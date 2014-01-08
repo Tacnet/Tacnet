@@ -37,9 +37,9 @@ if [ "$full_build" == true ]; then
     full=''
 fi
 
-ssh root@$target -t -p 9001 '
+ssh eirikmsy@$target -t '
 
-    su '$user' -c "
+    sudo su '$user' -c "
         cd '$prod_folder'
         git fetch
         git reset --hard origin/'$branch'
@@ -57,9 +57,9 @@ ssh root@$target -t -p 9001 '
     curl -H "x-api-key:" -d "deployment[application_id]=" -d "deployment[description]=$(git log -1 HEAD --pretty=format:%s)" -d "deployment[revision]=$REVERSION" -d "deployment[user]=$AUTHOR"  https://rpm.newrelic.com/deployments.xml
 
 
-    supervisorctl reload
-    service nginx stop
-    service nginx start
+    sudo supervisorctl reload
+    sudo service nginx stop
+    sudo service nginx start
 
 '
 
