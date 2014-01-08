@@ -637,7 +637,7 @@ function setBackground(background, backgroundID, clicked, init, sendInit) {
             TogetherJS.send({
                 type: 'setBackground',
                 background: background,
-                backgroundID: backgroundID
+                backgroundID: backgroundID,
                 scaleBackground: scaleBackground
             });
         }
