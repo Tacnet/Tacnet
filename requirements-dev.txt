@@ -1,7 +1,6 @@
 django
 gunicorn
 newrelic
-django-debug-toolbar
 south
 django-suit
 pil
