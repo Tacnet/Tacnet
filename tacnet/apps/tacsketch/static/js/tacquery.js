@@ -333,12 +333,34 @@ $(document).ready(function () {
 
                 $('.tac-table-content').html('');
                 jQuery.each(data, function() {
-                    // Fabric data = this.fabric
-                    // Lines data = this.lines
-                    $('.tac-table-content').append('<tr class="tac-element-' + this.id + '"><td style="cursor:pointer;" onclick="currentBackgroundID=' + this.mapID + '; setBackground(\'/media/' + this.mapURI + '\', true, false); $(\'#loadCloudTactic\').modal(\'hide\')">' + this.name + '</td><td>' + this.mapName + '</td><td>' + this.gameName + '</td><td><button type="button" class="btn btn-danger btn-xs confirmation" data-id="' + this.id + '"><span class="glyphicon glyphicon-remove-circle"></span> Delete</button></td></tr>');
+
+                    var fabricJSON = this.fabric;
+                    var linesJSON = this.lines;
+
+                    $('.tac-table-content').append('<tr class="tac-element-' + this.id + '"><td style="cursor:pointer;" class="tac-click" data-id="' + this.id + '">' + this.name + '</td><td>' + this.mapName + '</td><td>' + this.gameName + '</td><td><button type="button" class="btn btn-danger btn-xs confirmation" data-id="' + this.id + '"><span class="glyphicon glyphicon-remove-circle"></span> Delete</button></td></tr>');
 
 
                 });
+
+                $('.tac-click').click(function(){
+
+                    var id = $(this).attr('data-id');
+                    jQuery.each(data, function() {
+
+                        if(this.id == id) {
+
+                            currentBackgroundID=this.mapID;
+                            lines = JSON.parse(this.lines);
+                            initJSON = JSON.parse(this.fabric);
+                            setBackground('/media/' + this.mapURI, true, true);
+                            $('#loadCloudTactic').modal('hide');
+
+                        }
+
+                    });
+
+                });
+
 
 
                 $('.confirmation').click(function(){
