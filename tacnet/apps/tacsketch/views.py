@@ -130,7 +130,7 @@ def save_tac(request):
 
         try:
             map = Map.objects.get(id = int(gameMap))
-            obj = TacSave.add_object(name, user, map,fabricData,linesData)
+            obj = TacSave.add_object(name, user, map, fabricData,linesData)
             return HttpResponse("True")
         except:
             return HttpResponse("False")
@@ -145,7 +145,7 @@ def load_tac_list(request):
 
         tacs = TacSave.objects.filter(user = request.user).order_by('datetime')
         for tac in tacs:
-            response_data[tac.name] = {'id':tac.id, 'name':tac.name, 'mapID': tac.gameMap.id, 'mapURI': str(tac.gameMap.image), 'mapName': tac.gameMap.name, 'gameName': tac.gameMap.game.name, 'datetime': str(tac.datetime), 'fabric': tac.fabricData, 'lines': tac.linesData}
+            response_data[tac.id] = {'id':tac.id, 'name':tac.name, 'mapID': tac.gameMap.id, 'mapURI': str(tac.gameMap.image), 'mapName': tac.gameMap.name, 'gameName': tac.gameMap.game.name, 'datetime': str(tac.datetime), 'fabric': tac.fabricData, 'lines': tac.linesData}
 
         return HttpResponse(json.dumps(response_data), content_type="application/json")
     except:
