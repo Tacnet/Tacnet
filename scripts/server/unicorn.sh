@@ -5,7 +5,7 @@ LOGDIR=$(dirname $LOGFILE)
 NUM_WORKERS=5
 USER=tacnet-www
 GROUP=tacnet-www
-ADDRESS=127.0.0.1:9002
+ADDRESS=127.0.0.1:1341
 cd /home/tacnet-www/www/tacnet/
 source /home/tacnet-www/www/venv/bin/activate
 test -d $LOGDIR || mkdir -p $LOGDI
