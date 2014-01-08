@@ -88,7 +88,7 @@ $(document).ready(function () {
 
     $('#mapslist').select2({
         placeholder: 'Select Map'
-    }).on('change', function (e) {
+    }).on('select2-selecting', function (e) {
         if (e.val) {
             var img = e.val.split('|')[0];
             var id = e.val.split('|')[1];
