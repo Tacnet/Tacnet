@@ -1,4 +1,4 @@
-DEBUG = False
+DEBUG = True
 
 with open('/home/tacnet-www/www/passwords/tacnet_db', 'rb') as f:
     db_password = f.readline()
