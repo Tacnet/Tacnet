@@ -1,4 +1,4 @@
-<!-- Modal -->
+<!-- Map request modal -->
 <div class="modal fade" id="moreMapsModal" tabindex="-1" role="dialog" aria-labelledby="moreMaps" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -36,6 +36,48 @@
             <button type="submit" class="btn btn-primary submitMapRequestForm">Send Request</button>
           </div>
         </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- Load tactics modal -->
+<div class="modal fade" id="loadCloudTactic" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Load Tactic from Cloud</h4>
+      </div>
+      <div class="modal-body">
+
+
+          <div style="height: 200px; overflow-y: scroll;">
+
+          <table class="tac-save-table table table-striped">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Map</th>
+                  <th>Game</th>
+                  <th style="width: 60px;">Actions</th>
+                </tr>
+              </thead>
+
+                <tbody class="tac-table-content">
+
+
+
+                </tbody>
+
+
+          </table>
+
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
     </div>
   </div>
 </div>

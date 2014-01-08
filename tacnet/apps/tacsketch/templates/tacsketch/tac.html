@@ -5,10 +5,17 @@
     <!--Loading layer-->
     <div id="loading_layer"></div>
     <script src="/static/js/spin.js"></script>
+    <script type="text/javascript">
+        var loggedIn = "";
+    </script>
     <link rel="stylesheet" href="/static/js/loading_layer/loading.css">
     <script type="text/javascript" src="/static/js/loading_layer/loading.js"></script>
 
     <link rel="stylesheet" href="/static/css/dock.css">
+
+    <script type="text/javascript"> 
+        var csrf_token = "{{ csrf_token }}";
+    </script>
 
 
 {% endblock %}
@@ -34,7 +41,8 @@
     <input type="file" id="input" style="visibility:hidden;position:absolute;top:-50;left:-50">
 
     <!-- scripts -->
-    
+    <script src="/static/js/auth.js"></script>
+
     <!-- fabric.js -->
     <script src="/static/js/fabric.min.js"></script>
 

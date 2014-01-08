@@ -1,4 +1,4 @@
-<div id="sidebar">
+   <div id="sidebar">
 
     <div id="select-map" class="bar-element">
          <div class="row">
@@ -8,23 +8,21 @@
         </div>
 
         <div class="row">
-
             <div class="col-xs-12">
-              <p>
-                  <select id="gameslist" style="width: 100%;">
-                  <option></option>
-                        {% for game in games %}
-                            <option value="opt-{{ game.name|slugify }}">{{ game.name }}</option>
-                        {% endfor %}
-                  </select>
-              </p>
+              <p><select id="gameslist" style="width: 100%;">
+     <option></option>
+        {% for game in games %}
+            <option value="opt-{{ game.name|slugify }}">{{ game.name }}</option>
+        {% endfor %}
+    </select></p>
 
-            <p><select id="mapslist" style="width: 100%;">
-                <option></option>
-            </select></p>
 
-                <p style="margin-top: 20px; font-size: 15px;">We try to support as many games as possible. If you've got any additional suggestions, feel free to contact us through the form below.</p>
-                <p class="text-right" style="margin-top: 75px; text-align: center; font-size: 20px;"><i class="fa fa-gamepad"></i> <a href="#" class="moreMaps">Suggest a map</a></p>
+    <p><select id="mapslist" style="width: 100%;">
+        <option></option>
+    </select></p>
+
+    <p style="margin-top: 20px; font-size: 15px;">We try to support as many games as possible. If you've got any additional suggestions, feel free to contact us through the form below.</p>
+    <p class="text-right" style="margin-top: 75px; text-align: center; font-size: 20px;"><i class="fa fa-gamepad"></i> <a href="#" class="moreMaps">Suggest a map</a></p>
 
             </div>
 
@@ -35,7 +33,7 @@
 
         <div class="row">
 
-            <div class="col-xs-12"><h5><i class="fa fa-flag"></i> Icons/Text</h5><hr/></div>
+            <div class="col-xs-12"><h5><i class="fa fa-flag"></i> Icons</h5><hr/></div>
 
         </div>
 
@@ -54,17 +52,32 @@
         </div>
 
         <div class="scrollable">
-            <div class="row icon-holder"></div>
+
+        <div class="row icon-holder">
+
+
         </div>
 
-        <div class="row">
-            <div class="col-xs-12">
-                <a href="#" type="button" class="btn btn-primary addText" style="width: 230px; margin-top: 6px; margin-right: 10px;">Add Text</a>
-            </div>
         </div>
 
     </div>
 
+    <div id="cloud-menu" class="bar-element">
+        <div class="row">
+            <div class="col-xs-12"><h5><i class="fa fa-flag"></i> Cloud Save</h5><hr/></div>
+        </div>
+
+        <div class="row" id="save-cloud">
+            <div class="col-xs-12">
+                <h5 style="text-align: center; margin-top: 25px;">Tactic Name:</h5>
+                <input type="text" class="form-control tacticName" style="margin-top: 20px; height: 50px; color: #FFF !important; font-size: 24px !important;" placeholder="Enter tactic name..">
+
+                <p style="margin-top: 20px;">Note that you need to be logged in to cloud save tactics.</p>
+
+                <button class="btn btn-success cloudSave" style="margin-top: 40px; margin-left: 40px; width: 150px; height: 50px; margin-right: 40px; font-size: 20px !important;"><span class="glyphicon glyphicon-cloud-upload"></span> Save</button>
+            </div>
+        </div>
+    </div>
 
     <div id="save-menu" class="bar-element">
         <div class="row">
@@ -88,13 +101,17 @@
         </div>
     </div>
 
+
     <div class="dock">
 
         <ul class="button-list">
 
             <li class="icon-button select-map" data-toggle="tooltip" data-placement="right" title="Select Map" rel="tooltip"><i class="fa fa-gamepad"></i></li>
             <li class="icon-button select-icon" data-toggle="tooltip" data-placement="right" title="Icons" rel="tooltip"><i class="fa fa-flag"></i></li>
+            <li class="icon-button select-cloud-save" data-toggle="tooltip" data-placement="right" title="Cloud Saving" rel="tooltip"><span class="glyphicon glyphicon-cloud-upload"></span></li>
+            <li class="icon-button select-cloud-load" data-toggle="modal" data-target="#loadCloudTactic" data-placement="right" title="Cloud Loading" rel="tooltip"><span class="glyphicon glyphicon-cloud-download"></span></li>
             <li class="icon-button select-save" data-toggle="tooltip" data-placement="right" title="Save Drawings" rel="tooltip"><span class="glyphicon glyphicon-floppy-disk"></span></li>
+
 
             <!--<li class="rights-button"><i class="fa fa-minus-circle"></i></li>-->
 

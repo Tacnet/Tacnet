@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 class Game (models.Model):
     name = models.CharField(max_length=100, verbose_name="Name")
@@ -40,9 +40,21 @@ class MapRequest (models.Model):
         return self.game + ", " + self.map
 
 
-'''
-class Icon (models.Model):
-    name = models.CharField(max_length=100, verbose_name="Name")
-    game = models.ForeignKey(Game, verbose_name="Game", blank=True, null=True)
-    image = models.ImageField(upload_to="icons", verbose_name="Icon")
-'''
+class TacSave(models.Model):
+    name = models.CharField(max_length=200, verbose_name="Name")
+    datetime = models.DateTimeField(auto_now=True, verbose_name="DateTime")
+    user = models.ForeignKey(User, verbose_name="User")
+    gameMap = models.ForeignKey(Map, verbose_name="Map")
+    fabricData = models.TextField(verbose_name = "Fabric Data")
+    linesData = models.TextField(verbose_name = "Lines Data")
+
+
+    def __unicode__(self):
+        return self.name + self.user.username
+
+    @classmethod
+    def add_object(cls, name, user, gameMap, fabricData, linesData):
+        obj = cls(name = name, gameMap = gameMap, user = user, fabricData = fabricData, linesData = linesData)
+        obj.save()
+        return obj
+

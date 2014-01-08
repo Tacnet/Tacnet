@@ -27,26 +27,46 @@ $(document).ready(function () {
     var select_map = $('#select-map');
     var select_icons = $('#icon-picker');
     var select_save = $('#save-menu');
+    var select_cloud = $('#cloud-menu');
 
     var toggle_map = $('.select-map');
     var toggle_icons = $('.select-icon');
     var toggle_save = $('.select-save');
+    var toggle_cloud_save = $('.select-cloud-save');
+    var toggle_cloud_load = $('.select-cloud-load');
 
     /* OpenTabs */
-    toggle_map.click(function(){
+    toggle_map.click(function (){
         select_map.toggle();
         select_icons.hide();
         select_save.hide();
+        select_cloud.hide();
     });
-    toggle_icons.click(function(){
+    toggle_icons.click(function (){
         select_icons.toggle();
         select_save.hide();
         select_map.hide();
+        select_cloud.hide();
     });
-    toggle_save.click(function(){
+    toggle_save.click(function (){
         select_save.toggle();
         select_map.hide();
         select_icons.hide();
+        select_cloud.hide();
+    });
+
+    toggle_cloud_save.click(function (){
+        select_cloud.toggle();
+        select_map.hide();
+        select_icons.hide();
+        select_save.hide();
+    });
+
+    toggle_cloud_load.click(function() {
+        select_save.hide();
+        select_map.hide();
+        select_cloud.hide();
+        select_icons.hide();        
     });
 
     /* Close when click on canvas */
@@ -55,6 +75,7 @@ $(document).ready(function () {
         select_icons.hide();
         select_map.hide();
         select_save.hide();
+        select_cloud.hide();
     });
 
     /* Load Maps tab */
@@ -67,9 +88,11 @@ $(document).ready(function () {
 
     $('#mapslist').select2({
         placeholder: 'Select Map'
-    }).on('change', function (e) {
+    }).on('select2-selecting', function (e) {
         if (e.val) {
-            setBackground(e.val, true, false);
+            var img = e.val.split('|')[0];
+            var id = e.val.split('|')[1];
+            setBackground(img, id, true, false, false);
         }
     });
 
@@ -128,7 +151,6 @@ $(document).ready(function () {
         /* Searches */
         iconsearch.keyup(function(){
             $( ".icon-holder div" ).each(function( index ) {
-
                if (select.val() == "") {
                     $(this).css('display', 'block');
                 }
@@ -140,24 +162,11 @@ $(document).ready(function () {
                 }
 
                 if ($(this).css('display')=="block") {
-
                     if ($(this).attr('name').toLowerCase().indexOf(iconsearch.val().toLowerCase()) == -1) {
                         $(this).css('display', 'none');
                     }
-
                 }
-
-
             });
         });
-
-
-
     });
-
-
-
-
-
-
 });

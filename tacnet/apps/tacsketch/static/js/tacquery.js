@@ -70,6 +70,8 @@ $(document).ready(function () {
         });
 
         $('.resetBackground').click(function() {
+            $("#gameslist").select2("val", "");
+            $("#mapslist").select2("val", "");
             resetBackground(true);
             hidePopover($('#clearMenu'));
         });
@@ -229,6 +231,70 @@ $(document).ready(function () {
     // Init mouse
     changeMouse();
 
+    // Save/Load  Cloud
+    $('.cloudSave').click(function () {
+        var tacName = $('.tacticName').val();
+        if (!tacName) {
+            // Maybe just save the tactic with the mapname as name? Or at least use something else than growl, the warning 
+            // should come in the box itself, or close.
+            $.bootstrapGrowl('Please enter a tactic name.', {
+                type: 'warning', 
+                width: 'auto'
+            });
+        }
+        else if (!loggedIn) {
+            show_bar();
+            $.bootstrapGrowl('You need to be logged in to cloud save.', {
+                type: 'warning',
+                width: 'auto'
+            });
+        }
+        else if (currentBackgroundID == '-') {
+            $.bootstrapGrowl('Please select a map before attempting to save tactics.', {
+                type: 'warning',
+                width: 'auto'
+            });
+        }
+        else {
+            for (var key in icons) {
+                icons[key].toObject = (function(toObject) {
+                    return function() {
+                        return fabric.util.object.extend(toObject.call(this), {
+                            hash: this.hash
+                        });
+                    };
+                })(icons[key].toObject);
+            }
+            $.ajax({
+                type: "POST",
+                url: "/tacsketch/save_tac",
+                    xhrFields: {
+                        withCredentials: true
+                },
+                data: { 
+                    csrfmiddlewaretoken: csrf_token, 
+                    name: tacName,
+                    map: currentBackgroundID,
+                    fabric: JSON.stringify(fabricCanvas),
+                    lines: JSON.stringify(lines),
+                }
+            }).done(function (msg) {      
+                if (msg == "True") {
+                    $.bootstrapGrowl('Tactic successfully saved. ', {
+                        type: 'success',
+                        width: 'auto'
+                    });
+                }
+                else {
+                    $.bootstrapGrowl('Couldn\'t save tactic, please try again.', {
+                        type: 'danger',
+                        width: 'auto'
+                    });
+                }
+            });
+        }
+    });
+
     $('.saveDrawings').click(function() {
         var dlHref = sketchCanvas.toDataURL('image/png').replace("image/png", "image/octet-stream");
         $('.saveDrawings').attr('href', dlHref).attr('download', currentBackground.slice(12,currentBackground.length-4)+'.png');
@@ -268,4 +334,89 @@ $(document).ready(function () {
         spinner.stop();
         $('#loading_layer').hide();
     });
+
+
+    $('#loadCloudTactic').on('shown.bs.modal', function (e) {
+
+        $('.tac-table-content').html('<tr><td colspan="4">Loading...</td></tr>');
+        $.get( "/tacsketch/get_tacs", {  } )
+        .done(function( data ) {
+            if (data != "False") {
+
+                $('.tac-table-content').html('');
+                jQuery.each(data, function() {
+
+                    var fabricJSON = this.fabric;
+                    var linesJSON = this.lines;
+
+                    $('.tac-table-content').append('<tr class="tac-element-' + this.id + '"><td style="cursor:pointer;" class="tac-click" data-id="' + this.id + '">' + this.name + '</td><td>' + this.mapName + '</td><td>' + this.gameName + '</td><td><button type="button" class="btn btn-danger btn-xs confirmation" data-id="' + this.id + '"><span class="glyphicon glyphicon-remove-circle"></span> Delete</button></td></tr>');
+
+
+                });
+
+                $('.tac-click').click(function(){
+
+                    var id = $(this).attr('data-id');
+                    jQuery.each(data, function() {
+
+                        if(this.id == id) {
+                            lines = JSON.parse(this.lines);
+                            initJSON = JSON.parse(this.fabric);
+                            setBackground('/media/' + this.mapURI, this.mapID, false, true, true);
+                            $('#loadCloudTactic').modal('hide');
+                        }
+
+                    });
+
+                });
+
+
+
+                $('.confirmation').click(function(){
+
+                    if ($(this).hasClass('stage')) {
+
+                        var dataID = $(this).attr('data-id');
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/tacsketch/delete_tac",
+                                xhrFields: {
+                                    withCredentials: true
+                            },
+                            data: {
+                                csrfmiddlewaretoken: csrf_token,
+                                id: dataID
+                            }
+                            }).done(function (msg) {
+                                if (msg == "True") {
+                                    $('.tac-element-' + dataID).hide();
+                                }
+                                else {
+                                    $.bootstrapGrowl('Error: Can\'t delete tactic.', {
+                                        type: 'danger',
+                                        width: 'auto'
+                                    });
+                                }
+                            });
+
+
+                    }
+                    else {
+                        $(this).addClass('stage');
+                        $(this).html('Are you sure?');
+                    }
+
+                });
+
+            }
+           else {
+                $('.tac-table-content').html('<tr><td colspan="4">Please login!</td></tr>');
+            }
+        });
+
+
+    });
+
+
 }); 
