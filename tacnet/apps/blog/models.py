@@ -8,3 +8,6 @@ class Post (models.Model):
     text = models.TextField(verbose_name="Text")
     postImage = models.ImageField(upload_to="blog", verbose_name="Post Image", blank=True, null=True)
     author = models.ForeignKey(User, verbose_name="Author")
+
+    def __unicode__(self):
+        return self.title

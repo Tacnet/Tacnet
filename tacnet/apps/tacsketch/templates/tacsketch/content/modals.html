@@ -1,0 +1,41 @@
+<!-- Modal -->
+<div class="modal fade" id="moreMapsModal" tabindex="-1" role="dialog" aria-labelledby="moreMaps" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <form id="MapRequestForm" action="" method="post" role="form" enctype="multipart/form-data">{% csrf_token %}
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-tower"></span> More Maps</h4>
+          </div>
+          <div class="modal-body">
+
+            <div class="form-group">
+                <label for="id_nickname">Nickname</label>
+                <input id="id_nickname" maxlength="75" name="nickname" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="id_game">Game *</label>
+                <input id="id_game" maxlength="300" name="game" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="id_gameMode">Game Mode</label>
+                <input id="id_gameMode" maxlength="300" name="gameMode" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="id_map">Map *</label>
+                <input id="id_map" maxlength="300" name="map" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="id_image">Image Link</label>
+                <input id="id_imageurl" maxlength="300" name="imageurl" type="text" class="form-control">
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary submitMapRequestForm">Send Request</button>
+          </div>
+        </form>
+    </div>
+  </div>
+</div>

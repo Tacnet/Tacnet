@@ -32,6 +32,7 @@ def about(request):
         context_instance=RequestContext(request)
     )
 
+
 def contact(request):
     if request.method == 'POST':
         email = request.POST['email']
@@ -60,7 +61,6 @@ def contact(request):
                 return HttpResponse('False')
         except:
             return HttpResponse('False')
-        return HttpResponse('False')
 
     else:
         return HttpResponse('False')

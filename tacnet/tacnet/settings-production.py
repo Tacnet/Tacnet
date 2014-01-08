@@ -1,19 +1,22 @@
 DEBUG = False
 
+
 with open('/home/tacnet-www/www/passwords/tacnet_db', 'rb') as f:
     db_password = f.readline()
 
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'tacnet_db',                      # Or path to database file if using sqlite3.
-        # The following settings are not used with sqlite3:
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'tacnet_db',
+
         'USER': 'tacnet',
         'PASSWORD': db_password.strip(),
-        'HOST': 'localhost',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
+
 
 '''
 CACHES = {
@@ -24,9 +27,14 @@ CACHES = {
 }
 '''
 
+
+with open('/home/tacnet-www/www/passwords/django_secret', 'rb') as f:
+    SECRET_KEY_READ = f.readline()
+SECRET_KEY = SECRET_KEY_READ
+
+
 with open('/home/tacnet-www/www/passwords/mail_password', 'rb') as f:
     mail_password = f.readline()
-
 EMAIL_HOST = 'smtp.stud.ntnu.no'
 EMAIL_HOST_USER = 'larek'
 EMAIL_HOST_PASSWORD = mail_password.strip()
