@@ -4,7 +4,7 @@
         {% for mode in game.modes %}
             <optgroup label="{{ mode.name }}">
                 {%  for map in mode.maps %}
-                    <option value="/media/{{ map.image }}">{{ map.name }}</option>
+                    <option value="/media/{{ map.image }}|{{map.id}}">{{ map.name }}</option>
                 {% endfor %}
             </optgroup>
         {% endfor %}
