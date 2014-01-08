@@ -1,0 +1,12 @@
+{% for game in games %}
+    <div id="opt-{{ game.name|slugify }}" style="display: none;">
+        <option></option>
+        {% for mode in game.modes %}
+            <optgroup label="{{ mode.name }}">
+                {%  for map in mode.maps %}
+                    <option value="/media/{{ map.image }}">{{ map.name }}</option>
+                {% endfor %}
+            </optgroup>
+        {% endfor %}
+    </div>
+{% endfor %}

@@ -15,110 +15,21 @@
 
 {% block nav %}
 
-    <li id="chooseBrush" data-original-title="Select Brush"><a href="#"><span class="glyphicon glyphicon-pencil"></span> Select Brush</a></li>
-        <div id="chooseBrush_content_wrapper" style="display: none;">
-             <div class="form-group" id="brushSizeForm">
-                <label for="brushSize">Brush Size</label>
-                <!--Slider comes here.-->
-              </div>
-
-            <div class="btn-group btn-group-justified" style="width: 440px;">
-                <a class="btn btn-success green-pick brush">Green</a>
-                <a class="btn btn-warning yellow-pick brush">Yellow</a>
-                <a class="btn btn-danger red-pick brush">Red</a>
-                <a class="btn btn-info blue-pick brush">Blue</a>
-                <a class="btn btn-inverse black-pick brush">Black</a>
-            </div>
-
-            <div class="btn-group btn-group-justified" style="width: 440px; margin-top: 10px;">
-                <a class="btn btn-primary user-color-pick brush">User Color</a>
-                <a class="btn btn-default eraser brush"><i class="fa fa-eraser"></i></a>
-                <a class="btn btn-primary toggleTrailing"><i class="fa fa-chain"></i> Icon Trailing</a>
-            </div>
-        </div>
-    </li>
-
-    <li id="clearMenu" data-original-title="Clear"><a href="#"><span class="glyphicon glyphicon-remove-sign"></span> Clear</a></li>
-     <div id="clearMenu_content_wrapper" style="display: none">
-        <button class="btn btn-default clearCanvas" style="width: 360px;">Clear Drawings</button>
-
-        <div class="btn-group btn-group-justified" style="width: 360px; margin-top: 10px;">
-            <a class="btn btn-warning resetFabric">Reset Icons</a>
-            <a class="btn btn-danger resetBackground">Reset Background</a>
-        </div>
-
-        </div>
-    </li>
-
-    <li class="undo"><a href="#"><i class="fa fa-undo"></i> Undo</a></li>
-    <li class="redo"><a href="#"><i class="fa fa-repeat"></i> Redo</a></li>
-    <li class="deleteIcon"><a href="#"><span class="glyphicon glyphicon-trash"></span> Delete</a></li>
+    {% include "tacsketch/content/nav.html" %}
 
 {% endblock %}
 
 {% block container %}
     <div class="container">
-                <canvas id="background" style="z-index: -1 !important;"></canvas>
-                <canvas id="fabric" style="z-index: 1 !important;"></canvas>
-                <canvas id="sketch" style="z-index: 0 !important; border: 1px solid grey;"></canvas>
-
+        <canvas id="background" style="z-index: -1 !important;"></canvas>
+        <canvas id="fabric" style="z-index: 1 !important;"></canvas>
+        <canvas id="sketch" style="z-index: 0 !important; border: 1px solid grey;"></canvas>
     </div>
-    <!--Map Opt values-->
 
-    {% for game in games %}
-        <div id="opt-{{ game.name|slugify }}" style="display: none;">
-            <option></option>
-            {% for mode in game.modes %}
-                <optgroup label="{{ mode.name }}">
-                    {%  for map in mode.maps %}
-                        <option value="/media/{{ map.image }}">{{ map.name }}</option>
-                    {% endfor %}
-                </optgroup>
-            {% endfor %}
-        </div>
-    {% endfor %}
 
-    <!-- Modal -->
-    <div class="modal fade" id="moreMapsModal" tabindex="-1" role="dialog" aria-labelledby="moreMaps" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-            <form id="MapRequestForm" action="" method="post" role="form" enctype="multipart/form-data">{% csrf_token %}
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-tower"></span> More Maps</h4>
-              </div>
-              <div class="modal-body">
+    {% include "tacsketch/content/mapselector.html" %}
 
-                <div class="form-group">
-                    <label for="id_nickname">Nickname</label>
-                    <input id="id_nickname" maxlength="75" name="nickname" type="text" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="id_game">Game *</label>
-                    <input id="id_game" maxlength="300" name="game" type="text" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="id_gameMode">Game Mode</label>
-                    <input id="id_gameMode" maxlength="300" name="gameMode" type="text" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="id_map">Map *</label>
-                    <input id="id_map" maxlength="300" name="map" type="text" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="id_image">Image Link</label>
-                    <input id="id_imageurl" maxlength="300" name="imageurl" type="text" class="form-control">
-                </div>
-
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary submitMapRequestForm">Send Request</button>
-              </div>
-            </form>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+    {% include "tacsketch/content/modals.html" %}
 
     <input type="file" id="input" style="visibility:hidden;position:absolute;top:-50;left:-50">
 
@@ -159,115 +70,6 @@
 
 {% block iconbar %}
 
-
-
-
-
-    <div id="sidebar">
-
-        <div id="select-map" class="bar-element">
-             <div class="row">
-
-                <div class="col-xs-12"><h5><i class="fa fa-gamepad"></i> Maps</h5><hr/></div>
-
-            </div>
-
-            <div class="row">
-                <div class="col-xs-12">
-                  <p><select id="gameslist" style="width: 100%;">
-         <option></option>
-            {% for game in games %}
-                <option value="opt-{{ game.name|slugify }}">{{ game.name }}</option>
-            {% endfor %}
-        </select></p>
-
-
-        <p><select id="mapslist" style="width: 100%;">
-            <option></option>
-        </select></p>
-
-        <p style="margin-top: 20px; font-size: 15px;">We try to support as many games as possible. If you've got any additional suggestions, feel free to contact us through the form below.</p>
-        <p class="text-right" style="margin-top: 75px; text-align: center; font-size: 20px;"><i class="fa fa-gamepad"></i> <a href="#" class="moreMaps">Suggest a map</a></p>
-
-                </div>
-
-            </div>
-        </div>
-
-        <div id="icon-picker" class="bar-element">
-
-            <div class="row">
-
-                <div class="col-xs-12"><h5><i class="fa fa-flag"></i> Icons/Text</h5><hr/></div>
-
-            </div>
-
-            <div class="row">
-
-                <div class="col-xs-12">
-
-                    <p><input type="text" id="iconsearch" class="form-control input-sm" placeholder="Search.."></p>
-
-                    <p><select id="gamesearch" style="width: 100%;">
-                     <option value="">All Games</option>
-                    </select></p>
-
-                </div>
-
-            </div>
-
-            <div class="scrollable">
-                <div class="row icon-holder"></div>
-            </div>
-
-            <div class="row">
-                <div class="col-xs-12">
-                    <a href="#" type="button" class="btn btn-primary addText" style="width: 230px; margin-top: 6px; margin-right: 10px;">Add Text</a>
-                </div>
-            </div>
-
-
-
-        </div>
-
-
-        <div id="save-menu" class="bar-element">
-            <div class="row">
-                <div class="col-xs-12"><h5><i class="fa fa-flag"></i> Save/Load</h5><hr/></div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <h5 style="text-align: center;">Drawings:</h5>
-                    <div class="btn-group btn-group-justified" style="width: 230px; margin-top: 20px; margin-right: 10px;">
-                        <a href="#" type="button" class="btn btn-info saveDrawings"><span class="glyphicon glyphicon-floppy-save"></span> Save</a>
-                        <a href="#" type="button" class="btn btn-default loadDrawings"><span class="glyphicon glyphicon-floppy-open"></span> Load</a>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <h5 style="text-align: center; margin-top: 30px;">Screenshot:</h5>
-                    <a href="#" type="button" class="btn btn-success saveScreenshot" style="width: 230px; margin-top: 20px; margin-right: 10px;"><i class="fa fa-camera"></i></a>
-                    <p style="margin-top: 20px; font-size: 15px;">Screenshots are just images and cannot be loaded. </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="dock">
-
-            <ul class="button-list">
-
-                <li class="icon-button select-map" data-toggle="tooltip" data-placement="right" title="Select Map" rel="tooltip"><i class="fa fa-gamepad"></i></li>
-                <li class="icon-button select-icon" data-toggle="tooltip" data-placement="right" title="Icons" rel="tooltip"><i class="fa fa-flag"></i></li>
-                <li class="icon-button select-save" data-toggle="tooltip" data-placement="right" title="Save Drawings" rel="tooltip"><span class="glyphicon glyphicon-floppy-disk"></span></li>
-
-
-                <!--<li class="rights-button"><i class="fa fa-minus-circle"></i></li>-->
-
-            </ul>
-
-        </div>
-
-    </div>
+    {% include "tacsketch/content/sidebar.html" %}
 
 {% endblock %}
