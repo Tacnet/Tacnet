@@ -80,10 +80,14 @@ $(document).ready(function () {
         $('#loadMapScaleInput').click();
     });
  
-     $('#loadMapNoScale').click(function () {
-         $('#loadMapScaleDiv').hide();
-         $('#loadMapButton').show();
-         $('#loadMapNoScaleInput').click();
+    $('#loadMapNoScale').click(function () {
+        $('#loadMapScaleDiv').hide();
+        $('#loadMapButton').show();
+        $('#loadMapNoScaleInput').click();
+    });
+
+    $('#loadDrawings').click(function () {
+        $('#loadDrawingsInput').click();
     });
 
     /* Close when click on canvas */
