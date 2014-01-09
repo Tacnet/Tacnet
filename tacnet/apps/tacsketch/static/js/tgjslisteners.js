@@ -240,20 +240,12 @@ TogetherJS.hub.on('togetherjs.hello', function (msg) {
     if (!msg.sameUrl) {
         return;
     }
-    for (var key in icons) {
-        icons[key].toObject = (function(toObject) {
-            return function() {
-                return fabric.util.object.extend(toObject.call(this), {
-                    hash: this.hash
-                });
-            };
-        })(icons[key].toObject);
-    }
     var lineArr = [];
     for (var key in lines) {
         lineArr.push([lines[key][0], lines[key][1], lines[key][2], lines[key][3], lines[key][4], key]);
     }
     var fabricJSON = JSON.stringify(fabricCanvas);
+    console.log(fabricJSON);
     TogetherJS.send({
         type: 'init',
         lines: lineArr,
