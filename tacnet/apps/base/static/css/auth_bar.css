@@ -9,7 +9,7 @@
     border-style: solid;
     border-color: #000;
     border-width: 0px 0px 1px 0px;
-    z-index: 2;
+    z-index: 9998;
     padding-top: 5px;
 }
 

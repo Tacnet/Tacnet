@@ -66,6 +66,7 @@ ICONS_ROOT = makepath('icons')
 
 STATIC_URL = '/static/'
 
+INTERNAL_IPS = '127.0.0.1'
 
 STATICFILES_DIRS = (
     makepath('apps', 'base', 'static'),

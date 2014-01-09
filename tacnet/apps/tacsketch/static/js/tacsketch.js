@@ -9,6 +9,7 @@ var bgContext = bgCanvas.getContext('2d');
 
 var currentBackground;
 var currentBackgroundID = '-';
+var scaleBackground = false;
 var initJSON;
 
 var icons = {}; 
@@ -21,6 +22,8 @@ var redoArray = [];
 var stateObject = {};
 
 var iconTrail = false;
+
+var initialized = false;
 
 var mouse = {
     x: 0,
@@ -524,7 +527,7 @@ function initSend() {
     }
     var fabricJSON = JSON.stringify(fabricCanvas);
     TogetherJS.send({
-        type: 'init',
+        type: 'load',
         lines: lineArr,
         fabric: fabricJSON,
         undoArray: undoArray,
@@ -636,7 +639,8 @@ function setBackground(background, backgroundID, clicked, init, sendInit) {
             TogetherJS.send({
                 type: 'setBackground',
                 background: background,
-                backgroundID: backgroundID
+                backgroundID: backgroundID,
+                scaleBackground: scaleBackground
             });
         }
     }
@@ -651,13 +655,22 @@ function setBackground(background, backgroundID, clicked, init, sendInit) {
         var oldLineCap = sketchContext.lineCap;
         var oldStrokeStyle = sketchContext.strokeStyle;
 
-        bgCanvas.width = bgimg.width;
-        bgCanvas.height = bgimg.height;
-        sketchCanvas.width = bgimg.width;
-        sketchCanvas.height = bgimg.height;
-        fabricCanvas.setWidth(bgimg.width);
-        fabricCanvas.setHeight(bgimg.height);
-        bgContext.drawImage(bgimg,0,0);
+        if (scaleBackground) {
+            var width = 1140;
+            var height = Math.round(bgimg.height / (bgimg.width / width));
+        }
+        else {
+            var width = bgimg.width;
+            var height = bgimg.height;
+        }
+
+        bgCanvas.width = width;
+        bgCanvas.height = height;
+        sketchCanvas.width = width;
+        sketchCanvas.height = height;
+        fabricCanvas.setWidth(width);
+        fabricCanvas.setHeight(height);
+        bgContext.drawImage(bgimg, 0, 0, width, height);
 
         sketchContext.lineWidth =  oldLineWidth;
         sketchContext.lineJoin = oldLineJoin;
@@ -705,28 +718,4 @@ function resetFabric(clicked) {
     }
     fabricCanvas.clear();
     icons = {};
-}
-
-var input = document.getElementById('input');
-input.addEventListener('change', handleFiles);
-
-function handleFiles(e) {
-    var img = new Image;
-    img.src = URL.createObjectURL(e.target.files[0]);
-    img.onload = function() {
-        if ((img.width != bgCanvas.width) || (img.height != bgCanvas.height)) {
-            bgCanvas.width = img.width;
-            bgCanvas.height = img.height;
-            sketchCanvas.width = img.width;
-            sketchCanvas.height = img.height;
-        }
-        sketchContext.drawImage(img, 0,0);
-        img = sketchCanvas.toDataURL('image/png');
-        if (TogetherJS.running) {
-            TogetherJS.send({
-                type: 'load',
-                loadobject: img
-            });
-        }
-    }
 }
