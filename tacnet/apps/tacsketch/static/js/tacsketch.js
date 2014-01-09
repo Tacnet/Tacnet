@@ -551,6 +551,13 @@ function addIcon(icon, hash, init) {
             top: 100
         }).scale(0.5);
         fabricCanvas.add(oImg).renderAll();
+        oImg.toObject = (function(toObject) {
+            return function() {
+                return fabric.util.object.extend(toObject.call(oImg), {
+                    hash: oImg.hash
+                });
+            };
+        })(oImg.toObject);
         fabricCanvas.setActiveObject(oImg);
         icons[hash] = oImg;
         if (init && !oHash) {
