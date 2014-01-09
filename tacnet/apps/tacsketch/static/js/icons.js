@@ -86,9 +86,7 @@ $(document).ready(function () {
         $('#loadMapNoScaleInput').click();
     });
 
-    $('#loadDrawings').click(function () {
-        $('#loadDrawingsInput').click();
-    });
+
 
     /* Close when click on canvas */
     var ex = $('.upper-canvas');
