@@ -271,7 +271,7 @@ TogetherJS.hub.on('init', function (msg) {
     if (!msg.sameUrl) {
         return;
     }
-    if (!initialized || (msg.background != '/static/media/boot.jpg'  && msg.background != currentBackground)) {
+    if (!initialized || (msg.background != '/static/img/boot.jpg'  && msg.background != currentBackground)) {
         initialized = true;
         lines = {};
         var linesArr = msg.lines;
