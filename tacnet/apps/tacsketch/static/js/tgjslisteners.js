@@ -28,7 +28,7 @@ TogetherJS.hub.on('setBackground', function (msg) {
     setBackground(msg.background, msg.backgroundID, false, false, false);
 });
 
-TogetherJS.hub.on('load', function (msg) {
+TogetherJS.hub.on('loadDrawings', function (msg) {
     if (!msg.sameUrl) {
         return;
     }
@@ -240,6 +240,7 @@ TogetherJS.hub.on('togetherjs.hello', function (msg) {
     if (!msg.sameUrl) {
         return;
     }
+
     for (var key in icons) {
         icons[key].toObject = (function(toObject) {
             return function() {
@@ -270,11 +271,30 @@ TogetherJS.hub.on('init', function (msg) {
     if (!msg.sameUrl) {
         return;
     }
+    if (!initialized || (msg.background != '/static/media/boot.jpg'  && msg.background != currentBackground)) {
+        initialized = true;
+        lines = {};
+        var linesArr = msg.lines;
+        for (var i = 0; i < linesArr.length; i++) {
+            lines[linesArr[i][5]] = linesArr[i];
+        }
+        initJSON = msg.fabric;
+        scaleBackground = msg.scaleBackground;
+        setBackground(msg.background, msg.backgroundID, false, true, false);
+    }
+});
+
+TogetherJS.hub.on('load', function (msg) {
+    if (!msg.sameUrl) {
+        return;
+    }
+    lines = {};
     var linesArr = msg.lines;
     for (var i = 0; i < linesArr.length; i++) {
         lines[linesArr[i][5]] = linesArr[i];
     }
+    console.log("new lines:",lines);
     initJSON = msg.fabric;
-    scaleBackground = msg.scaleBackground;
+    scaleBackground = false; // Can't save tactics with custom maps, so the maps will always be original size.
     setBackground(msg.background, msg.backgroundID, false, true, false);
 });

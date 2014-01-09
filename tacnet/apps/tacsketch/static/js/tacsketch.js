@@ -23,6 +23,8 @@ var stateObject = {};
 
 var iconTrail = false;
 
+var initialized = false;
+
 var mouse = {
     x: 0,
     y: 0
@@ -525,7 +527,7 @@ function initSend() {
     }
     var fabricJSON = JSON.stringify(fabricCanvas);
     TogetherJS.send({
-        type: 'init',
+        type: 'load',
         lines: lineArr,
         fabric: fabricJSON,
         undoArray: undoArray,

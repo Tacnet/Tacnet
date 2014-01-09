@@ -337,43 +337,31 @@ $(document).ready(function () {
 
 
     $('#loadCloudTactic').on('shown.bs.modal', function (e) {
-
         $('.tac-table-content').html('<tr><td colspan="4">Loading...</td></tr>');
         $.get( "/tacsketch/get_tacs", {  } )
         .done(function( data ) {
             if (data != "False") {
-
                 $('.tac-table-content').html('');
                 jQuery.each(data, function() {
-
                     var fabricJSON = this.fabric;
                     var linesJSON = this.lines;
-
                     $('.tac-table-content').append('<tr class="tac-element-' + this.id + '"><td style="cursor:pointer;" class="tac-click" data-id="' + this.id + '">' + this.name + '</td><td>' + this.mapName + '</td><td>' + this.gameName + '</td><td><button type="button" class="btn btn-danger btn-xs confirmation" data-id="' + this.id + '"><span class="glyphicon glyphicon-remove-circle"></span> Delete</button></td></tr>');
-
-
                 });
 
                 $('.tac-click').click(function(){
-
                     var id = $(this).attr('data-id');
                     jQuery.each(data, function() {
-
                         if(this.id == id) {
+                            console.log(JSON.parse(this.lines));
                             lines = JSON.parse(this.lines);
                             initJSON = JSON.parse(this.fabric);
                             setBackground('/media/' + this.mapURI, this.mapID, false, true, true);
                             $('#loadCloudTactic').modal('hide');
                         }
-
                     });
-
                 });
 
-
-
                 $('.confirmation').click(function(){
-
                     if ($(this).hasClass('stage')) {
 
                         var dataID = $(this).attr('data-id');
@@ -399,16 +387,12 @@ $(document).ready(function () {
                                     });
                                 }
                             });
-
-
                     }
                     else {
                         $(this).addClass('stage');
                         $(this).html('Are you sure?');
                     }
-
                 });
-
             }
            else {
                 $('.tac-table-content').html('<tr><td colspan="4">Please login!</td></tr>');
@@ -440,7 +424,7 @@ $(document).ready(function () {
             img = sketchCanvas.toDataURL('image/png');
             if (TogetherJS.running) {
                 TogetherJS.send({
-                    type: 'load',
+                    type: 'loadDrawings',
                     loadobject: img
                 });
             }
