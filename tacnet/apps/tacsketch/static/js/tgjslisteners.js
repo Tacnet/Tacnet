@@ -24,6 +24,7 @@ TogetherJS.hub.on('setBackground', function (msg) {
     if (!msg.sameUrl) {
         return;
     }
+    scaleBackground = msg.scaleBackground;
     setBackground(msg.background, msg.backgroundID, false, false, false);
 });
 
@@ -259,7 +260,8 @@ TogetherJS.hub.on('togetherjs.hello', function (msg) {
         fabric: fabricJSON,
         undoArray: undoArray,
         background: currentBackground,
-        backgroundID: currentBackgroundID
+        backgroundID: currentBackgroundID,
+        scaleBackground: scaleBackground
     });
 });
 
@@ -273,5 +275,6 @@ TogetherJS.hub.on('init', function (msg) {
         lines[linesArr[i][5]] = linesArr[i];
     }
     initJSON = msg.fabric;
+    scaleBackground = msg.scaleBackground;
     setBackground(msg.background, msg.backgroundID, false, true, false);
 });

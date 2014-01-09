@@ -414,9 +414,37 @@ $(document).ready(function () {
                 $('.tac-table-content').html('<tr><td colspan="4">Please login!</td></tr>');
             }
         });
-
-
     });
 
+    $('#loadMapScaleInput').change(function (e) {
+        scaleBackground = true;
+        setBackground(URL.createObjectURL(e.target.files[0]), '-', true, false, false);
+    });
 
+    $('#loadMapNoScaleInput').change(function (e) {
+        scaleBackground = false;
+        setBackground(URL.createObjectURL(e.target.files[0]), '-', true, false, false);
+    });
+
+    $('#loadDrawingsInput').change(function (e) {
+        var img = new Image;
+        img.src = URL.createObjectURL(e.target.files[0]);
+        img.onload = function() {
+            if ((img.width != bgCanvas.width) || (img.height != bgCanvas.height)) {
+                bgCanvas.width = img.width;
+                bgCanvas.height = img.height;
+                sketchCanvas.width = img.width;
+                sketchCanvas.height = img.height;
+            }
+            sketchContext.drawImage(img, 0, 0);
+            img = sketchCanvas.toDataURL('image/png');
+            if (TogetherJS.running) {
+                TogetherJS.send({
+                    type: 'load',
+                    loadobject: img
+                });
+            }
+        }
+    });
+    
 }); 
