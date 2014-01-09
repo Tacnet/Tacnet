@@ -69,6 +69,27 @@ $(document).ready(function () {
         select_icons.hide();        
     });
 
+    $('#loadMapButton').click(function () {
+        $(this).hide();
+        $('#loadMapScaleDiv').show();
+    });
+
+    $('#loadMapScale').click(function () {
+        $('#loadMapScaleDiv').hide();
+        $('#loadMapButton').show();
+        $('#loadMapScaleInput').click();
+    });
+ 
+    $('#loadMapNoScale').click(function () {
+        $('#loadMapScaleDiv').hide();
+        $('#loadMapButton').show();
+        $('#loadMapNoScaleInput').click();
+    });
+
+    $('#loadDrawings').click(function () {
+        $('#loadDrawingsInput').click();
+    });
+
     /* Close when click on canvas */
     var ex = $('.upper-canvas');
     ex.click(function(){
@@ -92,6 +113,7 @@ $(document).ready(function () {
         if (e.val) {
             var img = e.val.split('|')[0];
             var id = e.val.split('|')[1];
+            scaleBackground = false;
             setBackground(img, id, true, false, false);
         }
     });
