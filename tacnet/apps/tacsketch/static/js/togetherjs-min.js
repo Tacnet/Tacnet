@@ -65,7 +65,11 @@
     // When true, the WebRTC-based mic/chat will be disabled
     disableWebRTC: false,
     // When true, youTube videos will synchronize
-    youtube: true
+    youtube: true,
+    // When false, disables all console logging
+    debug: true,
+    // Won't display the following console updates:
+    ignoreMessages: ["cursor-update", "keydown", "scroll-update"]
   };
 
   var styleSheet = "/togetherjs/togetherjs.css";

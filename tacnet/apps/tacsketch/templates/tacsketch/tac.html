@@ -52,8 +52,15 @@
     <link rel="stylesheet" href="/static/css/dock.css">
     <script src="/static/js/TogetherJSConfig.js"></script>
     {% if debug %}
+        <script>
+            TogetherJSConfig_debug = true;
+            TogetherJSConfig_ignoreMessages = ["cursor-update", "keydown", "scroll-update", "app.draw"];
+        </script>
         <script src="/static/js/togetherjs-min-local.js"></script>
     {% else %}
+        <script>
+            TogetherJSConfig_debug = false;
+        </script>
         <script src="/static/js/togetherjs-min.js"></script>
     {% endif %}
 

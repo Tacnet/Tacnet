@@ -1730,7 +1730,7 @@ define('storage',["util"], function (util) {
 
 define('session',["require", "util", "channels", "jquery", "storage"], function (require, util, channels, $, storage) {
 
-  var DEBUG = true;
+  var DEBUG = TogetherJS.config.get("debug");
   // This is the amount of time in which a hello-back must be received after a hello
   // for us to respect a URL change:
   var HELLO_BACK_CUTOFF = 1500;
@@ -1813,7 +1813,7 @@ define('session',["require", "util", "channels", "jquery", "storage"], function 
 
   session.hub = util.mixinEvents({});
 
-  var IGNORE_MESSAGES = ["cursor-update", "keydown", "scroll-update"];
+  var IGNORE_MESSAGES = TogetherJS.config.get("ignoreMessages");
   // These are messages sent by clients who aren't "part" of the TogetherJS session:
   var MESSAGES_WITHOUT_CLIENTID = ["who", "invite", "init-connection"];
 
