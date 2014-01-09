@@ -1,37 +1,33 @@
    <div id="sidebar">
-
     <div id="select-map" class="bar-element">
          <div class="row">
-
             <div class="col-xs-12"><h5><i class="fa fa-gamepad"></i> Maps</h5><hr/></div>
-
         </div>
 
         <div class="row">
             <div class="col-xs-12">
-              <p><select id="gameslist" style="width: 100%;">
-     <option></option>
-        {% for game in games %}
-            <option value="opt-{{ game.name|slugify }}">{{ game.name }}</option>
-        {% endfor %}
-    </select></p>
+                <p><select id="gameslist" style="width: 100%;">
+                <option></option>
+                {% for game in games %}
+                    <option value="opt-{{ game.name|slugify }}">{{ game.name }}</option>
+                {% endfor %}
+                </select></p>
 
 
-    <p><select id="mapslist" style="width: 100%;">
-        <option></option>
-    </select></p>
+                <p><select id="mapslist" style="width: 100%;">
+                    <option></option>
+                </select></p>
 
-    <p class="text-right" style="margin-top: 10px; text-align: center; font-size: 20px;"><i class="fa fa-gamepad"></i> <a href="#" class="moreMaps">Suggest a map</a></p>
-    <p style="margin-top: 10px; font-size: 15px;">We try to support as many games as possible. If you've got any additional suggestions, feel free to contact us through the form below.</p>
-    <div>
-        <a href="#" type="button" id="loadMapButton" class="btn btn-block btn-default btn-success"><span class="glyphicon glyphicon-floppy-open"></span> Load Map</a>
-        <div id="loadMapScaleDiv" class="btn-group btn-group-justified" style="display: none;">
-            <a href="#" id="loadMapScale" class="btn btn-success loadMapFromPath">Scale</a>
-            <a href="#" id="loadMapNoScale" class="btn btn-danger loadMapFromPath">No-scale</a>
-        </div>
-    </div>
+                <p class="text-right" style="margin-top: 10px; text-align: center; font-size: 20px;"><i class="fa fa-gamepad"></i> <a href="#" class="moreMaps">Suggest a map</a></p>
+                <p style="margin-top: 10px; font-size: 15px;">We try to support as many games as possible. If you've got any additional suggestions, feel free to contact us through the form below.</p>
+                <div style="margin-top: 50px;">
+                    <a href="#" type="button" id="loadMapButton" class="btn btn-block btn-default btn-success"><span class="glyphicon glyphicon-floppy-open"></span> Load Custom Map</a>
+                    <div id="loadMapScaleDiv" class="btn-group btn-group-justified" style="display: none;">
+                        <a href="#" id="loadMapScale" class="btn btn-success loadMapFromPath"><i class="fa fa-compress"></i> Scaled</a>
+                        <a href="#" id="loadMapNoScale" class="btn btn-danger loadMapFromPath"><i class="fa fa-expand"></i> Original</a>
+                    </div>
+                </div>
             </div>
-
         </div>
     </div>
 
