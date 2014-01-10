@@ -343,8 +343,22 @@ $(document).ready(function () {
         $('#input').click();
     });
 
-    TogetherJS.on('ready', function () {
-        stopSpinner();
+    TogetherJS.once('ready', function () {
+        TogetherJS.require('session').on('self-updated', function () {
+            stopSpinner();
+            self = {
+                name: TogetherJS.require('peers').Self.name,
+                id: TogetherJS.require('peers').Self.identityId
+            }
+            peers[self.id] = {
+                id: self.id,
+                name: self.name,
+                draw: true,
+                host: true
+            }
+            console.log("init peers", peers);
+            host = self;
+        });
     });
 
 

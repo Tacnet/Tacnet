@@ -17,15 +17,18 @@ var initJSON;
 var icons = {}; 
 var lines = {}; 
 var tempLines = {};
+var iconTrail = false;
 var startText = "TEXT"; 
 
 var undoArray = [];
 var redoArray = [];
 var stateObject = {};
 
-var iconTrail = false;
-
 var initialized = false;
+
+var peers = {};
+var self = {};
+var host; 
 
 var mouse = {
     x: 0,
