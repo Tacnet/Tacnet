@@ -183,7 +183,7 @@ function setSize(size) {
 function setColor(color) {
     globalColor = color;
     var rgb = globalColor.match(/\d+/g);
-    sketchContext.globalCompositeOperation = 'source-over';
+    sketchContext.globalCompositeOperation = 'copy';
     sketchContext.strokeStyle = 'rgba('+ rgb[0] +', '+ rgb[1] +', '+ rgb[2] +', '+ alpha +')';
 }
 

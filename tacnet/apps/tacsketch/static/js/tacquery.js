@@ -92,6 +92,7 @@ $(document).ready(function () {
             value: sketchContext.lineWidth
         }).on('slide', function (ev) {
             setSize(ev.value+2);
+            console.log(setSize(ev.value+2));
         }).on('slideStop', function (ev) {
             changeMouse();
         })
@@ -160,7 +161,7 @@ $(document).ready(function () {
                 sketchContext.strokeStyle = 'rgba(0,0,0,1)';
             }
             else {
-                sketchContext.globalCompositeOperation = 'source-over';
+                sketchContext.globalCompositeOperation = 'copy';
                 sketchContext.strokeStyle = oldColor;
             }
             changeMouse();
