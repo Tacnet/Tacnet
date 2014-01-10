@@ -94,13 +94,26 @@ $(document).ready(function () {
             setSize(ev.value+2);
         }).on('slideStop', function (ev) {
             changeMouse();
+        })
+
+        $('#setAlphaForm').append('<input type="text" class="slider2" id="setAlpha" style="width: 440px;" />');
+        $('.slider2').slider({
+            min: 0,
+            max: 1,
+            step: 0.1,
+            value: alpha
+        }).on('slide', function (ev) {
+            alpha = ev.value+0.1;
+        }).on('slideStop', function (ev) {
+            setColor(globalColor);
+            changeMouse();
         });
 
         // Button listeners
 
         //Color change functions
         $('.green-pick').click(function () {
-            setColor('#00ff00');
+            setColor('rgb(0, 255, 0)');
             $('.brush').removeClass('active');
             toggleState(this, '.green-pick');
             changeMouse();
@@ -108,7 +121,7 @@ $(document).ready(function () {
 
         //Color change functions
         $('.yellow-pick').click(function () {
-            setColor('#ff0');
+            setColor('rgba(255, 255, 170, '+ alpha +')');
             $('.brush').removeClass('active');
             toggleState(this, '.yellow-pick');
             changeMouse();
@@ -116,7 +129,7 @@ $(document).ready(function () {
 
         //Color change functions
         $('.red-pick').click(function () {
-            setColor('#ff0000');
+            setColor('rgba(255, 255, 0, '+ alpha +')');
             $('.brush').removeClass('active');
             toggleState(this, '.red-pick');
             changeMouse();
@@ -124,7 +137,7 @@ $(document).ready(function () {
 
         //Color change functions
         $('.blue-pick').click(function () {
-            setColor('#0000ff');
+            setColor('rgba(0, 0, 255, '+ alpha +')');
             $('.brush').removeClass('active');
             toggleState(this, '.blue-pick');
             changeMouse();
@@ -132,7 +145,7 @@ $(document).ready(function () {
 
         //Color change functions
         $('.black-pick').click(function () {
-            setColor('#000');
+            setColor('rgba(0, 0, 0, '+ alpha +')');
             $('.brush').removeClass('active');
             toggleState(this, '.black-pick');
             changeMouse();
