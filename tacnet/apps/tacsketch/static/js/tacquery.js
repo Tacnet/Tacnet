@@ -98,12 +98,13 @@ $(document).ready(function () {
 
         $('#setAlphaForm').append('<input type="text" class="slider2" id="setAlpha" style="width: 440px;" />');
         $('.slider2').slider({
-            min: 0,
-            max: 1,
-            step: 0.1,
-            value: alpha
+            min: 10,
+            max: 100,
+            step: 10,
+            value: alpha * 100
         }).on('slide', function (ev) {
-            alpha = ev.value+0.1;
+            alpha = (Math.round((ev.value * 10) / 10) / 100);
+            console.log(alpha);
         }).on('slideStop', function (ev) {
             setColor(globalColor);
             changeMouse();
