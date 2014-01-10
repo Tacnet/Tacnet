@@ -1036,7 +1036,7 @@ select::-webkit-scrollbar-thumb {
 }
 
 .modal {
-  background-color: #444;
+  /*background-color: #444;*/
 }
 
 .modal-content {

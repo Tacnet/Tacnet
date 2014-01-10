@@ -118,3 +118,9 @@ select, input[type="text"], input[type="password"], input[type="datetime"], inpu
 #body_content {
   min-height: 500px;
 }
+
+.modal-dialog {
+
+    padding-top: 60px !important;
+
+}
