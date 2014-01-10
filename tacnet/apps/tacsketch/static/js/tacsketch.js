@@ -12,6 +12,8 @@ var currentBackgroundID = '-';
 var scaleBackground = false;
 var initJSON;
 
+var iconColor = sketchContext.strokeStyle;
+
 var icons = {}; 
 var lines = {}; 
 var tempLines = {};
@@ -601,7 +603,7 @@ function addText(text, color, hash, init) {
             type: 'newText',
             hash: hash,
             text: text,
-            fill: sketchContext.strokeStyle
+            fill: color
         });
     }
     dfd.resolve();

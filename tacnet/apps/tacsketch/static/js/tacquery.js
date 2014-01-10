@@ -191,7 +191,7 @@ $(document).ready(function () {
     });
 
     $('.addText').click(function() {
-        addText('TEXT', sketchContext.strokeStyle, false, true);
+        addText('Click to edit...', iconColor, false, true);
     });
 
     $('.deleteIcon').click(function() {
@@ -403,5 +403,51 @@ $(document).ready(function () {
         scaleBackground = false;
         setBackground(URL.createObjectURL(e.target.files[0]), '-', true, false, false);
     });
+
+
+
+    var genericIcons = $(".generic-icons");
+    genericIcons.mousewheel(function(event, delta) {
+        // Vertical scroll genric icons
+        genericIcons.scrollLeft(genericIcons.scrollLeft() - (delta));
+        event.preventDefault();
+    });
+
+    $('.genric-green').click(function(){
+        iconColor = "#00ff00";
+        $('.generic-color').removeClass('active');
+        toggleState(this, '.genric-green');
+    });
+
+    $('.genric-yellow').click(function(){
+        iconColor = "#ffff00";
+        $('.generic-color').removeClass('active');
+        toggleState(this, '.genric-yellow');
+    });
+
+    $('.genric-red').click(function(){
+        iconColor = "#ff0000";
+        $('.generic-color').removeClass('active');
+        toggleState(this, '.genric-red');
+    });
+
+    $('.genric-blue').click(function(){
+        iconColor = "#0000FF";
+        $('.generic-color').removeClass('active');
+        toggleState(this, '.genric-blue');
+    });
+
+    $('.genric-black').click(function(){
+        iconColor = "#00000";
+        $('.generic-color').removeClass('active');
+        toggleState(this, '.genric-black');
+    });
+
+    $('.genric-white').click(function(){
+        iconColor = "#FFFFFF";
+        $('.generic-color').removeClass('active');
+        toggleState(this, '.genric-white');
+    });
+
 
 });
