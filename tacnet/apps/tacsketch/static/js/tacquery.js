@@ -237,10 +237,10 @@ $(document).ready(function () {
         if (!tacName) {
             // Maybe just save the tactic with the mapname as name? Or at least use something else than growl, the warning 
             // should come in the box itself, or close.
-                $.bootstrapGrowl('Please enter a tactic name.', {
-                    type: 'warning',
-                    width: 'auto'
-                });
+            $.bootstrapGrowl('Please enter a tactic name.', {
+                type: 'warning', 
+                width: 'auto'
+            });
         }
         else if (!loggedIn) {
             show_bar();
@@ -256,6 +256,15 @@ $(document).ready(function () {
             });
         }
         else {
+            for (var key in icons) {
+                icons[key].toObject = (function(toObject) {
+                    return function() {
+                        return fabric.util.object.extend(toObject.call(this), {
+                            hash: this.hash
+                        });
+                    };
+                })(icons[key].toObject);
+            }
             $.ajax({
                 type: "POST",
                 url: "/tacsketch/save_tac",
@@ -267,7 +276,7 @@ $(document).ready(function () {
                     name: tacName,
                     map: currentBackgroundID,
                     fabric: JSON.stringify(fabricCanvas),
-                    lines: JSON.stringify(lines)
+                    lines: JSON.stringify(lines),
                 }
             }).done(function (msg) {      
                 if (msg == "True") {
@@ -286,6 +295,14 @@ $(document).ready(function () {
         }
     });
 
+    $('.saveDrawings').click(function() {
+        var dlHref = sketchCanvas.toDataURL('image/png').replace("image/png", "image/octet-stream");
+        $('.saveDrawings').attr('href', dlHref).attr('download', currentBackground.slice(12,currentBackground.length-4)+'.png');
+        $.bootstrapGrowl('Saved drawings - please select the correct map before attempting to load.', {
+            type: 'success',
+            width: 'auto'
+        });
+    });
 
     $('.saveScreenshot').click(function() {
         var downloadCanvas = document.createElement('canvas');
@@ -309,39 +326,53 @@ $(document).ready(function () {
         });
     });
 
+    $('.loadDrawings').click(function() {
+        $('#input').click();
+    });
 
     TogetherJS.on('ready', function () {
-        spinner.stop();
-        $('#loading_layer').hide();
+        stopSpinner();
     });
 
 
     $('#loadCloudTactic').on('shown.bs.modal', function (e) {
+
         $('.tac-table-content').html('<tr><td colspan="4">Loading...</td></tr>');
         $.get( "/tacsketch/get_tacs", {  } )
         .done(function( data ) {
             if (data != "False") {
+
                 $('.tac-table-content').html('');
                 jQuery.each(data, function() {
+
                     var fabricJSON = this.fabric;
                     var linesJSON = this.lines;
+
                     $('.tac-table-content').append('<tr class="tac-element-' + this.id + '"><td style="cursor:pointer;" class="tac-click" data-id="' + this.id + '">' + this.name + '</td><td>' + this.mapName + '</td><td>' + this.gameName + '</td><td><button type="button" class="btn btn-danger btn-xs confirmation" data-id="' + this.id + '"><span class="glyphicon glyphicon-remove-circle"></span> Delete</button></td></tr>');
+
+
                 });
 
                 $('.tac-click').click(function(){
+
                     var id = $(this).attr('data-id');
                     jQuery.each(data, function() {
+
                         if(this.id == id) {
-                            console.log(JSON.parse(this.lines));
                             lines = JSON.parse(this.lines);
                             initJSON = JSON.parse(this.fabric);
                             setBackground('/media/' + this.mapURI, this.mapID, false, true, true);
                             $('#loadCloudTactic').modal('hide');
                         }
+
                     });
+
                 });
 
+
+
                 $('.confirmation').click(function(){
+
                     if ($(this).hasClass('stage')) {
 
                         var dataID = $(this).attr('data-id');
@@ -367,12 +398,16 @@ $(document).ready(function () {
                                     });
                                 }
                             });
+
+
                     }
                     else {
                         $(this).addClass('stage');
                         $(this).html('Are you sure?');
                     }
+
                 });
+
             }
            else {
                 $('.tac-table-content').html('<tr><td colspan="4">Please login!</td></tr>');
@@ -390,4 +425,25 @@ $(document).ready(function () {
         setBackground(URL.createObjectURL(e.target.files[0]), '-', true, false, false);
     });
 
-});
+    $('#loadDrawingsInput').change(function (e) {
+        var img = new Image;
+        img.src = URL.createObjectURL(e.target.files[0]);
+        img.onload = function() {
+            if ((img.width != bgCanvas.width) || (img.height != bgCanvas.height)) {
+                bgCanvas.width = img.width;
+                bgCanvas.height = img.height;
+                sketchCanvas.width = img.width;
+                sketchCanvas.height = img.height;
+            }
+            sketchContext.drawImage(img, 0, 0);
+            img = sketchCanvas.toDataURL('image/png');
+            if (TogetherJS.running) {
+                TogetherJS.send({
+                    type: 'load',
+                    loadobject: img
+                });
+            }
+        }
+    });
+    
+}); 

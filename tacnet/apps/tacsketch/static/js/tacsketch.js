@@ -103,13 +103,10 @@ fabricCanvas.on('text:changed', function (e) {
 
 fabricCanvas.on('text:editing:entered', function (e) {
     startText = e.target.text;
-    console.log("set starttext to", startText); 
 });
 
 fabricCanvas.on('text:editing:exited', function (e) {
-    console.log("text difference", startText, e.target.text);
     if (e.target.text != startText) {
-        console.log("adding", startText);
         undoArray.push({
             undoText: startText,
             hash: e.target.hash
@@ -185,10 +182,8 @@ function setColor(color) {
 }
 
 function undo() {
-    console.log(undoArray);
     if (undoArray[0] != null) {
         var undoObj = undoArray[undoArray.length-1];
-        console.log(undoObj);
         if (undoObj.undoText) {
             var redoObj = {
                 undoText: icons[undoObj.hash].text,
@@ -266,14 +261,12 @@ function undo() {
                     oCoords: undoObj.oCoords
                 });
                 if (undoObj.text !== 'undefined') {
-                    console.log("setting text here");
                     icons[undoObj.hash].set({
                         text: undoObj.text,
                         fill: undoObj.fill
                     });
                 }
                 else {
-                    console.log("setting src");
                     icons[undoObj.hash].set({
                         src: undoObj.src
                     });
@@ -286,11 +279,8 @@ function undo() {
                         state: undoObj
                     });
                 }
-                console.log(icons[undoObj.hash]);
             };
-            console.log(icons[undoObj.hash], icons, undoObj.hash);
             if (!icons[undoObj.hash]) {
-                console.log("got to missing");
                 if (undoObj.src) {
                     addIcon(undoObj.src, undoObj.hash, false).done(setIcon);
                 }
@@ -326,7 +316,6 @@ function redo() {
     if (redoArray[0] != null) {
         var redoObj = redoArray[redoArray.length-1];
         if (redoObj.undoText) {
-            console.log("setting text to", redoObj.undoText);
             icons[redoObj.hash].set({
                 text: redoObj.undoText
             });
@@ -373,7 +362,6 @@ function redo() {
                     oCoords: redoObj.oCoords
                 });
                 if (redoObj.text !== 'undefined') {
-                    console.log("setting text in redo");
                     icons[redoObj.hash].set({
                         text: redoObj.text,
                         fill: redoObj.fill
@@ -381,7 +369,6 @@ function redo() {
                     })
                 }
                 else {
-                    console.log("setting src in redo");
                     icons[redoObj.hash].set({
                         src: redoObj.src
                     });
@@ -393,11 +380,9 @@ function redo() {
             // Check if the icon already exists, if it doesn't, add it. 
             if (!icons[redoObj.hash]) {
                 if (redoObj.src) {
-                    console.log("adding normal icon (missing)");
                     addIcon(redoObj.src, redoObj.hash, false).done(setIcon);
                 }
                 else {
-                    console.log("adding text icon (missing)");
                     addText(redoObj.text, redoObj.fill, redoObj.hash, false).done(setIcon);
                 }
                 undoArray.push(redoObj.hash);
@@ -507,6 +492,7 @@ function initDraw(sendInit) {
         for (var i = 0; i < canvasObjects.length; i++) {
             icons[canvasObjects[i].hash] = canvasObjects[i];
         }
+        stopSpinner();
         if (sendInit) initSend();
     });
 }
@@ -592,7 +578,6 @@ function addText(text, color, hash, init) {
     fabricCanvas.add(fabricText).renderAll();
     fabricCanvas.setActiveObject(fabricText);
     icons[hash] = fabricText;
-    console.log(hash, icons[hash], icons);
     if (init && !oHash) {
         undoArray.push(hash);
     }
@@ -654,6 +639,7 @@ function setBackground(background, backgroundID, clicked, init, sendInit) {
 
     currentBackground = background;
     currentBackgroundID = backgroundID;
+    startSpinner();
     var bgimg = new Image();
     bgimg.src = background;
     bgimg.onload = function() {
@@ -687,6 +673,7 @@ function setBackground(background, backgroundID, clicked, init, sendInit) {
             initDraw(sendInit);
         }
         else {
+            stopSpinner();
             lines = {};
         }
     }
