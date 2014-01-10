@@ -316,6 +316,20 @@ $(document).ready(function () {
     });
 
 
+    $('.select-cloud-load').click(function(){
+        // Open Cloud load modal if logged in
+        if (loggedIn != "") {
+            $('#loadCloudTactic').modal('show');
+        }
+        else {
+            $.bootstrapGrowl('You need to login before you can load cloud tactics.', {
+                type: 'danger',
+                width: 'auto'
+            });
+        }
+    });
+
+
     $('#loadCloudTactic').on('shown.bs.modal', function (e) {
         $('.tac-table-content').html('<tr><td colspan="4">Loading...</td></tr>');
         $.get( "/tacsketch/get_tacs", {  } )
