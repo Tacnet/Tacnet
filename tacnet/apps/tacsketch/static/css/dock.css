@@ -173,3 +173,7 @@
     display: none
 }
 
+#icon-picker {
+    height: 500px !important;
+}
+
