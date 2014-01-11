@@ -462,7 +462,7 @@ $(document).ready(function () {
 
 
     $('#peerList').on('updateList', function() {
-
+        console.log("trigga");
         var userList = $('#peerBody');
         userList.html("");
 

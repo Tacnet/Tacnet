@@ -328,7 +328,7 @@ TogetherJS.hub.on('togetherjs.peer-update', function (msg) {
     else {
         if (peers[id].name != msg.name) {
             peers[id].name = msg.name;
-            $('#peersList').trigger('updateList');
+            $('#peerList').trigger('updateList');
         }
     }
 
