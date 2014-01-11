@@ -84,7 +84,7 @@ $(document).ready(function () {
             }
         }
         hidePopover($('#clearMenu'));
-        $('#brushSizeForm').append('<input type="text" id="brushSize" class="brushSlider" style="width: 209px;" />');
+        $('#brushSizeForm').append('<input type="text" id="brushSize" class="brushSlider" style="width: 214px;" />');
         $('.brushSlider').slider({
             min: 1,
             max: 50,
@@ -96,7 +96,7 @@ $(document).ready(function () {
             changeMouse();
         })
 
-        $('#setAlphaForm').append('<input type="text" id="setAlpha" class="alphaSlider" style="width: 209px;" />');
+        $('#setAlphaForm').append('<input type="text" id="setAlpha" class="alphaSlider" style="width: 214px;" />');
         $('.alphaSlider').slider({
             min: 1,
             max: 100,
