@@ -339,7 +339,6 @@ $(document).ready(function () {
                 tempName = TogetherJS.require('peers').Self.name
             }
             peers[TogetherJS.require('peers').Self.identityId] = {
-
                 id: TogetherJS.require('peers').Self.identityId,
                 name: tempName,
                 draw: true,
@@ -347,7 +346,6 @@ $(document).ready(function () {
             }
             console.log(TogetherJS.require('peers').Self.identityId);
             $('#peerList').trigger('updateList');
-            host = self;
         });
     });
 
@@ -472,22 +470,22 @@ $(document).ready(function () {
         $.each(peers, function( k, v ) {
 
             var lastButton = "";
-            if (v.host == true){
+            if (v.host === true){
                 lastButton = '<span class="label label-info">Host</span>';
             }
             else {
                 if (peers[TogetherJS.require('peers').Self.identityId].host == true) {
-                    if (v.draw == true) {
-                        lastButton = '<a data-user="' + v.id + '" href="#" class="btn btn-danger btn-xs restrict-user"><i class="fa fa-pencil"></i></a>';
+                    if (v.draw === true) {
+                        lastButton = '<a data-user="' + v.id + '" href="#" class="btn btn-success btn-xs restrict-user"><i class="fa fa-pencil"></i></a>';
                     }
                     else {
-                        lastButton = '<a data-user="' + v.id + '" href="#" class="btn btn-success btn-xs restrict-user"><i class="fa fa-pencil"></i></a>';
+                        lastButton = '<a data-user="' + v.id + '" href="#" class="btn btn-danger btn-xs restrict-user"><i class="fa fa-pencil"></i></a>';
                     }
                 }
             }
 
             var status = '<span class="label label-success"><i class="fa fa-user"></i></span>';
-            if (v.draw  == false) {
+            if (v.draw  === false) {
                 status = '<span class="label label-danger"><i class="fa fa-user"></i></span>';
             }
             userList.append('<tr>' +

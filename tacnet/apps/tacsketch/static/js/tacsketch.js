@@ -25,7 +25,6 @@ var stateObject = {};
 var initialized = false;
 
 var peers = {};
-var self = {};
 var host; 
 
 var mouse = {
@@ -120,29 +119,31 @@ fabricCanvas.on('text:editing:exited', function (e) {
 
 var lastState = 0;
 fabricCanvas.on('mouse:down', function(e) {
-    lastMouse = fabricCanvas.getPointer(e.e);
-    if (!fabricCanvas.getActiveObject()) {
-        lastState = Object.keys(lines).length;
-        fabricCanvas.on('mouse:move', move);
-    }
-    else {
-        lastState = Object.keys(lines).length;
-        stateObject = {};
-        stateObject.hash = fabricCanvas.getActiveObject().hash;
-        stateObject.left = fabricCanvas.getActiveObject().left;
-        stateObject.top = fabricCanvas.getActiveObject().top;
-        stateObject.width = fabricCanvas.getActiveObject().width;
-        stateObject.height = fabricCanvas.getActiveObject().height;
-        stateObject.scaleX = fabricCanvas.getActiveObject().scaleX;
-        stateObject.scaleY = fabricCanvas.getActiveObject().scaleY;
-        stateObject.angle = fabricCanvas.getActiveObject().angle;
-        stateObject.oCoords = fabricCanvas.getActiveObject().oCoords;
-        if (typeof fabricCanvas.getActiveObject().text !== 'undefined') { 
-            stateObject.text = fabricCanvas.getActiveObject().text;
-            stateObject.fill = fabricCanvas.getActiveObject().fill;
+    if (peers[TogetherJS.require('peers').Self.identityId].draw) {
+        lastMouse = fabricCanvas.getPointer(e.e);
+        if (!fabricCanvas.getActiveObject()) {
+            lastState = Object.keys(lines).length;
+            fabricCanvas.on('mouse:move', move);
         }
         else {
-            stateObject.src = fabricCanvas.getActiveObject()._element.src;
+            lastState = Object.keys(lines).length;
+            stateObject = {};
+            stateObject.hash = fabricCanvas.getActiveObject().hash;
+            stateObject.left = fabricCanvas.getActiveObject().left;
+            stateObject.top = fabricCanvas.getActiveObject().top;
+            stateObject.width = fabricCanvas.getActiveObject().width;
+            stateObject.height = fabricCanvas.getActiveObject().height;
+            stateObject.scaleX = fabricCanvas.getActiveObject().scaleX;
+            stateObject.scaleY = fabricCanvas.getActiveObject().scaleY;
+            stateObject.angle = fabricCanvas.getActiveObject().angle;
+            stateObject.oCoords = fabricCanvas.getActiveObject().oCoords;
+            if (typeof fabricCanvas.getActiveObject().text !== 'undefined') { 
+                stateObject.text = fabricCanvas.getActiveObject().text;
+                stateObject.fill = fabricCanvas.getActiveObject().fill;
+            }
+            else {
+                stateObject.src = fabricCanvas.getActiveObject()._element.src;
+            }
         }
     }
 });

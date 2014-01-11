@@ -240,6 +240,16 @@ TogetherJS.hub.on('updatePeersList', function (msg) {
         return;
     }
     peers[msg.id].draw = msg.draw;
+    if (TogetherJS.require('peers').Self.identityId === msg.id) {
+        fabricCanvas.deactivateAll().renderAll();
+        for (var i in icons) {
+            console.log("setting to ", msg.draw, icons[i]);
+            icons[i].set({
+                selectable: msg.draw
+            });
+        }
+        fabricCanvas.renderAll();
+    }
 });
 
 // Hello is fired whenever you connect (so that the other clients know you connected):
