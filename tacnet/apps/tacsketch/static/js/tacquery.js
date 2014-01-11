@@ -441,52 +441,50 @@ $(document).ready(function () {
     });
 
     $('.generic-blue').click(function () {
-        textColor = "#0000FF";
+        textColor = "#0000ff";
         $('.generic-color').removeClass('active');
         toggleState(this, '.generic-blue');
     });
 
     $('.generic-black').click(function () {
-        textColor = "#00000";
+        textColor = "#000000";
         $('.generic-color').removeClass('active');
         toggleState(this, '.generic-black');
     });
 
     $('.generic-white').click(function () {
-        textColor = "#FFFFFF";
+        textColor = "#ffffff";
         $('.generic-color').removeClass('active');
         toggleState(this, '.generic-white');
     });
 
 
-
+    var colors = {
+        '#00ff00': 'green',
+        '#ffff00': 'yellow',
+        '#ff0000': 'red',
+        '#0000ff': 'blue',
+        '#000000': 'black',
+        '#ffffff': 'white'
+    };
 
     $('.circleFilled').click(function(){
-
-        addIcon(icon, false, true);
+        addIcon('/static/img/fabric/circle_' + colors[textColor] + '.png', false, true);
     });
     $('.rectFilled').click(function(){
-
+        addIcon('/static/img/fabric/rect_' + colors[textColor] + '.png', false, true);
     });
     $('.triangleFilled').click(function(){
-
+        addIcon('/static/img/fabric/triangle_' + colors[textColor] + '.png', false, true);
     });
     $('.circle').click(function(){
-
+        addIcon('/static/img/fabric/circle_stroke_' + colors[textColor] + '.png', false, true);
     });
     $('.rect').click(function(){
-
+        addIcon('/static/img/fabric/rect_stroke_' + colors[textColor] + '.png', false, true);
     });
     $('.trinagle').click(function(){
-
+        addIcon('/static/img/fabric/triangle_stroke_' + colors[textColor] + '.png', false, true);
     });
-    $('.number').click(function(){
-
-    });
-
-
-
-
-
 
 });

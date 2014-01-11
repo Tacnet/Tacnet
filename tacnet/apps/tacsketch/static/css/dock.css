@@ -194,6 +194,10 @@
     white-space: normal;
 }
 
+.generic-icons .icon:first-child {
+    margin-left: 10px;
+}
+
 #sidebar .element-separator {
     width: 100%;
     height: 1px;
@@ -216,3 +220,4 @@
 .btn.generic-white {
     background-color: #FFF !important;
 }
+
