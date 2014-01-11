@@ -338,13 +338,14 @@ $(document).ready(function () {
             if (TogetherJS.require('peers').Self.name != "") {
                 tempName = TogetherJS.require('peers').Self.name
             }
+            peers[TogetherJS.require('peers').Self.identityId] = {
 
-            peers[self.id] = {
                 id: TogetherJS.require('peers').Self.identityId,
                 name: tempName,
                 draw: true,
                 host: true
             }
+            console.log(TogetherJS.require('peers').Self.identityId);
             $('#peerList').trigger('updateList');
             host = self;
         });

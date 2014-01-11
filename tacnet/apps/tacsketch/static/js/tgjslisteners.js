@@ -241,12 +241,19 @@ TogetherJS.hub.on('togetherjs.hello', function (msg) {
         return;
     }
     var id = msg.clientId.split(".")[0];
-    peers[id] = {
-        id: id,
-        name: msg.name,
-        draw: true,
-        host: false
+    if (peers[id]) {
+        peers[id].name = msg.name;
     }
+    else {
+        peers[id] = {
+            id: id,
+            name: msg.name,
+            draw: true,
+            host: false
+        }
+    }
+
+    console.log(peers);
     $('#peerList').trigger('updateList');
     var lineArr = [];
     for (var key in lines) {
