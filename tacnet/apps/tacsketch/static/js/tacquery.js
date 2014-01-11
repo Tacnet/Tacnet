@@ -457,4 +457,36 @@ $(document).ready(function () {
         $('.generic-color').removeClass('active');
         toggleState(this, '.generic-white');
     });
+
+
+
+
+    $('.circleFilled').click(function(){
+
+        addIcon(icon, false, true);
+    });
+    $('.rectFilled').click(function(){
+
+    });
+    $('.triangleFilled').click(function(){
+
+    });
+    $('.circle').click(function(){
+
+    });
+    $('.rect').click(function(){
+
+    });
+    $('.trinagle').click(function(){
+
+    });
+    $('.number').click(function(){
+
+    });
+
+
+
+
+
+
 });
