@@ -463,37 +463,40 @@ $(document).ready(function () {
 
     $('#peerList').on('updateList', function() {
 
-        var userList = $(this);
+        var userList = $('#peerBody');
         userList.html("");
 
-        $.each(peers, function( k, v ) {
-            
+        $.each(peers, function (k, v) {
+            console.log("got to peer: ", k, v);
             var lastButton = "";
             if (v.host === true){
                 lastButton = '<span class="label label-info">Host</span>';
             }
             else {
-                if (peers[TogetherJS.require('peers').Self.identityId].host == true) {
-                    if (v.draw === true) {
+                if (v.draw === true) {
+                    if (peers[TogetherJS.require('peers').Self.identityId].host === true) {
                         lastButton = '<a data-user="' + v.id + '" href="#" class="btn btn-success btn-xs restrict-user"><i class="fa fa-pencil"></i></a>';
                     }
                     else {
+                        lastButton = '<span class="label label-success"><i class="fa fa-pencil"></i></span>';
+                    }
+                }
+                else {
+                    if (peers[TogetherJS.require('peers').Self.identityId].host === true) {
                         lastButton = '<a data-user="' + v.id + '" href="#" class="btn btn-danger btn-xs restrict-user"><i class="fa fa-pencil"></i></a>';
+                    }
+                    else {
+                        lastButton = '<span class="label label-danger"><i class="fa fa-pencil"></i></span>';
                     }
                 }
             }
 
-            var status = '<span class="label label-success"><i class="fa fa-user"></i></span>';
-            if (v.draw  === false) {
-                status = '<span class="label label-danger"><i class="fa fa-user"></i></span>';
-            }
             userList.append('<tr>' +
-                '<td>' + status + ' ' + v.name + '</td>' +
-                '<td style="float: right;">' + lastButton + '</td>' +
-            '</tr>');
-
+                '<td>' + v.name + '</td>' +
+                '<td>' + lastButton + '</td>' +
+                '</tr>'
+            );
         });
-
 
         $('.restrict-user').click(function() {
             var userID = $(this).attr('data-user');
@@ -521,11 +524,6 @@ $(document).ready(function () {
                 button.removeClass('btn-success');
                 button.addClass('btn-danger');
             }
-
         });
-
-
     });
-
-    
 }); 

@@ -126,7 +126,7 @@ select, input[type="text"], input[type="password"], input[type="datetime"], inpu
     border: solid #dddddd 3px;
     border-radius: 6px;
     border-color: #dddddd;
-    color: #333333;
+    color: #ffffff;
 }
 
 .table-curved td {
@@ -136,7 +136,6 @@ select, input[type="text"], input[type="password"], input[type="datetime"], inpu
 
 .table-curved th {
   border-bottom: 2px #dddddd !important;
-  color: #ffffff;
 }
 .table-curved th {
     border-top: none;
@@ -155,9 +154,9 @@ select, input[type="text"], input[type="password"], input[type="datetime"], inpu
 }
 
 .table-curved tr:last-child td:first-child {
-    border-radius: 0 0 0 6px;
+    border-radius: 0 0 0 4px;
 }
 
 .table-curved tr:last-child td:last-child {
-    border-radius: 0 0 6px 0;
+    border-radius: 0 0 4px 0;
 }
