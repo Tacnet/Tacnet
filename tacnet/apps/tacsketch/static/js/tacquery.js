@@ -486,31 +486,37 @@ $(document).ready(function () {
                 }
             }
 
+            var status = '<span class="label label-success"><i class="fa fa-user"></i></span>';
+            if (v.draw  == false) {
+                status = '<span class="label label-danger"><i class="fa fa-user"></i></span>';
+            }
             userList.append('<tr>' +
-                '<td><i class="fa fa-user"></i> ' + v.name + '</td>' +
+                '<td>' + status + ' ' + v.name + '</td>' +
                 '<td style="float: right;">' + lastButton + '</td>' +
             '</tr>');
 
         });
 
+
+        $('.restrict-user').click(function() {
+            var userID = $(this).attr('data-user');
+            var button = $(this);
+
+            if (button.hasClass('btn-danger')) {
+                // TODO: DISABLE DRAWING FOR USER WITH ID userID
+                button.removeClass('btn-danger');
+                button.addClass('btn-success');
+            }
+            else {
+                // TODO: ENABLE DRAWING FOR USER WITH ID userID
+                button.removeClass('btn-success');
+                button.addClass('btn-danger');
+            }
+
+        });
+
+
     });
 
-    $('.restrict-user').click(function() {
-        var userID = $(this).attr('data-user');
-
-        var button = $(this);
-
-        if (button.hasClass('btn-danger')) {
-            // TODO: DISABLE DRAWING FOR USER WITH ID userID
-            button.removeClass('btn-danger');
-            button.addClass('btn-success');
-        }
-        else {
-            // TODO: ENABLE DRAWING FOR USER WITH ID userID
-            button.removeClass('btn-success');
-            button.addClass('btn-danger');
-        }
-
-    });
     
 }); 
