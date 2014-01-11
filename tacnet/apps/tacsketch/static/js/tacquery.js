@@ -92,7 +92,6 @@ $(document).ready(function () {
             value: sketchContext.lineWidth
         }).on('slide', function (ev) {
             setSize(ev.value+2);
-            console.log(setSize(ev.value+2));
         }).on('slideStop', function (ev) {
             changeMouse();
         })
@@ -105,7 +104,6 @@ $(document).ready(function () {
             value: alpha * 100
         }).on('slide', function (ev) {
             alpha = (Math.round((ev.value * 10) / 10) / 100);
-            console.log(alpha);
         }).on('slideStop', function (ev) {
             setColor(globalColor);
             changeMouse();
