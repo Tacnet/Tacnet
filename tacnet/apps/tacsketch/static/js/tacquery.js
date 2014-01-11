@@ -476,11 +476,13 @@ $(document).ready(function () {
                 lastButton = '<span class="label label-success">Host</span>';
             }
             else {
-                if (v.draw == true) {
-                    lastButton = '<a data-user="' + v.id + '" href="#" class="btn btn-danger btn-xs restrict-user"><i class="fa fa-pencil"></i></a>';
-                }
-                else {
-                    lastButton = '<a data-user="' + v.id + '" href="#" class="btn btn-success btn-xs restrict-user"><i class="fa fa-pencil"></i></a>';
+                if (peers[TogetherJS.require('peers').Self.identityId].host == true) {
+                    if (v.draw == true) {
+                        lastButton = '<a data-user="' + v.id + '" href="#" class="btn btn-danger btn-xs restrict-user"><i class="fa fa-pencil"></i></a>';
+                    }
+                    else {
+                        lastButton = '<a data-user="' + v.id + '" href="#" class="btn btn-success btn-xs restrict-user"><i class="fa fa-pencil"></i></a>';
+                    }
                 }
             }
 
@@ -495,8 +497,19 @@ $(document).ready(function () {
 
     $('.restrict-user').click(function() {
         var userID = $(this).attr('data-user');
-        // TODO: Change draw status
 
+        var button = $(this);
+
+        if (button.hasClass('btn-danger')) {
+            // TODO: DISABLE DRAWING FOR USER WITH ID userID
+            button.removeClass('btn-danger');
+            button.addClass('btn-success');
+        }
+        else {
+            // TODO: ENABLE DRAWING FOR USER WITH ID userID
+            button.removeClass('btn-success');
+            button.addClass('btn-danger');
+        }
 
     });
     
