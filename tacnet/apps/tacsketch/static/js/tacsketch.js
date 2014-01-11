@@ -574,8 +574,15 @@ function addText(text, color, hash, init) {
         top: 100,
         fill: color
     });
-
     fabricCanvas.add(fabricText).renderAll();
+    fabricText.toObject = (function(toObject) {
+        return function() {
+            return fabric.util.object.extend(toObject.call(fabricText), {
+                hash: fabricText.hash
+            });
+        };
+    })(fabricText.toObject);
+    
     fabricCanvas.setActiveObject(fabricText);
     icons[hash] = fabricText;
     if (init && !oHash) {
