@@ -484,7 +484,7 @@ $(document).ready(function () {
                 }
             }
 
-            userList.append('<tr>' +
+            userList.append('<tr class="restrict-user" data-user="' + v.id + '">' +
                 '<td><i class="fa fa-user"></i> ' + v.name + '</td>' +
                 '<td style="float: right;">' + lastButton + '</td>' +
             '</tr>');
