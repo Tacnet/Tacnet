@@ -1,11 +1,15 @@
 <li id="chooseBrush" data-original-title="Select Brush"><a href="#"><span class="glyphicon glyphicon-pencil"></span> Select Brush</a></li>
     <div id="chooseBrush_content_wrapper" style="display: none;">
-         <div class="form-group" id="brushSizeForm">
-            <label for="brushSize">Brush Size</label>
-            <!--Slider comes here.-->
+         <div class="form-group">
+            <div id="brushSizeForm">
+                <label for="brushSize">Brush Size</label><br>
+            </div>
+            <div id="setAlphaForm">
+                <label for="setAlpha">Opacity</label><br>
+            </div>
           </div>
 
-        <div class="btn-group btn-group-justified" style="width: 440px;">
+        <div class="btn-group btn-group-justified" style="width: 438px;">
             <a class="btn btn-success green-pick brush">Green</a>
             <a class="btn btn-warning yellow-pick brush">Yellow</a>
             <a class="btn btn-danger red-pick brush">Red</a>
@@ -13,7 +17,7 @@
             <a class="btn btn-inverse black-pick brush">Black</a>
         </div>
 
-        <div class="btn-group btn-group-justified" style="width: 440px; margin-top: 10px;">
+        <div class="btn-group btn-group-justified" style="width: 438px; margin-top: 10px;">
             <a class="btn btn-primary user-color-pick brush">User Color</a>
             <a class="btn btn-default eraser brush"><i class="fa fa-eraser"></i></a>
             <a class="btn btn-primary toggleTrailing"><i class="fa fa-chain"></i> Icon Trailing</a>
