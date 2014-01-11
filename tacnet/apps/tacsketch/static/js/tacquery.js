@@ -488,6 +488,7 @@ $(document).ready(function () {
                 '<td><i class="fa fa-user"></i> ' + v.name + '</td>' +
                 '<td style="float: right;">' + lastButton + '</td>' +
             '</tr>');
+
         });
 
     });
