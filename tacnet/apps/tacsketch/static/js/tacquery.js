@@ -413,38 +413,43 @@ $(document).ready(function () {
         event.preventDefault();
     });
 
+    $('.number').click(funciton () {
+        addText(textCounter, textColor, false, true);
+        textCounter++;
+    });
+
     $('.generic-green').click(function () {
-        iconColor = "#00ff00";
+        textColor = "#00ff00";
         $('.generic-color').removeClass('active');
         toggleState(this, '.generic-green');
     });
 
     $('.generic-yellow').click(function (){
-        iconColor = "#ffff00";
+        textColor = "#ffff00";
         $('.generic-color').removeClass('active');
         toggleState(this, '.generic-yellow');
     });
 
     $('.generic-red').click(function () {
-        iconColor = "#ff0000";
+        textColor = "#ff0000";
         $('.generic-color').removeClass('active');
         toggleState(this, '.generic-red');
     });
 
     $('.generic-blue').click(function () {
-        iconColor = "#0000FF";
+        textColor = "#0000FF";
         $('.generic-color').removeClass('active');
         toggleState(this, '.generic-blue');
     });
 
     $('.generic-black').click(function () {
-        iconColor = "#00000";
+        textColor = "#00000";
         $('.generic-color').removeClass('active');
         toggleState(this, '.generic-black');
     });
 
     $('.generic-white').click(function () {
-        iconColor = "#FFFFFF";
+        textColor = "#FFFFFF";
         $('.generic-color').removeClass('active');
         toggleState(this, '.generic-white');
     });

@@ -12,7 +12,8 @@ var currentBackgroundID = '-';
 var scaleBackground = false;
 var initJSON;
 
-var iconColor = sketchContext.strokeStyle;
+var textColor = "#000000";
+var textCounter = 1;
 
 var icons = {}; 
 var lines = {}; 
