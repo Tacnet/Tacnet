@@ -413,41 +413,39 @@ $(document).ready(function () {
         event.preventDefault();
     });
 
-    $('.genric-green').click(function(){
+    $('.generic-green').click(function () {
         iconColor = "#00ff00";
         $('.generic-color').removeClass('active');
-        toggleState(this, '.genric-green');
+        toggleState(this, '.generic-green');
     });
 
-    $('.genric-yellow').click(function(){
+    $('.generic-yellow').click(function (){
         iconColor = "#ffff00";
         $('.generic-color').removeClass('active');
-        toggleState(this, '.genric-yellow');
+        toggleState(this, '.generic-yellow');
     });
 
-    $('.genric-red').click(function(){
+    $('.generic-red').click(function () {
         iconColor = "#ff0000";
         $('.generic-color').removeClass('active');
-        toggleState(this, '.genric-red');
+        toggleState(this, '.generic-red');
     });
 
-    $('.genric-blue').click(function(){
+    $('.generic-blue').click(function () {
         iconColor = "#0000FF";
         $('.generic-color').removeClass('active');
-        toggleState(this, '.genric-blue');
+        toggleState(this, '.generic-blue');
     });
 
-    $('.genric-black').click(function(){
+    $('.generic-black').click(function () {
         iconColor = "#00000";
         $('.generic-color').removeClass('active');
-        toggleState(this, '.genric-black');
+        toggleState(this, '.generic-black');
     });
 
-    $('.genric-white').click(function(){
+    $('.generic-white').click(function () {
         iconColor = "#FFFFFF";
         $('.generic-color').removeClass('active');
-        toggleState(this, '.genric-white');
+        toggleState(this, '.generic-white');
     });
-
-
 });
