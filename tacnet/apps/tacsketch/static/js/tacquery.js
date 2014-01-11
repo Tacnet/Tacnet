@@ -84,8 +84,8 @@ $(document).ready(function () {
             }
         }
         hidePopover($('#clearMenu'));
-        $('#brushSizeForm').append('<input type="text" class="slider" id="brushSize" style="width: 440px;" />');
-        $('.slider').slider({
+        $('#brushSizeForm').append('<input type="text" id="brushSize" class="brushSlider" style="width: 209px;" />');
+        $('.brushSlider').slider({
             min: 1,
             max: 50,
             step: 1,
@@ -97,11 +97,11 @@ $(document).ready(function () {
             changeMouse();
         })
 
-        $('#setAlphaForm').append('<input type="text" class="slider2" id="setAlpha" style="width: 440px;" />');
-        $('.slider2').slider({
-            min: 10,
+        $('#setAlphaForm').append('<input type="text" id="setAlpha" class="alphaSlider" style="width: 209px;" />');
+        $('.alphaSlider').slider({
+            min: 1,
             max: 100,
-            step: 10,
+            step: 1,
             value: alpha * 100
         }).on('slide', function (ev) {
             alpha = (Math.round((ev.value * 10) / 10) / 100);
@@ -131,7 +131,7 @@ $(document).ready(function () {
 
         //Color change functions
         $('.red-pick').click(function () {
-            setColor('rgba(255, 255, 0, '+ alpha +')');
+            setColor('rgba(255, 0, 0, '+ alpha +')');
             $('.brush').removeClass('active');
             toggleState(this, '.red-pick');
             changeMouse();
