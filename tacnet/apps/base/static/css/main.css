@@ -26,6 +26,18 @@ margin-bottom: 30px;
     color: #FFF !important;
 }
 
+#brushSizeForm {
+  display: inline-block;
+  float: left;
+  width: 214px;
+}
+
+#setAlphaForm {
+  display: inline-block;
+  float: right;
+  width: 214px;
+}
+
 .jumbotron {
   text-align: center;
 }

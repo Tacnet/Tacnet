@@ -10,6 +10,8 @@ var bgContext = bgCanvas.getContext('2d');
 var currentBackground;
 var currentBackgroundID = '-';
 var scaleBackground = false;
+var alpha = 1.0;
+var globalColor;
 var initJSON;
 
 var textColor = '#000000';
@@ -18,15 +20,18 @@ var textCounter = 1;
 var icons = {}; 
 var lines = {}; 
 var tempLines = {};
+var iconTrail = false;
 var startText = "TEXT"; 
 
 var undoArray = [];
 var redoArray = [];
 var stateObject = {};
 
-var iconTrail = false;
-
 var initialized = false;
+
+var peers = {};
+var self = {};
+var host; 
 
 var mouse = {
     x: 0,
@@ -43,7 +48,7 @@ setBackground('/static/img/boot.jpg', '-', false, false, false);
 sketchContext.lineWidth = 3;
 sketchContext.lineJoin = 'round';
 sketchContext.lineCap = 'round';
-sketchContext.strokeStyle = '#000';
+setColor('rgb(0,0,0)')
 
 // Event listeneres for objects
 fabricCanvas.on('object:rotating', function(e) {
@@ -175,13 +180,14 @@ fabricCanvas.on('mouse:up', function(e) {
 // Set brush size
 function setSize(size) {
     sketchContext.lineWidth = size;
-
 }
 
 // Set brush color
 function setColor(color) {
-    sketchContext.globalCompositeOperation = 'source-over';
-    sketchContext.strokeStyle = color;
+    globalColor = color;
+    var rgb = globalColor.match(/\d+/g);
+    sketchContext.globalCompositeOperation = 'copy';
+    sketchContext.strokeStyle = 'rgba('+ rgb[0] +', '+ rgb[1] +', '+ rgb[2] +', '+ alpha +')';
 }
 
 function undo() {
@@ -495,6 +501,7 @@ function initDraw(sendInit) {
         for (var i = 0; i < canvasObjects.length; i++) {
             icons[canvasObjects[i].hash] = canvasObjects[i];
         }
+        stopSpinner();
         if (sendInit) initSend();
     });
 }
@@ -576,8 +583,15 @@ function addText(text, color, hash, init) {
         top: 100,
         fill: color
     });
-
     fabricCanvas.add(fabricText).renderAll();
+    fabricText.toObject = (function(toObject) {
+        return function() {
+            return fabric.util.object.extend(toObject.call(fabricText), {
+                hash: fabricText.hash
+            });
+        };
+    })(fabricText.toObject);
+    
     fabricCanvas.setActiveObject(fabricText);
     icons[hash] = fabricText;
     if (init && !oHash) {
@@ -641,6 +655,7 @@ function setBackground(background, backgroundID, clicked, init, sendInit) {
 
     currentBackground = background;
     currentBackgroundID = backgroundID;
+    startSpinner();
     var bgimg = new Image();
     bgimg.src = background;
     bgimg.onload = function() {
@@ -674,6 +689,7 @@ function setBackground(background, backgroundID, clicked, init, sendInit) {
             initDraw(sendInit);
         }
         else {
+            stopSpinner();
             lines = {};
         }
     }
