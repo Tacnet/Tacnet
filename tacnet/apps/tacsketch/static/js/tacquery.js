@@ -84,8 +84,8 @@ $(document).ready(function () {
             }
         }
         hidePopover($('#clearMenu'));
-        $('#brushSizeForm').append('<input type="text" class="slider" id="brushSize" style="width: 440px;" />');
-        $('.slider').slider({
+        $('#brushSizeForm').append('<input type="text" id="brushSize" class="brushSlider" style="width: 214px;" />');
+        $('.brushSlider').slider({
             min: 1,
             max: 50,
             step: 1,
@@ -94,13 +94,26 @@ $(document).ready(function () {
             setSize(ev.value+2);
         }).on('slideStop', function (ev) {
             changeMouse();
+        })
+
+        $('#setAlphaForm').append('<input type="text" id="setAlpha" class="alphaSlider" style="width: 214px;" />');
+        $('.alphaSlider').slider({
+            min: 1,
+            max: 100,
+            step: 1,
+            value: alpha * 100
+        }).on('slide', function (ev) {
+            alpha = (Math.round((ev.value * 10) / 10) / 100);
+        }).on('slideStop', function (ev) {
+            setColor(globalColor);
+            changeMouse();
         });
 
         // Button listeners
 
         //Color change functions
         $('.green-pick').click(function () {
-            setColor('#00ff00');
+            setColor('rgb(0, 255, 0)');
             $('.brush').removeClass('active');
             toggleState(this, '.green-pick');
             changeMouse();
@@ -108,7 +121,7 @@ $(document).ready(function () {
 
         //Color change functions
         $('.yellow-pick').click(function () {
-            setColor('#ff0');
+            setColor('rgb(255, 255, 170)');
             $('.brush').removeClass('active');
             toggleState(this, '.yellow-pick');
             changeMouse();
@@ -116,7 +129,7 @@ $(document).ready(function () {
 
         //Color change functions
         $('.red-pick').click(function () {
-            setColor('#ff0000');
+            setColor('rgb(255, 0, 0)');
             $('.brush').removeClass('active');
             toggleState(this, '.red-pick');
             changeMouse();
@@ -124,7 +137,7 @@ $(document).ready(function () {
 
         //Color change functions
         $('.blue-pick').click(function () {
-            setColor('#0000ff');
+            setColor('rgb(0, 0, 255)');
             $('.brush').removeClass('active');
             toggleState(this, '.blue-pick');
             changeMouse();
@@ -132,7 +145,7 @@ $(document).ready(function () {
 
         //Color change functions
         $('.black-pick').click(function () {
-            setColor('#000');
+            setColor('rgb(0, 0, 0)');
             $('.brush').removeClass('active');
             toggleState(this, '.black-pick');
             changeMouse();
@@ -146,7 +159,7 @@ $(document).ready(function () {
                 sketchContext.strokeStyle = 'rgba(0,0,0,1)';
             }
             else {
-                sketchContext.globalCompositeOperation = 'source-over';
+                sketchContext.globalCompositeOperation = 'copy';
                 sketchContext.strokeStyle = oldColor;
             }
             changeMouse();
