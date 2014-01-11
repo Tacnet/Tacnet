@@ -121,7 +121,7 @@ $(document).ready(function () {
 
         //Color change functions
         $('.yellow-pick').click(function () {
-            setColor('rgba(255, 255, 170, '+ alpha +')');
+            setColor('rgb(255, 255, 170)');
             $('.brush').removeClass('active');
             toggleState(this, '.yellow-pick');
             changeMouse();
@@ -129,7 +129,7 @@ $(document).ready(function () {
 
         //Color change functions
         $('.red-pick').click(function () {
-            setColor('rgba(255, 0, 0, '+ alpha +')');
+            setColor('rgb(255, 0, 0)');
             $('.brush').removeClass('active');
             toggleState(this, '.red-pick');
             changeMouse();
@@ -137,7 +137,7 @@ $(document).ready(function () {
 
         //Color change functions
         $('.blue-pick').click(function () {
-            setColor('rgba(0, 0, 255, '+ alpha +')');
+            setColor('rgb(0, 0, 255)');
             $('.brush').removeClass('active');
             toggleState(this, '.blue-pick');
             changeMouse();
@@ -145,7 +145,7 @@ $(document).ready(function () {
 
         //Color change functions
         $('.black-pick').click(function () {
-            setColor('rgba(0, 0, 0, '+ alpha +')');
+            setColor('rgb(0, 0, 0)');
             $('.brush').removeClass('active');
             toggleState(this, '.black-pick');
             changeMouse();
