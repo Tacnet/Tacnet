@@ -362,7 +362,6 @@ $(document).ready(function () {
 
                     var fabricJSON = this.fabric;
                     var linesJSON = this.lines;
-
                     $('.tac-table-content').append('<tr class="tac-element-' + this.id + '"><td style="cursor:pointer;" class="tac-click" data-id="' + this.id + '">' + this.name + '</td><td>' + this.mapName + '</td><td>' + this.gameName + '</td><td><button type="button" class="btn btn-danger btn-xs confirmation" data-id="' + this.id + '"><span class="glyphicon glyphicon-remove-circle"></span> Delete</button></td></tr>');
 
 
@@ -468,7 +467,7 @@ $(document).ready(function () {
         userList.html("");
 
         $.each(peers, function( k, v ) {
-
+            
             var lastButton = "";
             if (v.host === true){
                 lastButton = '<span class="label label-info">Host</span>';
