@@ -26,11 +26,6 @@ margin-bottom: 30px;
     color: #FFF !important;
 }
 
-.form-group {
-  height: 46px;
-  margin-bottom: 5px;
-}
-
 #brushSizeForm {
   display: inline-block;
   float: left;
