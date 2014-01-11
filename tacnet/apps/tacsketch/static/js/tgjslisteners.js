@@ -241,7 +241,7 @@ TogetherJS.hub.on('togetherjs.hello', function (msg) {
         return;
     }
     var id = msg.clientId.split(".")[0];
-    if (!peers[id])
+    if (!peers[id]) {
         peers[id] = {
             id: id,
             name: msg.name,
@@ -298,7 +298,22 @@ TogetherJS.hub.on('init', function (msg) {
 
 TogetherJS.hub.on('togetherjs.peer-update', function (msg) {
 
-    
+    var id = msg.clientId.split(".")[0];
+    if (!peers[id]) {
+        peers[id] = {
+            id: id,
+            name: msg.name,
+            draw: true,
+            host: false
+        }
+        $('#peerList').trigger('updateList');
+    }
+    else {
+        if (peers[id].name != msg.name) {
+            peers[id].name = msg.name;
+            $('#peersList').trigger('updateList');
+        }
+    }
 
 })
 
