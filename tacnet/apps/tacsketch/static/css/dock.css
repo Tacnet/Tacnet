@@ -177,3 +177,8 @@
     border: none !important;
 }
 
+.restrict-scroll {
+    overflow-x: scroll;
+    height: 310px;
+}
+
