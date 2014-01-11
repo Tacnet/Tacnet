@@ -473,7 +473,7 @@ $(document).ready(function () {
 
             var lastButton = "";
             if (v.host == true){
-                lastButton = '<span class="label label-success">Host</span>';
+                lastButton = '<span class="label label-info">Host</span>';
             }
             else {
                 if (peers[TogetherJS.require('peers').Self.identityId].host == true) {
@@ -503,12 +503,24 @@ $(document).ready(function () {
             var button = $(this);
 
             if (button.hasClass('btn-danger')) {
-                // TODO: DISABLE DRAWING FOR USER WITH ID userID
+                if (TogetherJS.running) {
+                    TogetherJS.send({
+                        type: "updatePeersList",
+                        id: userID,
+                        draw: true
+                    });
+                }
                 button.removeClass('btn-danger');
                 button.addClass('btn-success');
             }
             else {
-                // TODO: ENABLE DRAWING FOR USER WITH ID userID
+                if (TogetherJS.running) {
+                    TogetherJS.send({
+                        type: "updatePeersList",
+                        id: userID,
+                        draw: false
+                    });
+                }
                 button.removeClass('btn-success');
                 button.addClass('btn-danger');
             }

@@ -235,6 +235,13 @@ TogetherJS.hub.on('rotatedObject', function (msg) {
     icons[sendObject.hash].setCoords();
 });
 
+TogetherJS.hub.on('updatePeersList', function (msg) {
+    if (!msg.sameUrl) {
+        return;
+    }
+    peers[msg.id].draw = msg.draw;
+});
+
 // Hello is fired whenever you connect (so that the other clients know you connected):
 TogetherJS.hub.on('togetherjs.hello', function (msg) {
     if (!msg.sameUrl) {
