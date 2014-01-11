@@ -152,16 +152,15 @@ $(document).ready(function () {
         });
         $('.eraser').click(function () {
             $('.brush').removeClass('active');
-            toggleState(this);
-            if (sketchContext.globalCompositeOperation != 'destination-out') {
+            if (!erasing) {
                 oldColor = sketchContext.strokeStyle;
-                sketchContext.globalCompositeOperation = 'destination-out';
-                sketchContext.strokeStyle = 'rgba(0,0,0,1)';
+                sketchContext.strokeStyle = 'rgba(0,0,0,0)';
             }
             else {
-                sketchContext.globalCompositeOperation = 'copy';
                 sketchContext.strokeStyle = oldColor;
             }
+            erasing = !erasing;
+            toggleState(this);
             changeMouse();
         });
          //User color
@@ -231,12 +230,11 @@ $(document).ready(function () {
         ctx.arc(centerX, centerY, (cursorSize/2)-4, 0, 2 * Math.PI, false);
 
         // If the user is erasing, set the fill of the cursor to white.
-        if (sketchContext.globalCompositeOperation == 'destination-over') {
+        if (erasing) {
              ctx.fillStyle = 'white';
              ctx.fill();
         }
         
-        ctx.globalCompositeOperation = 'copy';
         ctx.lineWidth = 3;
         ctx.strokeStyle = cursorColor;
         ctx.stroke();
@@ -347,18 +345,6 @@ $(document).ready(function () {
     TogetherJS.once('ready', function () {
         TogetherJS.require('session').on('self-updated', function () {
             stopSpinner();
-            self = {
-                name: TogetherJS.require('peers').Self.name,
-                id: TogetherJS.require('peers').Self.identityId
-            }
-            peers[self.id] = {
-                id: self.id,
-                name: self.name,
-                draw: true,
-                host: true
-            }
-            console.log("init peers", peers);
-            host = self;
         });
     });
 

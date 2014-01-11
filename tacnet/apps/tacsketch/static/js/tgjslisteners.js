@@ -48,8 +48,8 @@ TogetherJS.hub.on('draw', function (msg) {
     if (!msg.sameUrl) {
         return;
     }
-    lines[msg.hash] = [msg.start, msg.end, msg.color, msg.size, msg.compositeoperation];
-    draw(msg.start, msg.end, msg.color, msg.size, msg.compositeoperation, true);
+    lines[msg.hash] = [msg.start, msg.end, msg.color, msg.size];
+    draw(msg.start, msg.end, msg.color, msg.size, true);
 });
 
 // Undo/redo-listeners:
@@ -76,7 +76,7 @@ TogetherJS.hub.on('redoLine', function (msg) {
         return;
     }
     for (var i = 0; i < msg.hashArray.length; i++) {
-        lines[msg.hashArray[i]] = [msg.fromArray[i], msg.toArray[i], msg.colorArray[i], msg.sizeArray[i], msg.compositeArray[i]];
+        lines[msg.hashArray[i]] = [msg.fromArray[i], msg.toArray[i], msg.colorArray[i], msg.sizeArray[i]];
     }
     reDraw(lines);
 });
@@ -240,16 +240,6 @@ TogetherJS.hub.on('togetherjs.hello', function (msg) {
     if (!msg.sameUrl) {
         return;
     }
-    var id = msg.clientId.split(".")[0];
-    peers[id] = {
-        id: id,
-        name: msg.name,
-        draw: true,
-        host: false
-    }
-    // NEED TO DO STUFF.
-    $('#peerList').trigger('updatePeers');
-    console.log("update peers, send:",peers);
     var lineArr = [];
     for (var key in lines) {
         lineArr.push([lines[key][0], lines[key][1], lines[key][2], lines[key][3], lines[key][4], key]);
@@ -257,7 +247,6 @@ TogetherJS.hub.on('togetherjs.hello', function (msg) {
     var fabricJSON = JSON.stringify(fabricCanvas);
     TogetherJS.send({
         type: 'init',
-        peers: peers,
         host: host,
         lines: lineArr,
         fabric: fabricJSON,
@@ -275,10 +264,6 @@ TogetherJS.hub.on('init', function (msg) {
     }
     if (!initialized || (msg.background != '/static/img/boot.jpg'  && msg.background != currentBackground)) {
         initialized = true;
-        console.log("got new peers:",peers);
-        peers = msg.peers;
-        $('#peerList').trigger('updatePeers'); // TODO: Stuff.
-        host = msg.host;
         lines = {};
         var linesArr = msg.lines;
         for (var i = 0; i < linesArr.length; i++) {

@@ -3,7 +3,8 @@ fabricCanvas.selection = false;
 
 var sketchCanvas = document.getElementById ('sketch');
 var sketchContext = sketchCanvas.getContext('2d');
-
+sketchContext.globalCompositeOperation = 'copy';
+console.log(sketchContext.globalCompositeOperation);
 var bgCanvas = document.getElementById ('background');
 var bgContext = bgCanvas.getContext('2d');
 
@@ -12,6 +13,7 @@ var currentBackgroundID = '-';
 var scaleBackground = false;
 var alpha = 1.0;
 var globalColor;
+var erasing = false;
 var initJSON;
 
 var textColor = '#000000';
@@ -21,7 +23,7 @@ var icons = {};
 var lines = {}; 
 var tempLines = {};
 var iconTrail = false;
-var startText = "TEXT"; 
+var startText = 'TEXT'; 
 
 var undoArray = [];
 var redoArray = [];
@@ -184,9 +186,10 @@ function setSize(size) {
 
 // Set brush color
 function setColor(color) {
+    console.log("i color",sketchContext.globalCompositeOperation);
+
     globalColor = color;
     var rgb = globalColor.match(/\d+/g);
-    sketchContext.globalCompositeOperation = 'copy';
     sketchContext.strokeStyle = 'rgba('+ rgb[0] +', '+ rgb[1] +', '+ rgb[2] +', '+ alpha +')';
 }
 
@@ -415,14 +418,12 @@ function redo() {
             var toArray = [];
             var colorArray = [];
             var sizeArray = [];
-            var compositeArray = [];
             for (var key in redoObj) {
                 hashArray.push(key);
                 fromArray.push(redoObj[key][0]);
                 toArray.push(redoObj[key][1]);
                 colorArray.push(redoObj[key][2]);
                 sizeArray.push(redoObj[key][3]);
-                compositeArray.push(redoObj[key][4]);
             }
             if (TogetherJS.running) {
                 TogetherJS.send({
@@ -432,7 +433,6 @@ function redo() {
                     toArray: toArray,
                     colorArray: colorArray,
                     sizeArray: sizeArray,
-                    compositeArray: compositeArray
                 });
             }
             undoArray.push(redoObj);
@@ -442,10 +442,9 @@ function redo() {
 }
 
 // Draws the lines
-function draw(start, end, color, size, compositeoperation, save) {
+function draw(start, end, color, size, save) {
     sketchContext.save();
     sketchContext.strokeStyle = color;
-    sketchContext.globalCompositeOperation = compositeoperation;
     sketchContext.lineWidth = size;
     sketchContext.beginPath();
     sketchContext.moveTo(start.x, start.y);
@@ -468,9 +467,9 @@ function move(e) {
     else {
         mouse = fabricCanvas.getPointer(e.e);
     }
-    lines[hash] = [lastMouse, mouse, sketchContext.strokeStyle, sketchContext.lineWidth, sketchContext.globalCompositeOperation];
-    tempLines[hash] = [lastMouse, mouse, sketchContext.strokeStyle, sketchContext.lineWidth, sketchContext.globalCompositeOperation];
-    draw(lastMouse, mouse, sketchContext.strokeStyle, sketchContext.lineWidth, sketchContext.globalCompositeOperation, true);
+    lines[hash] = [lastMouse, mouse, sketchContext.strokeStyle, sketchContext.lineWidth];
+    tempLines[hash] = [lastMouse, mouse, sketchContext.strokeStyle, sketchContext.lineWidth];
+    draw(lastMouse, mouse, sketchContext.strokeStyle, sketchContext.lineWidth, true);
     if (TogetherJS.running) {
         TogetherJS.send({
             type: 'draw',
@@ -478,7 +477,6 @@ function move(e) {
             end: mouse,
             color: sketchContext.strokeStyle,
             size: sketchContext.lineWidth,
-            compositeoperation: sketchContext.globalCompositeOperation,
             hash: hash
         });
     }
@@ -495,6 +493,7 @@ function reDraw(lines){
 
 function initDraw(sendInit) {
     reDraw(lines);
+    console.log(sketchContext.globalCompositeOperation);
     fabricCanvas.loadFromJSON(initJSON, function() {
         fabricCanvas.renderAll();
         var canvasObjects = fabricCanvas.getObjects();
@@ -642,6 +641,8 @@ function deleteIcon(hash, send) {
 
 // Sets background
 function setBackground(background, backgroundID, clicked, init, sendInit) {
+    console.log(sketchContext.globalCompositeOperation);
+
     if (clicked) {
         if (TogetherJS.running) {
             TogetherJS.send({
@@ -659,6 +660,8 @@ function setBackground(background, backgroundID, clicked, init, sendInit) {
     var bgimg = new Image();
     bgimg.src = background;
     bgimg.onload = function() {
+  console.log("i bg start",sketchContext.globalCompositeOperation);
+
         var oldLineWidth = sketchContext.lineWidth;
         var oldLineJoin = sketchContext.lineJoin;
         var oldLineCap = sketchContext.lineCap;
@@ -672,6 +675,7 @@ function setBackground(background, backgroundID, clicked, init, sendInit) {
             var width = bgimg.width;
             var height = bgimg.height;
         }
+          console.log("før w",sketchContext.globalCompositeOperation);
 
         bgCanvas.width = width;
         bgCanvas.height = height;
@@ -679,13 +683,16 @@ function setBackground(background, backgroundID, clicked, init, sendInit) {
         sketchCanvas.height = height;
         fabricCanvas.setWidth(width);
         fabricCanvas.setHeight(height);
+        sketchContext.globalCompositeOperation = 'copy'; // For some reason this is reset by setting the width..
+        
         bgContext.drawImage(bgimg, 0, 0, width, height);
 
-        sketchContext.globalCompositeOperation = 'copy';
         sketchContext.lineWidth =  oldLineWidth;
         sketchContext.lineJoin = oldLineJoin;
         sketchContext.lineCap = oldLineCap;
         sketchContext.strokeStyle = oldStrokeStyle;
+          console.log("i bg",sketchContext.globalCompositeOperation);
+
         if (init) {
             initDraw(sendInit);
         }
@@ -730,3 +737,6 @@ function resetFabric(clicked) {
     fabricCanvas.clear();
     icons = {};
 }
+
+console.log(sketchContext.globalCompositeOperation);
+
