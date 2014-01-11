@@ -241,20 +241,22 @@ TogetherJS.hub.on('togetherjs.hello', function (msg) {
         return;
     }
     var id = msg.clientId.split(".")[0];
-    if (peers[id]) {
-        peers[id].name = msg.name;
-    }
-    else {
+    if (!peers[id])
         peers[id] = {
             id: id,
             name: msg.name,
             draw: true,
             host: false
         }
+        $('#peerList').trigger('updateList');
+    }
+    else {
+        if (peers[id].name != msg.name) {
+            peers[id].name = msg.name;
+            $('#peersList').trigger('updateList');
+        }
     }
 
-    console.log(peers);
-    $('#peerList').trigger('updateList');
     var lineArr = [];
     for (var key in lines) {
         lineArr.push([lines[key][0], lines[key][1], lines[key][2], lines[key][3], lines[key][4], key]);
