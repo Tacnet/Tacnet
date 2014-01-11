@@ -477,19 +477,26 @@ $(document).ready(function () {
             }
             else {
                 if (v.draw == true) {
-                    lastButton = '<a href="#" class="btn btn-danger btn-xs"><i class="fa fa-pencil"></i></a>';
+                    lastButton = '<a data-user="' + v.id + '" href="#" class="btn btn-danger btn-xs restrict-user"><i class="fa fa-pencil"></i></a>';
                 }
                 else {
-                    lastButton = '<a href="#" class="btn btn-success btn-xs"><i class="fa fa-pencil"></i></a>';
+                    lastButton = '<a data-user="' + v.id + '" href="#" class="btn btn-success btn-xs restrict-user"><i class="fa fa-pencil"></i></a>';
                 }
             }
 
-            userList.append('<tr class="restrict-user" data-user="' + v.id + '">' +
+            userList.append('<tr>' +
                 '<td><i class="fa fa-user"></i> ' + v.name + '</td>' +
                 '<td style="float: right;">' + lastButton + '</td>' +
             '</tr>');
 
         });
+
+    });
+
+    $('.restrict-user').click(function() {
+        var userID = $(this).attr('data-user');
+        // TODO: Change draw status
+
 
     });
     
