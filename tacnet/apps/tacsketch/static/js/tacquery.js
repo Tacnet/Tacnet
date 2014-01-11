@@ -346,7 +346,6 @@ $(document).ready(function () {
                     var id = $(this).attr('data-id');
                     jQuery.each(data, function() {
                         if(this.id == id) {
-                            console.log(JSON.parse(this.lines));
                             lines = JSON.parse(this.lines);
                             initJSON = JSON.parse(this.fabric);
                             setBackground('/media/' + this.mapURI, this.mapID, false, true, true);

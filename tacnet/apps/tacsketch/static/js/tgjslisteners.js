@@ -284,7 +284,6 @@ TogetherJS.hub.on('load', function (msg) {
     for (var i = 0; i < linesArr.length; i++) {
         lines[linesArr[i][5]] = linesArr[i];
     }
-    console.log("new lines:",lines);
     initJSON = msg.fabric;
     scaleBackground = false; // Can't save tactics with custom maps, so the maps will always be original size.
     setBackground(msg.background, msg.backgroundID, false, true, false);
