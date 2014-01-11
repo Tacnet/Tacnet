@@ -53,7 +53,7 @@
 }
 
 #togetherjs-dock.togetherjs-dock-right {
-    top: 200px !important;
+    top: 120px !important;
     right: 0px !important;
     border-bottom-right-radius: 0px !important;
     border-top-right-radius: 0px !important;
@@ -79,7 +79,7 @@
 /* Custom Dock */
 #sidebar {
     position: fixed;
-    top: 200px;
+    top: 120px;
     left: 0px;
     z-index: 10;
 }
@@ -174,13 +174,13 @@
 }
 
 #icon-picker {
-    height: 510px !important;
+    height: 490px !important;
 }
 
 .generic-icons {
     overflow-y: hidden;
     overflow-x: scroll;
-    height: 80px;
+    height: 60px;
     background-color: #1b1c1e;
     padding: 5px;
     white-space: nowrap;
@@ -209,10 +209,10 @@
     margin-top: 15px;
 }
 
-.btn.genric-black {
+.btn.generic-black {
     background-color: #000 !important;
 }
 
-.btn.genric-white {
+.btn.generic-white {
     background-color: #FFF !important;
 }
