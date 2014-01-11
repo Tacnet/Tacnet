@@ -235,7 +235,8 @@ $(document).ready(function () {
              ctx.fillStyle = 'white';
              ctx.fill();
         }
-
+        
+        ctx.globalCompositeOperation = 'copy';
         ctx.lineWidth = 3;
         ctx.strokeStyle = cursorColor;
         ctx.stroke();

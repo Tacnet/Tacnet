@@ -681,6 +681,7 @@ function setBackground(background, backgroundID, clicked, init, sendInit) {
         fabricCanvas.setHeight(height);
         bgContext.drawImage(bgimg, 0, 0, width, height);
 
+        sketchContext.globalCompositeOperation = 'copy';
         sketchContext.lineWidth =  oldLineWidth;
         sketchContext.lineJoin = oldLineJoin;
         sketchContext.lineCap = oldLineCap;
