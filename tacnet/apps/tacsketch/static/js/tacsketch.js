@@ -12,7 +12,7 @@ var currentBackgroundID = '-';
 var scaleBackground = false;
 var initJSON;
 
-var textColor = "#000000";
+var textColor = '#000000';
 var textCounter = 1;
 
 var icons = {}; 

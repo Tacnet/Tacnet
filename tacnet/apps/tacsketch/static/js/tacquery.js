@@ -191,7 +191,7 @@ $(document).ready(function () {
     });
 
     $('.addText').click(function() {
-        addText('Click to edit...', iconColor, false, true);
+        addText('Click to edit...', textColor, false, true);
     });
 
     $('.deleteIcon').click(function() {
@@ -413,9 +413,13 @@ $(document).ready(function () {
         event.preventDefault();
     });
 
-    $('.number').click(funciton () {
-        addText(textCounter, textColor, false, true);
+    $('.number').click(function () {
+        addText(String(textCounter), textColor, false, true);
         textCounter++;
+    });
+
+    $('.resetNumbers').click(function () {
+        textCounter = 1;
     });
 
     $('.generic-green').click(function () {
