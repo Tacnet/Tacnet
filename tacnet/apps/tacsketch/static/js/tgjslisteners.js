@@ -296,6 +296,12 @@ TogetherJS.hub.on('init', function (msg) {
     }
 });
 
+TogetherJS.hub.on('togetherjs.peer-update', function (msg) {
+
+    
+
+})
+
 TogetherJS.hub.on('load', function (msg) {
     if (!msg.sameUrl) {
         return;
