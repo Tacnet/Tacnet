@@ -247,9 +247,7 @@ TogetherJS.hub.on('togetherjs.hello', function (msg) {
         draw: true,
         host: false
     }
-    // NEED TO DO STUFF.
-    $('#peerList').trigger('updatePeers');
-    console.log("update peers, send:",peers);
+    $('#peerList').trigger('updateList');
     var lineArr = [];
     for (var key in lines) {
         lineArr.push([lines[key][0], lines[key][1], lines[key][2], lines[key][3], lines[key][4], key]);
@@ -275,10 +273,9 @@ TogetherJS.hub.on('init', function (msg) {
     }
     if (!initialized || (msg.background != '/static/img/boot.jpg'  && msg.background != currentBackground)) {
         initialized = true;
-        console.log("got new peers:",peers);
         peers = msg.peers;
-        $('#peerList').trigger('updatePeers'); // TODO: Stuff.
         host = msg.host;
+        $('#peerList').trigger('updateList');
         lines = {};
         var linesArr = msg.lines;
         for (var i = 0; i < linesArr.length; i++) {

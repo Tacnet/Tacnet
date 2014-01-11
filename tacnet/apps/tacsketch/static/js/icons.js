@@ -28,12 +28,14 @@ $(document).ready(function () {
     var select_icons = $('#icon-picker');
     var select_save = $('#save-menu');
     var select_cloud = $('#cloud-menu');
+    var select_restrictions = $('#restrictions-menu');
 
     var toggle_map = $('.select-map');
     var toggle_icons = $('.select-icon');
     var toggle_save = $('.select-save');
     var toggle_cloud_save = $('.select-cloud-save');
     var toggle_cloud_load = $('.select-cloud-load');
+    var toggle_restrictions = $('.select-restrictions');
 
     /* OpenTabs */
     toggle_map.click(function (){
@@ -41,18 +43,21 @@ $(document).ready(function () {
         select_icons.hide();
         select_save.hide();
         select_cloud.hide();
+        select_restrictions.hide();
     });
     toggle_icons.click(function (){
         select_icons.toggle();
         select_save.hide();
         select_map.hide();
         select_cloud.hide();
+        select_restrictions.hide();
     });
     toggle_save.click(function (){
         select_save.toggle();
         select_map.hide();
         select_icons.hide();
         select_cloud.hide();
+        select_restrictions.hide();
     });
 
     toggle_cloud_save.click(function (){
@@ -60,13 +65,23 @@ $(document).ready(function () {
         select_map.hide();
         select_icons.hide();
         select_save.hide();
+        select_restrictions.hide();
     });
 
     toggle_cloud_load.click(function() {
         select_save.hide();
         select_map.hide();
         select_cloud.hide();
-        select_icons.hide();        
+        select_icons.hide();
+        select_restrictions.hide();
+    });
+
+    toggle_restrictions.click(function() {
+        select_save.hide();
+        select_map.hide();
+        select_cloud.hide();
+        select_icons.hide();
+        select_restrictions.toggle();
     });
 
     $('#loadMapButton').click(function () {
@@ -90,11 +105,12 @@ $(document).ready(function () {
 
     /* Close when click on canvas */
     var ex = $('.upper-canvas');
-    ex.click(function(){
+    ex.mousedown(function(){
         select_icons.hide();
         select_map.hide();
         select_save.hide();
         select_cloud.hide();
+        select_restrictions.hide();
     });
 
     /* Load Maps tab */

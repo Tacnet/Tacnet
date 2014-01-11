@@ -173,3 +173,7 @@
     display: none
 }
 
+#restrictions-menu td {
+    border: none !important;
+}
+

@@ -333,17 +333,19 @@ $(document).ready(function () {
     TogetherJS.once('ready', function () {
         TogetherJS.require('session').on('self-updated', function () {
             stopSpinner();
-            self = {
-                name: TogetherJS.require('peers').Self.name,
-                id: TogetherJS.require('peers').Self.identityId
+
+            var tempName = TogetherJS.require('peers').Self.defaultName;
+            if (TogetherJS.require('peers').Self.name != "") {
+                tempName = TogetherJS.require('peers').Self.name
             }
+
             peers[self.id] = {
-                id: self.id,
-                name: self.name,
+                id: TogetherJS.require('peers').Self.identityId,
+                name: tempName,
                 draw: true,
                 host: true
             }
-            console.log("init peers", peers);
+            $('#peerList').trigger('updateList');
             host = self;
         });
     });
@@ -458,6 +460,35 @@ $(document).ready(function () {
                 });
             }
         }
+    });
+
+
+    $('#peerList').on('updateList', function() {
+
+        var userList = $(this);
+        userList.html("");
+
+        $.each(peers, function( k, v ) {
+
+            var lastButton = "";
+            if (v.host == true){
+                lastButton = '<span class="label label-success">Host</span>';
+            }
+            else {
+                if (v.draw == true) {
+                    lastButton = '<a href="#" class="btn btn-danger btn-xs"><i class="fa fa-pencil"></i></a>';
+                }
+                else {
+                    lastButton = '<a href="#" class="btn btn-success btn-xs"><i class="fa fa-pencil"></i></a>';
+                }
+            }
+
+            userList.append('<tr>' +
+                '<td><i class="fa fa-user"></i> ' + v.name + '</td>' +
+                '<td style="float: right;">' + lastButton + '</td>' +
+            '</tr>');
+        });
+
     });
     
 }); 
