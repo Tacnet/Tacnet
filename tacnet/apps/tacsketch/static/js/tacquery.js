@@ -121,7 +121,7 @@ $(document).ready(function () {
 
         //Color change functions
         $('.yellow-pick').click(function () {
-            setColor('rgb(255, 255, 170)');
+            setColor('rgb(255, 255, 0)');
             $('.brush').removeClass('active');
             toggleState(this, '.yellow-pick');
             changeMouse();
