@@ -4,7 +4,6 @@ fabricCanvas.selection = false;
 var sketchCanvas = document.getElementById ('sketch');
 var sketchContext = sketchCanvas.getContext('2d');
 sketchContext.globalCompositeOperation = 'copy';
-console.log(sketchContext.globalCompositeOperation);
 var bgCanvas = document.getElementById ('background');
 var bgContext = bgCanvas.getContext('2d');
 
@@ -186,8 +185,6 @@ function setSize(size) {
 
 // Set brush color
 function setColor(color) {
-    console.log("i color",sketchContext.globalCompositeOperation);
-
     globalColor = color;
     var rgb = globalColor.match(/\d+/g);
     sketchContext.strokeStyle = 'rgba('+ rgb[0] +', '+ rgb[1] +', '+ rgb[2] +', '+ alpha +')';
@@ -493,7 +490,6 @@ function reDraw(lines){
 
 function initDraw(sendInit) {
     reDraw(lines);
-    console.log(sketchContext.globalCompositeOperation);
     fabricCanvas.loadFromJSON(initJSON, function() {
         fabricCanvas.renderAll();
         var canvasObjects = fabricCanvas.getObjects();
@@ -641,7 +637,6 @@ function deleteIcon(hash, send) {
 
 // Sets background
 function setBackground(background, backgroundID, clicked, init, sendInit) {
-    console.log(sketchContext.globalCompositeOperation);
 
     if (clicked) {
         if (TogetherJS.running) {
@@ -660,7 +655,6 @@ function setBackground(background, backgroundID, clicked, init, sendInit) {
     var bgimg = new Image();
     bgimg.src = background;
     bgimg.onload = function() {
-  console.log("i bg start",sketchContext.globalCompositeOperation);
 
         var oldLineWidth = sketchContext.lineWidth;
         var oldLineJoin = sketchContext.lineJoin;
@@ -675,7 +669,6 @@ function setBackground(background, backgroundID, clicked, init, sendInit) {
             var width = bgimg.width;
             var height = bgimg.height;
         }
-          console.log("før w",sketchContext.globalCompositeOperation);
 
         bgCanvas.width = width;
         bgCanvas.height = height;
@@ -684,14 +677,14 @@ function setBackground(background, backgroundID, clicked, init, sendInit) {
         fabricCanvas.setWidth(width);
         fabricCanvas.setHeight(height);
         sketchContext.globalCompositeOperation = 'copy'; // For some reason this is reset by setting the width..
-        
+
         bgContext.drawImage(bgimg, 0, 0, width, height);
 
         sketchContext.lineWidth =  oldLineWidth;
         sketchContext.lineJoin = oldLineJoin;
         sketchContext.lineCap = oldLineCap;
         sketchContext.strokeStyle = oldStrokeStyle;
-          console.log("i bg",sketchContext.globalCompositeOperation);
+          
 
         if (init) {
             initDraw(sendInit);
@@ -737,6 +730,4 @@ function resetFabric(clicked) {
     fabricCanvas.clear();
     icons = {};
 }
-
-console.log(sketchContext.globalCompositeOperation);
 

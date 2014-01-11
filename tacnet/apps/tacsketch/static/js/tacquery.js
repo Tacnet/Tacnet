@@ -11,16 +11,31 @@ var buttonStates = {
 };
 
 $(document).ready(function () {
+    function hexRGB(hex) {
+        return 'rgb(' + ['0x' + hex[1] + hex[2] | 0, '0x' + hex[3] + hex[4] | 0, '0x' + hex[5] + hex[6] | 0].join(',') + ')';
+    }
+
     function toggleState(button, buttonClass) {
         if (buttonStates[buttonClass]) { 
             buttonStates[buttonClass] = '';
             $(button).removeClass('active');
         }
         else {
+            for (var i in buttonStates) {
+                if (['.eraser', '.toggleTrailing'].indexOf(i) === -1) {
+                    buttonStates[i] = '';
+                }
+            }
             buttonStates[buttonClass] = 'active';
             $(button).addClass('active');
+            if (buttonClass != '.eraser') {
+                erasing = false;
+                buttonStates['.eraser'] = '';
+                $('.eraser').removeClass('active');
+            }
         }
     }
+
     // Hide popover
     function hidePopover(element) {
         if (element.next('div.popover:visible').length) {
@@ -150,6 +165,7 @@ $(document).ready(function () {
             toggleState(this, '.black-pick');
             changeMouse();
         });
+
         $('.eraser').click(function () {
             $('.brush').removeClass('active');
             if (!erasing) {
@@ -160,12 +176,13 @@ $(document).ready(function () {
                 sketchContext.strokeStyle = oldColor;
             }
             erasing = !erasing;
-            toggleState(this);
+            toggleState(this, '.eraser');
             changeMouse();
         });
+
          //User color
         $('.user-color-pick').click(function() {
-            setColor(TogetherJS.require('peers').Self.color);
+            setColor(hexRGB(TogetherJS.require('peers').Self.color));
             $('.brush').removeClass('active');
             toggleState(this, '.user-color-pick');
             changeMouse();
@@ -233,6 +250,7 @@ $(document).ready(function () {
         if (erasing) {
              ctx.fillStyle = 'white';
              ctx.fill();
+             cursorColor = oldColor;
         }
         
         ctx.lineWidth = 3;
@@ -344,6 +362,9 @@ $(document).ready(function () {
 
     TogetherJS.once('ready', function () {
         TogetherJS.require('session').on('self-updated', function () {
+            setColor(hexRGB(TogetherJS.require('peers').Self.color));
+            buttonStates['.user-color-pick'] = 'active';
+            changeMouse();
             stopSpinner();
         });
     });
