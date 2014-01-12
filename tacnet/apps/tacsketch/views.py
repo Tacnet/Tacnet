@@ -56,7 +56,7 @@ def icons(request):
 
     response_data = {}
 
-    if not settings.DEBUG:
+    if not settings.DEBUG or "test1337" in (request.get_host()):
         for folder in os.listdir(settings.ICONS_ROOT):
             if os.path.isdir(settings.ICONS_ROOT + "/" + folder):
 
