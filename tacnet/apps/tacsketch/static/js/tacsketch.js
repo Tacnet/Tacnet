@@ -39,6 +39,10 @@ var lastMouse = {
     x: 0,
     y: 0
 };
+var lastMouseIcon = {
+    x: 0,
+    y: 0
+};
 
 setBackground('/static/img/boot.jpg', '-', false, false, false);
 
@@ -78,21 +82,27 @@ fabricCanvas.on('object:scaling', function(e) {
     }
 });
 
-fabricCanvas.on('object:moving', function(e) {
-    if (iconTrail) {
-        lastState = Object.keys(lines).length;
-        fabricCanvas.on('mouse:move', move);
-    }
-    var sendObject = new Object();
-    sendObject['hash'] = e.target.hash;
-    sendObject['left'] = e.target.left;
-    sendObject['top'] = e.target.top;
-    sendObject['oCoords'] = e.target.oCoords;
-    if (TogetherJS.running) {
-        TogetherJS.send({
-            type: 'movedObject',
-            sendObject: sendObject
-        });
+fabricCanvas.on('object:moving', function (e) {
+    var distance = Math.sqrt(Math.pow(lastMouseIcon.x-fabricCanvas.getPointer(e.e).x,2)+Math.pow(lastMouseIcon.y-fabricCanvas.getPointer(e.e).y,2));
+    console.log(distance);
+    if (distance > 5) {
+        console.log("got in", distance);
+        if (iconTrail) {
+            lastState = Object.keys(lines).length;
+            fabricCanvas.on('mouse:move', move);
+        }
+        var sendObject = new Object();
+        sendObject['hash'] = e.target.hash;
+        sendObject['left'] = e.target.left;
+        sendObject['top'] = e.target.top;
+        sendObject['oCoords'] = e.target.oCoords;
+        if (TogetherJS.running) {
+            TogetherJS.send({
+                type: 'movedObject',
+                sendObject: sendObject
+            });
+        }
+        lastMouseIcon = fabricCanvas.getPointer(e.e);
     }
 });
 
