@@ -30,3 +30,5 @@ DATABASES = {
         'PORT': '',
     }
 }
+
+DEBUG = True
