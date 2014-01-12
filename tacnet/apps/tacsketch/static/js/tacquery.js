@@ -442,13 +442,21 @@ $(document).ready(function () {
             }
         });
     });
-
+    function sendSpinner() {
+        if (TogetherJS.running) {
+            TogetherJS.send({
+                type: 'startSpinner'
+            });
+        }
+    }
     $('#loadMapScaleInput').change(function (e) {
+        sendSpinner();
         scaleBackground = true;
         setBackground(URL.createObjectURL(e.target.files[0]), '-', true, false, false);
     });
 
     $('#loadMapNoScaleInput').change(function (e) {
+        sendSpinner();
         scaleBackground = false;
         setBackground(URL.createObjectURL(e.target.files[0]), '-', true, false, false);
     });
