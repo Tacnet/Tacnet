@@ -256,7 +256,9 @@ TogetherJS.hub.on('startSpinner', function (msg) {
     if (!msg.sameUrl) {
         return;
     }
-    if (!initalized) startSpinner();
+    if (!initialized || (msg.background != '/static/img/boot.jpg'  && msg.background != currentBackground)) {
+        startSpinner();
+    }
 });
 
 // Hello is fired whenever you connect (so that the other clients know you connected):
@@ -288,7 +290,8 @@ TogetherJS.hub.on('togetherjs.hello', function (msg) {
     var fabricJSON = JSON.stringify(fabricCanvas);
     if (currentBackground.slice(0,5) === 'data:') {
         TogetherJS.send({
-            type: 'startSpinner'
+            type: 'startSpinner',
+            background: currentBackground
         });
     }
     TogetherJS.send({

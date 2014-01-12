@@ -448,7 +448,8 @@ $(document).ready(function () {
     function sendSpinner() {
         if (TogetherJS.running) {
             TogetherJS.send({
-                type: 'startSpinner'
+                type: 'startSpinner',
+                background: currentBackground
             });
         }
     }
