@@ -250,6 +250,7 @@ TogetherJS.hub.on('updatePeersList', function (msg) {
         }
         fabricCanvas.renderAll();
     }
+    $('#peerList').trigger('updateList');
 });
 
 // Hello is fired whenever you connect (so that the other clients know you connected):
