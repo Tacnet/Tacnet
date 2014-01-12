@@ -11,6 +11,13 @@ var buttonStates = {
 };
 
 $(document).ready(function () {
+    // Set brush color
+    function setColor(color) {
+        sketchContext.globalCompositeOperation = 'source-over';
+        sketchContext.strokeStyle = color;
+        changeMouse();
+    }
+    
     function toggleState(button, buttonClass) {
         if (buttonStates[buttonClass]) { 
             buttonStates[buttonClass] = '';
@@ -114,7 +121,6 @@ $(document).ready(function () {
             setColor('#00ff00');
             $('.brush').removeClass('active');
             toggleState(this, '.green-pick');
-            changeMouse();
         });
 
         //Color change functions
@@ -122,7 +128,6 @@ $(document).ready(function () {
             setColor('#ffff00');
             $('.brush').removeClass('active');
             toggleState(this, '.yellow-pick');
-            changeMouse();
         });
 
         //Color change functions
@@ -130,7 +135,6 @@ $(document).ready(function () {
             setColor('#ff0000');
             $('.brush').removeClass('active');
             toggleState(this, '.red-pick');
-            changeMouse();
         });
 
         //Color change functions
@@ -138,7 +142,6 @@ $(document).ready(function () {
             setColor('#0000ff');
             $('.brush').removeClass('active');
             toggleState(this, '.blue-pick');
-            changeMouse();
         });
 
         //Color change functions
@@ -146,7 +149,6 @@ $(document).ready(function () {
             setColor('#000');
             $('.brush').removeClass('active');
             toggleState(this, '.black-pick');
-            changeMouse();
         });
 
         $('.eraser').click(function () {
@@ -169,7 +171,6 @@ $(document).ready(function () {
             setColor(TogetherJS.require('peers').Self.color);
             $('.brush').removeClass('active');
             toggleState(this, '.user-color-pick');
-            changeMouse();
         });
 
         $('.toggleTrailing').click(function() {
@@ -364,14 +365,22 @@ $(document).ready(function () {
 
     $('.select-cloud-load').click(function(){
         // Open Cloud load modal if logged in
-        if (loggedIn != "") {
-            $('#loadCloudTactic').modal('show');
+        if (peers[TogetherJS.require('peers').Self.identityId].draw) {
+            if (loggedIn) {
+                $('#loadCloudTactic').modal('show');
+            }
+            else {
+                $.bootstrapGrowl('You need to login before you can load cloud tactics.', {
+                    type: 'danger',
+                    width: 'auto'
+                });
+            }
         }
         else {
-            $.bootstrapGrowl('You need to login before you can load cloud tactics.', {
+            $.bootstrapGrowl('You need drawing rights from the session host to load tactics.', {
                 type: 'danger',
                 width: 'auto'
-            });
+            });            
         }
     });
 

@@ -85,8 +85,16 @@ $(document).ready(function () {
     });
 
     $('#loadMapButton').click(function () {
-        $(this).hide();
-        $('#loadMapScaleDiv').show();
+        if (peers[TogetherJS.require('peers').Self.identityId].draw) {
+            $(this).hide();
+            $('#loadMapScaleDiv').show();
+        }
+        else {
+            $.bootstrapGrowl('You need drawing rights from the session host to load tactics.', {
+                type: 'warning',
+                width: 'auto'
+            });            
+        }
     });
 
     $('#loadMapScale').click(function () {
