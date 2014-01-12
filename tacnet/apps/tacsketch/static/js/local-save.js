@@ -31,7 +31,15 @@ $(document).ready(function () {
     });
 
     loadLocal.click(function(){
-        loadInput.click();
+        if (peers[TogetherJS.require('peers').Self.identityId].draw) {
+            loadInput.click();
+        }
+        else {
+            $.bootstrapGrowl('You need drawing rights from the session host to load tactics.', {
+                type: 'warning',
+                width: 'auto'
+            });            
+        }
     });
 
     loadInput.change(function (e) {

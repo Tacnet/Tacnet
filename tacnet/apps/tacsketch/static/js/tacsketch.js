@@ -28,8 +28,6 @@ var stateObject = {};
 var initialized = false;
 
 var peers = {};
-var self = {};
-var host; 
 
 var mouse = {
     x: 0,
@@ -122,29 +120,31 @@ fabricCanvas.on('text:editing:exited', function (e) {
 
 var lastState = 0;
 fabricCanvas.on('mouse:down', function(e) {
-    lastMouse = fabricCanvas.getPointer(e.e);
-    if (!fabricCanvas.getActiveObject()) {
-        lastState = Object.keys(lines).length;
-        fabricCanvas.on('mouse:move', move);
-    }
-    else {
-        lastState = Object.keys(lines).length;
-        stateObject = {};
-        stateObject.hash = fabricCanvas.getActiveObject().hash;
-        stateObject.left = fabricCanvas.getActiveObject().left;
-        stateObject.top = fabricCanvas.getActiveObject().top;
-        stateObject.width = fabricCanvas.getActiveObject().width;
-        stateObject.height = fabricCanvas.getActiveObject().height;
-        stateObject.scaleX = fabricCanvas.getActiveObject().scaleX;
-        stateObject.scaleY = fabricCanvas.getActiveObject().scaleY;
-        stateObject.angle = fabricCanvas.getActiveObject().angle;
-        stateObject.oCoords = fabricCanvas.getActiveObject().oCoords;
-        if (typeof fabricCanvas.getActiveObject().text !== 'undefined') { 
-            stateObject.text = fabricCanvas.getActiveObject().text;
-            stateObject.fill = fabricCanvas.getActiveObject().fill;
+    if (peers[TogetherJS.require('peers').Self.identityId].draw) {
+        lastMouse = fabricCanvas.getPointer(e.e);
+        if (!fabricCanvas.getActiveObject()) {
+            lastState = Object.keys(lines).length;
+            fabricCanvas.on('mouse:move', move);
         }
         else {
-            stateObject.src = fabricCanvas.getActiveObject()._element.src;
+            lastState = Object.keys(lines).length;
+            stateObject = {};
+            stateObject.hash = fabricCanvas.getActiveObject().hash;
+            stateObject.left = fabricCanvas.getActiveObject().left;
+            stateObject.top = fabricCanvas.getActiveObject().top;
+            stateObject.width = fabricCanvas.getActiveObject().width;
+            stateObject.height = fabricCanvas.getActiveObject().height;
+            stateObject.scaleX = fabricCanvas.getActiveObject().scaleX;
+            stateObject.scaleY = fabricCanvas.getActiveObject().scaleY;
+            stateObject.angle = fabricCanvas.getActiveObject().angle;
+            stateObject.oCoords = fabricCanvas.getActiveObject().oCoords;
+            if (typeof fabricCanvas.getActiveObject().text !== 'undefined') { 
+                stateObject.text = fabricCanvas.getActiveObject().text;
+                stateObject.fill = fabricCanvas.getActiveObject().fill;
+            }
+            else {
+                stateObject.src = fabricCanvas.getActiveObject()._element.src;
+            }
         }
     }
 });
@@ -179,260 +179,258 @@ function setSize(size) {
     sketchContext.lineWidth = size;
 }
 
-// Set brush color
-function setColor(color) {
-    sketchContext.globalCompositeOperation = 'source-over';
-    sketchContext.strokeStyle = color;
-}
-
 function undo() {
-    if (undoArray[0] != null) {
-        var undoObj = undoArray[undoArray.length-1];
-        if (undoObj.undoText) {
-            var redoObj = {
-                undoText: icons[undoObj.hash].text,
-                hash: undoObj.hash
-            };
-            icons[undoObj.hash].set({
-                text: undoObj.undoText
-            });
-            redoArray.push(redoObj);
-            if (TogetherJS.running) {
-                TogetherJS.send({
-                    type: "editText",
-                    text: undoObj.undoText,
+    if (peers[TogetherJS.require('peers').Self.identityId].draw) {
+        if (undoArray[0] != null) {
+            var undoObj = undoArray[undoArray.length-1];
+            if (undoObj.undoText) {
+                var redoObj = {
+                    undoText: icons[undoObj.hash].text,
                     hash: undoObj.hash
-                });
-            }
-            fabricCanvas.renderAll();
-        }
-        else if (typeof undoObj === 'string') {
-            var redoObj = {};
-            redoObj.hash = undoObj;
-            redoObj.left = icons[undoObj].left;
-            redoObj.top = icons[undoObj].top;
-            redoObj.width = icons[undoObj].width;
-            redoObj.height = icons[undoObj].height;
-            redoObj.scaleX = icons[undoObj].scaleX;
-            redoObj.scaleY = icons[undoObj].scaleY;
-            redoObj.angle = icons[undoObj].angle;
-            redoObj.oCoords = icons[undoObj].oCoords;
-            redoObj.fill = icons[undoObj].fill;
-            if (icons[undoObj].text !== 'undefined') {
-                redoObj.text = icons[undoObj].text;
-            }
-            else {
-                redoObj.src = icons[undoObj]._element.src;
-            }
-            fabricCanvas.remove(icons[undoObj]);
-            delete icons[undoObj];
-            redoArray.push(redoObj);
-            if (TogetherJS.running) {
-                TogetherJS.send({
-                    type: 'undoNew',
-                    hash: undoObj
-                });
-            }
-        }
-        else if (undoObj.hash) {
-            var setIcon = function () {
-                var redoObj = {};
-                redoObj.hash = undoObj.hash;
-                redoObj.left = icons[undoObj.hash].left;
-                redoObj.top = icons[undoObj.hash].top;
-                redoObj.width = icons[undoObj.hash].width;
-                redoObj.height = icons[undoObj.hash].height;
-                redoObj.scaleX = icons[undoObj.hash].scaleX;
-                redoObj.scaleY = icons[undoObj.hash].scaleY;
-                redoObj.angle = icons[undoObj.hash].angle;
-                redoObj.oCoords = icons[undoObj.hash].oCoords;
-                redoObj.fill = icons[undoObj.hash].fill;
-                if (icons[undoObj.hash].text !== 'undefined') {
-                    redoObj.text = icons[undoObj.hash].text;
-                    redoObj.fill = icons[undoObj.hash].fill;
-                }
-                else {
-                    redoObj.src = icons[undoObj.hash]._element.src;
-                }
+                };
                 icons[undoObj.hash].set({
-                    left: undoObj.left,
-                    top: undoObj.top,
-                    width: undoObj.width,
-                    height: undoObj.height,
-                    scaleX: undoObj.scaleX,
-                    scaleY: undoObj.scaleY,
-                    angle: undoObj.angle,
-                    oCoords: undoObj.oCoords
+                    text: undoObj.undoText
                 });
-                if (undoObj.text !== 'undefined') {
-                    icons[undoObj.hash].set({
-                        text: undoObj.text,
-                        fill: undoObj.fill
-                    });
-                }
-                else {
-                    icons[undoObj.hash].set({
-                        src: undoObj.src
-                    });
-                }
-                fabricCanvas.renderAll();
                 redoArray.push(redoObj);
                 if (TogetherJS.running) {
                     TogetherJS.send({
-                        type: 'undoIcon',
-                        state: undoObj
+                        type: "editText",
+                        text: undoObj.undoText,
+                        hash: undoObj.hash
                     });
                 }
-            };
-            if (!icons[undoObj.hash]) {
-                if (undoObj.src) {
-                    addIcon(undoObj.src, undoObj.hash, false).done(setIcon);
+                fabricCanvas.renderAll();
+            }
+            else if (typeof undoObj === 'string') {
+                var redoObj = {};
+                redoObj.hash = undoObj;
+                redoObj.left = icons[undoObj].left;
+                redoObj.top = icons[undoObj].top;
+                redoObj.width = icons[undoObj].width;
+                redoObj.height = icons[undoObj].height;
+                redoObj.scaleX = icons[undoObj].scaleX;
+                redoObj.scaleY = icons[undoObj].scaleY;
+                redoObj.angle = icons[undoObj].angle;
+                redoObj.oCoords = icons[undoObj].oCoords;
+                redoObj.fill = icons[undoObj].fill;
+                if (icons[undoObj].text !== 'undefined') {
+                    redoObj.text = icons[undoObj].text;
                 }
                 else {
-                    addText(undoObj.text, undoObj.fill, undoObj.hash, false).done(setIcon);
+                    redoObj.src = icons[undoObj]._element.src;
+                }
+                fabricCanvas.remove(icons[undoObj]);
+                delete icons[undoObj];
+                redoArray.push(redoObj);
+                if (TogetherJS.running) {
+                    TogetherJS.send({
+                        type: 'undoNew',
+                        hash: undoObj
+                    });
                 }
             }
-            else setIcon();
+            else if (undoObj.hash) {
+                var setIcon = function () {
+                    var redoObj = {};
+                    redoObj.hash = undoObj.hash;
+                    redoObj.left = icons[undoObj.hash].left;
+                    redoObj.top = icons[undoObj.hash].top;
+                    redoObj.width = icons[undoObj.hash].width;
+                    redoObj.height = icons[undoObj.hash].height;
+                    redoObj.scaleX = icons[undoObj.hash].scaleX;
+                    redoObj.scaleY = icons[undoObj.hash].scaleY;
+                    redoObj.angle = icons[undoObj.hash].angle;
+                    redoObj.oCoords = icons[undoObj.hash].oCoords;
+                    redoObj.fill = icons[undoObj.hash].fill;
+                    if (icons[undoObj.hash].text !== 'undefined') {
+                        redoObj.text = icons[undoObj.hash].text;
+                        redoObj.fill = icons[undoObj.hash].fill;
+                    }
+                    else {
+                        redoObj.src = icons[undoObj.hash]._element.src;
+                    }
+                    icons[undoObj.hash].set({
+                        left: undoObj.left,
+                        top: undoObj.top,
+                        width: undoObj.width,
+                        height: undoObj.height,
+                        scaleX: undoObj.scaleX,
+                        scaleY: undoObj.scaleY,
+                        angle: undoObj.angle,
+                        oCoords: undoObj.oCoords
+                    });
+                    if (undoObj.text !== 'undefined') {
+                        icons[undoObj.hash].set({
+                            text: undoObj.text,
+                            fill: undoObj.fill
+                        });
+                    }
+                    else {
+                        icons[undoObj.hash].set({
+                            src: undoObj.src
+                        });
+                    }
+                    fabricCanvas.renderAll();
+                    redoArray.push(redoObj);
+                    if (TogetherJS.running) {
+                        TogetherJS.send({
+                            type: 'undoIcon',
+                            state: undoObj
+                        });
+                    }
+                };
+                if (!icons[undoObj.hash]) {
+                    if (undoObj.src) {
+                        addIcon(undoObj.src, undoObj.hash, false).done(setIcon);
+                    }
+                    else {
+                        addText(undoObj.text, undoObj.fill, undoObj.hash, false).done(setIcon);
+                    }
+                }
+                else setIcon();
 
+            }
+            else {
+                for (var key in undoObj) {
+                    delete lines[key];
+                }
+                reDraw(lines);
+                var hashArray = [];
+                for (var key in undoObj) {
+                    hashArray.push(key);
+                }
+                redoArray.push(undoObj);
+                if (TogetherJS.running) {
+                    TogetherJS.send({
+                        type: 'undoLine',
+                        hashArray: hashArray
+                    });
+                }
+            }
+            undoArray.pop();
         }
-        else {
-            for (var key in undoObj) {
-                delete lines[key];
-            }
-            reDraw(lines);
-            var hashArray = [];
-            for (var key in undoObj) {
-                hashArray.push(key);
-            }
-            redoArray.push(undoObj);
-            if (TogetherJS.running) {
-                TogetherJS.send({
-                    type: 'undoLine',
-                    hashArray: hashArray
-                });
-            }
-        }
-        undoArray.pop();
     }
 }
 
 function redo() {
-    if (redoArray[0] != null) {
-        var redoObj = redoArray[redoArray.length-1];
-        if (redoObj.undoText) {
-            icons[redoObj.hash].set({
-                text: redoObj.undoText
-            });
-            undoArray.push(redoObj);
-            if (TogetherJS.running) {
-                TogetherJS.send({
-                    type: "editText",
-                    text: redoObj.undoText,
-                    hash: redoObj.hash
-                });
-            }
-            fabricCanvas.renderAll();
-        }
-        else if (redoObj.hash) {
-            var setIcon = function() {
-                // Need to save the current icon state, so that it can be pushed to the undo-array. This could really be done in an easier way (TODO).
-                var undoObj = {};
-                undoObj.hash = redoObj.hash;
-                undoObj.left = icons[redoObj.hash].left;
-                undoObj.top = icons[redoObj.hash].top;
-                undoObj.width = icons[redoObj.hash].width;
-                undoObj.height = icons[redoObj.hash].height;
-                undoObj.scaleX = icons[redoObj.hash].scaleX;
-                undoObj.scaleY = icons[redoObj.hash].scaleY;
-                undoObj.angle = icons[redoObj.hash].angle;
-                undoObj.oCoords = icons[redoObj.hash].oCoords;
-                undoObj.fill = icons[redoObj.hash].fill;
-                if (icons[redoObj.hash].text !== 'undefined') {
-                    undoObj.text = icons[redoObj.hash].text;
-                    undoObj.fill = icons[redoObj.hash].fill;
-                }
-                else {
-                    undoObj.src = icons[redoObj.hash]._element.src;
-                }
-
+    if (peers[TogetherJS.require('peers').Self.identityId].draw) {
+        if (redoArray[0] != null) {
+            var redoObj = redoArray[redoArray.length-1];
+            if (redoObj.undoText) {
                 icons[redoObj.hash].set({
-                    left: redoObj.left,
-                    top: redoObj.top,
-                    width: redoObj.width,
-                    height: redoObj.height,
-                    scaleX: redoObj.scaleX,
-                    scaleY: redoObj.scaleY,
-                    angle: redoObj.angle,
-                    oCoords: redoObj.oCoords
+                    text: redoObj.undoText
                 });
-                if (redoObj.text !== 'undefined') {
-                    icons[redoObj.hash].set({
-                        text: redoObj.text,
-                        fill: redoObj.fill
-                        //need to set more shit
-                    })
-                }
-                else {
-                    icons[redoObj.hash].set({
-                        src: redoObj.src
+                undoArray.push(redoObj);
+                if (TogetherJS.running) {
+                    TogetherJS.send({
+                        type: "editText",
+                        text: redoObj.undoText,
+                        hash: redoObj.hash
                     });
                 }
-                undoArray.push(undoObj);
                 fabricCanvas.renderAll();
-            };
+            }
+            else if (redoObj.hash) {
+                var setIcon = function() {
+                    // Need to save the current icon state, so that it can be pushed to the undo-array. This could really be done in an easier way (TODO).
+                    var undoObj = {};
+                    undoObj.hash = redoObj.hash;
+                    undoObj.left = icons[redoObj.hash].left;
+                    undoObj.top = icons[redoObj.hash].top;
+                    undoObj.width = icons[redoObj.hash].width;
+                    undoObj.height = icons[redoObj.hash].height;
+                    undoObj.scaleX = icons[redoObj.hash].scaleX;
+                    undoObj.scaleY = icons[redoObj.hash].scaleY;
+                    undoObj.angle = icons[redoObj.hash].angle;
+                    undoObj.oCoords = icons[redoObj.hash].oCoords;
+                    undoObj.fill = icons[redoObj.hash].fill;
+                    if (icons[redoObj.hash].text !== 'undefined') {
+                        undoObj.text = icons[redoObj.hash].text;
+                        undoObj.fill = icons[redoObj.hash].fill;
+                    }
+                    else {
+                        undoObj.src = icons[redoObj.hash]._element.src;
+                    }
 
-            // Check if the icon already exists, if it doesn't, add it. 
-            if (!icons[redoObj.hash]) {
-                if (redoObj.src) {
-                    addIcon(redoObj.src, redoObj.hash, false).done(setIcon);
-                }
-                else {
-                    addText(redoObj.text, redoObj.fill, redoObj.hash, false).done(setIcon);
-                }
-                undoArray.push(redoObj.hash);
-            }
+                    icons[redoObj.hash].set({
+                        left: redoObj.left,
+                        top: redoObj.top,
+                        width: redoObj.width,
+                        height: redoObj.height,
+                        scaleX: redoObj.scaleX,
+                        scaleY: redoObj.scaleY,
+                        angle: redoObj.angle,
+                        oCoords: redoObj.oCoords
+                    });
+                    if (redoObj.text !== 'undefined') {
+                        icons[redoObj.hash].set({
+                            text: redoObj.text,
+                            fill: redoObj.fill
+                            //need to set more shit
+                        })
+                    }
+                    else {
+                        icons[redoObj.hash].set({
+                            src: redoObj.src
+                        });
+                    }
+                    undoArray.push(undoObj);
+                    fabricCanvas.renderAll();
+                };
 
-            else setIcon();
-            if (TogetherJS.running) {
-                TogetherJS.send({
-                    type: 'redoIcon',
-                    state: redoObj
-                });
+                // Check if the icon already exists, if it doesn't, add it. 
+                if (!icons[redoObj.hash]) {
+                    if (redoObj.src) {
+                        addIcon(redoObj.src, redoObj.hash, false).done(setIcon);
+                    }
+                    else {
+                        addText(redoObj.text, redoObj.fill, redoObj.hash, false).done(setIcon);
+                    }
+                    undoArray.push(redoObj.hash);
+                }
+
+                else setIcon();
+                if (TogetherJS.running) {
+                    TogetherJS.send({
+                        type: 'redoIcon',
+                        state: redoObj
+                    });
+                }
             }
+            else {
+                for (var key in redoObj) {
+                    lines[key] = redoObj[key];
+                }
+                reDraw(lines);
+                var hashArray = [];
+                var fromArray = [];
+                var toArray = [];
+                var colorArray = [];
+                var sizeArray = [];
+                var compositeArray = [];
+                for (var key in redoObj) {
+                    hashArray.push(key);
+                    fromArray.push(redoObj[key][0]);
+                    toArray.push(redoObj[key][1]);
+                    colorArray.push(redoObj[key][2]);
+                    sizeArray.push(redoObj[key][3]);
+                    compositeArray.push(redoObj[key][4]);
+                }
+                if (TogetherJS.running) {
+                    TogetherJS.send({
+                        type: 'redoLine',
+                        hashArray: hashArray,
+                        fromArray: fromArray,
+                        toArray: toArray,
+                        colorArray: colorArray,
+                        sizeArray: sizeArray,
+                        compositeArray: compositeArray
+                    });
+                }
+                undoArray.push(redoObj);
+            }
+            redoArray.pop();
         }
-        else {
-            for (var key in redoObj) {
-                lines[key] = redoObj[key];
-            }
-            reDraw(lines);
-            var hashArray = [];
-            var fromArray = [];
-            var toArray = [];
-            var colorArray = [];
-            var sizeArray = [];
-            var compositeArray = [];
-            for (var key in redoObj) {
-                hashArray.push(key);
-                fromArray.push(redoObj[key][0]);
-                toArray.push(redoObj[key][1]);
-                colorArray.push(redoObj[key][2]);
-                sizeArray.push(redoObj[key][3]);
-                compositeArray.push(redoObj[key][4]);
-            }
-            if (TogetherJS.running) {
-                TogetherJS.send({
-                    type: 'redoLine',
-                    hashArray: hashArray,
-                    fromArray: fromArray,
-                    toArray: toArray,
-                    colorArray: colorArray,
-                    sizeArray: sizeArray,
-                    compositeArray: compositeArray
-                });
-            }
-            undoArray.push(redoObj);
-        }
-        redoArray.pop();
     }
 }
 
@@ -528,80 +526,96 @@ function initSend() {
 
 // Adds an icon to the canvas, sends info through TJS.
 function addIcon(icon, hash, init) {
-    var dfd = $.Deferred();
-    var oHash = hash; // Original hash-argument
-    fabric.Image.fromURL(icon, function (img) {
-        // If the function is called by TogetherJS:
+    if (peers[TogetherJS.require('peers').Self.identityId].draw) {
+        var dfd = $.Deferred();
+        var oHash = hash; // Original hash-argument
+        fabric.Image.fromURL(icon, function (img) {
+            // If the function is called by TogetherJS:
+            if (!hash) {
+                hash = Math.random().toString(36);
+            }
+            var oImg = img.set({
+                hash: hash,
+                left: fabricCanvas.width/3,
+                top: 100
+            }).scale(0.5);
+            fabricCanvas.add(oImg).renderAll();
+            oImg.toObject = (function(toObject) {
+                return function() {
+                    return fabric.util.object.extend(toObject.call(oImg), {
+                        hash: oImg.hash
+                    });
+                };
+            })(oImg.toObject);
+            fabricCanvas.setActiveObject(oImg);
+            icons[hash] = oImg;
+            if (init && !oHash) {
+                undoArray.push(hash);
+            }
+            if (TogetherJS.running && !oHash) {
+                TogetherJS.send({
+                    type: 'newIcon',
+                    hash: hash,
+                    url: icon
+                });
+            }
+            dfd.resolve();
+        });
+        return dfd;
+    }
+    else {
+        $.bootstrapGrowl('You need drawing rights from the session host to add icons.', {
+            type: 'warning', 
+            width: 'auto'
+        });
+    }
+}
+
+function addText(text, color, hash, init) {
+    if (peers[TogetherJS.require('peers').Self.identityId].draw) {
+        var dfd = $.Deferred();
+        var oHash = hash; // Original hash-argument
         if (!hash) {
             hash = Math.random().toString(36);
         }
-        var oImg = img.set({
+        var fabricText = new fabric.IText(text, {
             hash: hash,
-            left: fabricCanvas.width/3,
-            top: 100
-        }).scale(0.5);
-        fabricCanvas.add(oImg).renderAll();
-        oImg.toObject = (function(toObject) {
+            fontFamily: 'Helvetica Neue',
+            left: fabricCanvas.width-fabricCanvas.width/3,
+            top: 100,
+            fill: color
+        });
+        fabricCanvas.add(fabricText).renderAll();
+        fabricText.toObject = (function(toObject) {
             return function() {
-                return fabric.util.object.extend(toObject.call(oImg), {
-                    hash: oImg.hash
+                return fabric.util.object.extend(toObject.call(fabricText), {
+                    hash: fabricText.hash
                 });
             };
-        })(oImg.toObject);
-        fabricCanvas.setActiveObject(oImg);
-        icons[hash] = oImg;
+        })(fabricText.toObject);
+        
+        fabricCanvas.setActiveObject(fabricText);
+        icons[hash] = fabricText;
         if (init && !oHash) {
             undoArray.push(hash);
         }
         if (TogetherJS.running && !oHash) {
             TogetherJS.send({
-                type: 'newIcon',
+                type: 'newText',
                 hash: hash,
-                url: icon
+                text: text,
+                fill: color
             });
         }
         dfd.resolve();
-    });
-    return dfd;
-}
-
-function addText(text, color, hash, init) {
-    var dfd = $.Deferred();
-    var oHash = hash; // Original hash-argument
-    if (!hash) {
-        hash = Math.random().toString(36);
+        return dfd;
     }
-    var fabricText = new fabric.IText(text, {
-        hash: hash,
-        fontFamily: 'Helvetica Neue',
-        left: fabricCanvas.width-fabricCanvas.width/3,
-        top: 100,
-        fill: color
-    });
-    fabricCanvas.add(fabricText).renderAll();
-    fabricText.toObject = (function(toObject) {
-        return function() {
-            return fabric.util.object.extend(toObject.call(fabricText), {
-                hash: fabricText.hash
-            });
-        };
-    })(fabricText.toObject);
-    
-    fabricCanvas.setActiveObject(fabricText);
-    icons[hash] = fabricText;
-    if (init && !oHash) {
-        undoArray.push(hash);
-    }
-    if (TogetherJS.running && !oHash) {
-        TogetherJS.send({
-            type: 'newText',
-            hash: hash,
-            text: text,
-            fill: color
+    else {
+        $.bootstrapGrowl('You need drawing rights from the session host to add icons.', {
+            type: 'warning', 
+            width: 'auto'
         });
     }
-    dfd.resolve();
-    return dfd;
 }
 
 // Removes icons from hash, sends message over TGJS if send is true.
@@ -638,9 +652,15 @@ function deleteIcon(hash, send) {
 // Sets background
 function setBackground(background, backgroundID, clicked, init, sendInit) {
     var send = false;
-    if (clicked && (background.slice(0,7) === '/media/' || background.slice(0,8) === '/static/')) {
-        console.log("got here");
-        if (TogetherJS.running) {
+    if (clicked) {
+        if (!peers[TogetherJS.require('peers').Self.identityId].draw) {
+            $.bootstrapGrowl('You need drawing rights from the session host to change map.', {
+                type: 'warning', 
+                width: 'auto'
+            });
+            return;
+        }
+        else if (TogetherJS.running && (background.slice(0,7) === '/media/' || background.slice(0,8) === '/static/')) {
             TogetherJS.send({
                 type: 'setBackground',
                 background: background,
@@ -648,8 +668,8 @@ function setBackground(background, backgroundID, clicked, init, sendInit) {
                 scaleBackground: scaleBackground
             });
         }
+        else send = clicked;
     }
-    else send = clicked;
 
     currentBackground = background;
     currentBackgroundID = backgroundID;

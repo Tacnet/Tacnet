@@ -103,7 +103,6 @@ select, input[type="text"], input[type="password"], input[type="datetime"], inpu
   display: none;
 }
 
-
 .right-text {
   margin-top: 30px;
 }
@@ -117,6 +116,49 @@ select, input[type="text"], input[type="password"], input[type="datetime"], inpu
 
 #body_content {
   min-height: 500px;
+}
+
+.table-curved {
+    border-collapse: separate;
+}
+
+.table-curved {
+    border: solid #dddddd 3px;
+    border-radius: 6px;
+    border-color: #dddddd;
+    color: #ffffff;
+}
+
+.table-curved td {
+  background-color: #808080 !important;
+  border-color: #dddddd !important;
+}
+
+.table-curved th {
+  border-bottom: 2px #dddddd !important;
+}
+.table-curved th {
+    border-top: none;
+}
+
+.table-curved th:first-child {
+    border-radius: 6px 0 0 0;
+}
+
+.table-curved th:last-child {
+    border-radius: 0 6px 0 0;
+}
+
+.table-curved th:only-child{
+    border-radius: 6px 6px 0 0;
+}
+
+.table-curved tr:last-child td:first-child {
+    border-radius: 0 0 0 3px;
+}
+
+.table-curved tr:last-child td:last-child {
+    border-radius: 0 0 3px 0;
 }
 
 .modal-dialog {

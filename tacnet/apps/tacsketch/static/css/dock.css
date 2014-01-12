@@ -173,6 +173,11 @@
     display: none
 }
 
+.restrict-scroll {
+    overflow-x: scroll;
+    height: 310px;
+}
+
 #icon-picker {
     height: 490px !important;
 }

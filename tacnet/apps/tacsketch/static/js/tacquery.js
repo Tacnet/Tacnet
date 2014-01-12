@@ -11,6 +11,13 @@ var buttonStates = {
 };
 
 $(document).ready(function () {
+    // Set brush color
+    function setColor(color) {
+        sketchContext.globalCompositeOperation = 'source-over';
+        sketchContext.strokeStyle = color;
+        changeMouse();
+    }
+
     function toggleState(button, buttonClass) {
         if (buttonStates[buttonClass]) { 
             buttonStates[buttonClass] = '';
@@ -114,7 +121,6 @@ $(document).ready(function () {
             setColor('#00ff00');
             $('.brush').removeClass('active');
             toggleState(this, '.green-pick');
-            changeMouse();
         });
 
         //Color change functions
@@ -122,7 +128,6 @@ $(document).ready(function () {
             setColor('#ffff00');
             $('.brush').removeClass('active');
             toggleState(this, '.yellow-pick');
-            changeMouse();
         });
 
         //Color change functions
@@ -130,7 +135,6 @@ $(document).ready(function () {
             setColor('#ff0000');
             $('.brush').removeClass('active');
             toggleState(this, '.red-pick');
-            changeMouse();
         });
 
         //Color change functions
@@ -138,7 +142,6 @@ $(document).ready(function () {
             setColor('#0000ff');
             $('.brush').removeClass('active');
             toggleState(this, '.blue-pick');
-            changeMouse();
         });
 
         //Color change functions
@@ -146,7 +149,6 @@ $(document).ready(function () {
             setColor('#000');
             $('.brush').removeClass('active');
             toggleState(this, '.black-pick');
-            changeMouse();
         });
 
         $('.eraser').click(function () {
@@ -169,7 +171,6 @@ $(document).ready(function () {
             setColor(TogetherJS.require('peers').Self.color);
             $('.brush').removeClass('active');
             toggleState(this, '.user-color-pick');
-            changeMouse();
         });
 
         $('.toggleTrailing').click(function() {
@@ -343,22 +344,25 @@ $(document).ready(function () {
         stopSpinner();
         TogetherJS.require('session').on('self-updated', function () {
             setColor(TogetherJS.require('peers').Self.color);
-            buttonStates['.user-color-pick'] = 'active';
-            changeMouse();
+            var tempName = TogetherJS.require('peers').Self.defaultName;
+            if (TogetherJS.require('peers').Self.name != "") {
+                tempName = TogetherJS.require('peers').Self.name;
+            }
+            peers[TogetherJS.require('peers').Self.identityId] = {
+                id: TogetherJS.require('peers').Self.identityId,
+                name: tempName,
+                draw: true,
+                host: true
+            }
+            $('#peerList').trigger('updateList');
         });
     });
 
 
     $('.select-cloud-load').click(function(){
         // Open Cloud load modal if logged in
-        if (loggedIn != "") {
+        if (loggedIn && peers[TogetherJS.require('peers').Self.identityId].draw) {
             $('#loadCloudTactic').modal('show');
-        }
-        else {
-            $.bootstrapGrowl('You need to login before you can load cloud tactics.', {
-                type: 'danger',
-                width: 'auto'
-            });
         }
     });
 
@@ -375,7 +379,6 @@ $(document).ready(function () {
 
                     var fabricJSON = this.fabric;
                     var linesJSON = this.lines;
-
                     $('.tac-table-content').append('<tr class="tac-element-' + this.id + '"><td style="cursor:pointer;" class="tac-click" data-id="' + this.id + '">' + this.name + '</td><td>' + this.mapName + '</td><td>' + this.gameName + '</td><td><button type="button" class="btn btn-danger btn-xs confirmation" data-id="' + this.id + '"><span class="glyphicon glyphicon-remove-circle"></span> Delete</button></td></tr>');
 
 
@@ -461,9 +464,6 @@ $(document).ready(function () {
         setBackground(URL.createObjectURL(e.target.files[0]), '-', true, false, false);
     });
 
-
-
-
     var genericIcons = $(".generic-icons");
     genericIcons.mousewheel(function(event, delta) {
         // Vertical scroll genric icons
@@ -508,6 +508,72 @@ $(document).ready(function () {
         textColor = "#000000";
         $('.generic-color').removeClass('active');
         toggleState(this, '.generic-black');
+    });
+
+    $('#peerList').on('updateList', function() {
+        var userList = $('#peerBody');
+        userList.html("");
+
+        $.each(peers, function (k, v) {
+            var lastButton = "";
+            if (v.host === true){
+                lastButton = '<span class="label label-info">Host</span>';
+            }
+            else {
+                if (v.draw === true) {
+                    if (peers[TogetherJS.require('peers').Self.identityId].host === true) {
+                        lastButton = '<a data-user="' + v.id + '" href="#" class="btn btn-success btn-xs restrict-user"><i class="fa fa-pencil"></i></a>';
+                    }
+                    else {
+                        lastButton = '<span class="label label-success"><i class="fa fa-pencil"></i></span>';
+                    }
+                }
+                else {
+                    if (peers[TogetherJS.require('peers').Self.identityId].host === true) {
+                        lastButton = '<a data-user="' + v.id + '" href="#" class="btn btn-danger btn-xs restrict-user"><i class="fa fa-pencil"></i></a>';
+                    }
+                    else {
+                        lastButton = '<span class="label label-danger"><i class="fa fa-pencil"></i></span>';
+                    }
+                }
+            }
+
+            userList.append('<tr>' +
+                '<td>' + v.name + '</td>' +
+                '<td>' + lastButton + '</td>' +
+                '</tr>'
+            );
+        });
+
+        $('.restrict-user').click(function() {
+            var userID = $(this).attr('data-user');
+            var button = $(this);
+
+            if (button.hasClass('btn-danger')) {
+                peers[userID].draw = true;
+                if (TogetherJS.running) {
+                    TogetherJS.send({
+                        type: "updatePeersList",
+                        id: userID,
+                        draw: true
+                    });
+                }
+                button.removeClass('btn-danger');
+                button.addClass('btn-success');
+            }
+            else {
+                peers[userID].draw = false;
+                if (TogetherJS.running) {
+                    TogetherJS.send({
+                        type: "updatePeersList",
+                        id: userID,
+                        draw: false
+                    });
+                }
+                button.removeClass('btn-success');
+                button.addClass('btn-danger');
+            }
+        });
     });
 
     $('.generic-white').click(function () {

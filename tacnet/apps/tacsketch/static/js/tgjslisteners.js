@@ -235,6 +235,23 @@ TogetherJS.hub.on('rotatedObject', function (msg) {
     icons[sendObject.hash].setCoords();
 });
 
+TogetherJS.hub.on('updatePeersList', function (msg) {
+    if (!msg.sameUrl) {
+        return;
+    }
+    peers[msg.id].draw = msg.draw;
+    if (TogetherJS.require('peers').Self.identityId === msg.id) {
+        fabricCanvas.deactivateAll().renderAll();
+        for (var i in icons) {
+            icons[i].set({
+                selectable: msg.draw
+            });
+        }
+        fabricCanvas.renderAll();
+    }
+    $('#peerList').trigger('updateList');
+}
+
 TogetherJS.hub.on('startSpinner', function (msg) {
     if (!msg.sameUrl) {
         return;
@@ -247,6 +264,23 @@ TogetherJS.hub.on('togetherjs.hello', function (msg) {
     if (!msg.sameUrl) {
         return;
     }
+    var id = msg.clientId.split(".")[0];
+    if (!peers[id]) {
+        peers[id] = {
+            id: id,
+            name: msg.name,
+            draw: true,
+            host: false
+        }
+        $('#peerList').trigger('updateList');
+    }
+    else {
+        if (peers[id].name != msg.name) {
+            peers[id].name = msg.name;
+            $('#peersList').trigger('updateList');
+        }
+    }
+
     var lineArr = [];
     for (var key in lines) {
         lineArr.push([lines[key][0], lines[key][1], lines[key][2], lines[key][3], lines[key][4], key]);
@@ -259,7 +293,7 @@ TogetherJS.hub.on('togetherjs.hello', function (msg) {
     }
     TogetherJS.send({
         type: 'init',
-        host: host,
+        peers: peers,
         lines: lineArr,
         fabric: fabricJSON,
         undoArray: undoArray,
@@ -276,6 +310,8 @@ TogetherJS.hub.on('init', function (msg) {
     }
     if (!initialized || (msg.background != '/static/img/boot.jpg'  && msg.background != currentBackground)) {
         initialized = true;
+        peers = msg.peers;
+        $('#peerList').trigger('updateList');
         lines = {};
         var linesArr = msg.lines;
         for (var i = 0; i < linesArr.length; i++) {
@@ -286,6 +322,27 @@ TogetherJS.hub.on('init', function (msg) {
         setBackground(msg.background, msg.backgroundID, false, true, false);
     }
 });
+
+TogetherJS.hub.on('togetherjs.peer-update', function (msg) {
+
+    var id = msg.clientId.split(".")[0];
+    if (!peers[id]) {
+        peers[id] = {
+            id: id,
+            name: msg.name,
+            draw: true,
+            host: false
+        }
+        $('#peerList').trigger('updateList');
+    }
+    else {
+        if (peers[id].name != msg.name) {
+            peers[id].name = msg.name;
+            $('#peerList').trigger('updateList');
+        }
+    }
+
+})
 
 TogetherJS.hub.on('load', function (msg) {
     if (!msg.sameUrl) {
