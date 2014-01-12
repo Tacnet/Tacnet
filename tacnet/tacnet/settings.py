@@ -66,7 +66,7 @@ ICONS_ROOT = makepath('icons')
 
 STATIC_URL = '/static/'
 
-INTERNAL_IPS = ['127.0.0.1', 'test1337.tacnet.io']
+INTERNAL_IPS = ['127.0.0.1', '129.241.208.163']
 
 STATICFILES_DIRS = (
     makepath('apps', 'base', 'static'),
