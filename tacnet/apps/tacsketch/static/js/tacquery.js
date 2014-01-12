@@ -11,10 +11,6 @@ var buttonStates = {
 };
 
 $(document).ready(function () {
-    function hexRGB(hex) {
-        return 'rgb(' + ['0x' + hex[1] + hex[2] | 0, '0x' + hex[3] + hex[4] | 0, '0x' + hex[5] + hex[6] | 0].join(',') + ')';
-    }
-
     function toggleState(button, buttonClass) {
         if (buttonStates[buttonClass]) { 
             buttonStates[buttonClass] = '';
@@ -35,7 +31,6 @@ $(document).ready(function () {
             }
         }
     }
-
     // Hide popover
     function hidePopover(element) {
         if (element.next('div.popover:visible').length) {
@@ -99,7 +94,7 @@ $(document).ready(function () {
             }
         }
         hidePopover($('#clearMenu'));
-        $('#brushSizeForm').append('<input type="text" id="brushSize" class="brushSlider" style="width: 214px;" />');
+        $('#brushSizeForm').append('<input type="text" id="brushSize" class="brushSlider" style="width: 438px;" />');
         $('.brushSlider').slider({
             min: 1,
             max: 50,
@@ -111,24 +106,12 @@ $(document).ready(function () {
             changeMouse();
         })
 
-        $('#setAlphaForm').append('<input type="text" id="setAlpha" class="alphaSlider" style="width: 214px;" />');
-        $('.alphaSlider').slider({
-            min: 1,
-            max: 100,
-            step: 1,
-            value: alpha * 100
-        }).on('slide', function (ev) {
-            alpha = (Math.round((ev.value * 10) / 10) / 100);
-        }).on('slideStop', function (ev) {
-            setColor(globalColor);
-            changeMouse();
-        });
 
         // Button listeners
 
         //Color change functions
         $('.green-pick').click(function () {
-            setColor('rgb(0, 255, 0)');
+            setColor('#00ff00');
             $('.brush').removeClass('active');
             toggleState(this, '.green-pick');
             changeMouse();
@@ -136,7 +119,7 @@ $(document).ready(function () {
 
         //Color change functions
         $('.yellow-pick').click(function () {
-            setColor('rgb(255, 255, 0)');
+            setColor('#ffff00');
             $('.brush').removeClass('active');
             toggleState(this, '.yellow-pick');
             changeMouse();
@@ -144,7 +127,7 @@ $(document).ready(function () {
 
         //Color change functions
         $('.red-pick').click(function () {
-            setColor('rgb(255, 0, 0)');
+            setColor('#ff0000');
             $('.brush').removeClass('active');
             toggleState(this, '.red-pick');
             changeMouse();
@@ -152,7 +135,7 @@ $(document).ready(function () {
 
         //Color change functions
         $('.blue-pick').click(function () {
-            setColor('rgb(0, 0, 255)');
+            setColor('#0000ff');
             $('.brush').removeClass('active');
             toggleState(this, '.blue-pick');
             changeMouse();
@@ -160,7 +143,7 @@ $(document).ready(function () {
 
         //Color change functions
         $('.black-pick').click(function () {
-            setColor('rgb(0, 0, 0)');
+            setColor('#000');
             $('.brush').removeClass('active');
             toggleState(this, '.black-pick');
             changeMouse();
@@ -168,21 +151,22 @@ $(document).ready(function () {
 
         $('.eraser').click(function () {
             $('.brush').removeClass('active');
-            if (!erasing) {
+            toggleState(this, '.eraser');
+            if (sketchContext.globalCompositeOperation != 'destination-out') {
                 oldColor = sketchContext.strokeStyle;
-                sketchContext.strokeStyle = 'rgba(0,0,0,0)';
+                sketchContext.globalCompositeOperation = 'destination-out';
+                sketchContext.strokeStyle = 'rgba(0,0,0,1)';
             }
             else {
+                sketchContext.globalCompositeOperation = 'source-over';
                 sketchContext.strokeStyle = oldColor;
             }
-            erasing = !erasing;
-            toggleState(this, '.eraser');
             changeMouse();
         });
 
          //User color
         $('.user-color-pick').click(function() {
-            setColor(hexRGB(TogetherJS.require('peers').Self.color));
+            setColor(TogetherJS.require('peers').Self.color);
             $('.brush').removeClass('active');
             toggleState(this, '.user-color-pick');
             changeMouse();
@@ -247,12 +231,11 @@ $(document).ready(function () {
         ctx.arc(centerX, centerY, (cursorSize/2)-4, 0, 2 * Math.PI, false);
 
         // If the user is erasing, set the fill of the cursor to white.
-        if (erasing) {
+        if (sketchContext.globalCompositeOperation == 'destination-over') {
              ctx.fillStyle = 'white';
              ctx.fill();
-             cursorColor = oldColor;
         }
-        
+
         ctx.lineWidth = 3;
         ctx.strokeStyle = cursorColor;
         ctx.stroke();
@@ -362,10 +345,19 @@ $(document).ready(function () {
 
     TogetherJS.once('ready', function () {
         TogetherJS.require('session').on('self-updated', function () {
-            setColor(hexRGB(TogetherJS.require('peers').Self.color));
-            buttonStates['.user-color-pick'] = 'active';
-            changeMouse();
             stopSpinner();
+            self = {
+                name: TogetherJS.require('peers').Self.name,
+                id: TogetherJS.require('peers').Self.identityId
+            }
+            peers[self.id] = {
+                id: self.id,
+                name: self.name,
+                draw: true,
+                host: true
+            }
+            console.log("init peers", peers);
+            host = self;
         });
     });
 

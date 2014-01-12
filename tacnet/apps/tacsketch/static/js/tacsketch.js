@@ -3,16 +3,13 @@ fabricCanvas.selection = false;
 
 var sketchCanvas = document.getElementById ('sketch');
 var sketchContext = sketchCanvas.getContext('2d');
-sketchContext.globalCompositeOperation = 'copy';
+
 var bgCanvas = document.getElementById ('background');
 var bgContext = bgCanvas.getContext('2d');
 
 var currentBackground;
 var currentBackgroundID = '-';
 var scaleBackground = false;
-var alpha = 1.0;
-var globalColor;
-var erasing = false;
 var initJSON;
 
 var textColor = '#000000';
@@ -22,7 +19,7 @@ var icons = {};
 var lines = {}; 
 var tempLines = {};
 var iconTrail = false;
-var startText = 'TEXT'; 
+var startText = "TEXT"; 
 
 var undoArray = [];
 var redoArray = [];
@@ -49,7 +46,6 @@ setBackground('/static/img/boot.jpg', '-', false, false, false);
 sketchContext.lineWidth = 3;
 sketchContext.lineJoin = 'round';
 sketchContext.lineCap = 'round';
-setColor('rgb(0,0,0)')
 
 // Event listeneres for objects
 fabricCanvas.on('object:rotating', function(e) {
@@ -185,9 +181,8 @@ function setSize(size) {
 
 // Set brush color
 function setColor(color) {
-    globalColor = color;
-    var rgb = globalColor.match(/\d+/g);
-    sketchContext.strokeStyle = 'rgba('+ rgb[0] +', '+ rgb[1] +', '+ rgb[2] +', '+ alpha +')';
+    sketchContext.globalCompositeOperation = 'source-over';
+    sketchContext.strokeStyle = color;
 }
 
 function undo() {
@@ -415,12 +410,14 @@ function redo() {
             var toArray = [];
             var colorArray = [];
             var sizeArray = [];
+            var compositeArray = [];
             for (var key in redoObj) {
                 hashArray.push(key);
                 fromArray.push(redoObj[key][0]);
                 toArray.push(redoObj[key][1]);
                 colorArray.push(redoObj[key][2]);
                 sizeArray.push(redoObj[key][3]);
+                compositeArray.push(redoObj[key][4]);
             }
             if (TogetherJS.running) {
                 TogetherJS.send({
@@ -430,6 +427,7 @@ function redo() {
                     toArray: toArray,
                     colorArray: colorArray,
                     sizeArray: sizeArray,
+                    compositeArray: compositeArray
                 });
             }
             undoArray.push(redoObj);
@@ -439,9 +437,10 @@ function redo() {
 }
 
 // Draws the lines
-function draw(start, end, color, size, save) {
+function draw(start, end, color, size, compositeoperation, save) {
     sketchContext.save();
     sketchContext.strokeStyle = color;
+    sketchContext.globalCompositeOperation = compositeoperation;
     sketchContext.lineWidth = size;
     sketchContext.beginPath();
     sketchContext.moveTo(start.x, start.y);
@@ -464,9 +463,9 @@ function move(e) {
     else {
         mouse = fabricCanvas.getPointer(e.e);
     }
-    lines[hash] = [lastMouse, mouse, sketchContext.strokeStyle, sketchContext.lineWidth];
-    tempLines[hash] = [lastMouse, mouse, sketchContext.strokeStyle, sketchContext.lineWidth];
-    draw(lastMouse, mouse, sketchContext.strokeStyle, sketchContext.lineWidth, true);
+    lines[hash] = [lastMouse, mouse, sketchContext.strokeStyle, sketchContext.lineWidth, sketchContext.globalCompositeOperation];
+    tempLines[hash] = [lastMouse, mouse, sketchContext.strokeStyle, sketchContext.lineWidth, sketchContext.globalCompositeOperation];
+    draw(lastMouse, mouse, sketchContext.strokeStyle, sketchContext.lineWidth, sketchContext.globalCompositeOperation, true);
     if (TogetherJS.running) {
         TogetherJS.send({
             type: 'draw',
@@ -474,6 +473,7 @@ function move(e) {
             end: mouse,
             color: sketchContext.strokeStyle,
             size: sketchContext.lineWidth,
+            compositeoperation: sketchContext.globalCompositeOperation,
             hash: hash
         });
     }
@@ -637,7 +637,6 @@ function deleteIcon(hash, send) {
 
 // Sets background
 function setBackground(background, backgroundID, clicked, init, sendInit) {
-
     if (clicked) {
         if (TogetherJS.running) {
             TogetherJS.send({
@@ -655,7 +654,6 @@ function setBackground(background, backgroundID, clicked, init, sendInit) {
     var bgimg = new Image();
     bgimg.src = background;
     bgimg.onload = function() {
-
         var oldLineWidth = sketchContext.lineWidth;
         var oldLineJoin = sketchContext.lineJoin;
         var oldLineCap = sketchContext.lineCap;
@@ -676,16 +674,12 @@ function setBackground(background, backgroundID, clicked, init, sendInit) {
         sketchCanvas.height = height;
         fabricCanvas.setWidth(width);
         fabricCanvas.setHeight(height);
-        sketchContext.globalCompositeOperation = 'copy'; // For some reason this is reset by setting the width..
-
         bgContext.drawImage(bgimg, 0, 0, width, height);
 
         sketchContext.lineWidth =  oldLineWidth;
         sketchContext.lineJoin = oldLineJoin;
         sketchContext.lineCap = oldLineCap;
         sketchContext.strokeStyle = oldStrokeStyle;
-          
-
         if (init) {
             initDraw(sendInit);
         }
@@ -730,4 +724,3 @@ function resetFabric(clicked) {
     fabricCanvas.clear();
     icons = {};
 }
-
