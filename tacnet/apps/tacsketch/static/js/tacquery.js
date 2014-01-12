@@ -365,7 +365,7 @@ $(document).ready(function () {
 
     $('.select-cloud-load').click(function(){
         // Open Cloud load modal if logged in
-        if (loggedIn) {
+        if (loggedIn && peers[TogetherJS.require('peers').Self.identityId].draw) {
             $('#loadCloudTactic').modal('show');
         }
     });
