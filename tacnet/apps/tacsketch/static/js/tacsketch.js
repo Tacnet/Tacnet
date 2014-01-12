@@ -637,7 +637,9 @@ function deleteIcon(hash, send) {
 
 // Sets background
 function setBackground(background, backgroundID, clicked, init, sendInit) {
-    if (clicked) {
+    var send = false;
+    if (clicked && (background.slice(0,7) === '/media/' || background.slice(0,8) === '/static/')) {
+        console.log("got here");
         if (TogetherJS.running) {
             TogetherJS.send({
                 type: 'setBackground',
@@ -647,6 +649,7 @@ function setBackground(background, backgroundID, clicked, init, sendInit) {
             });
         }
     }
+    else send = clicked;
 
     currentBackground = background;
     currentBackgroundID = backgroundID;
@@ -680,6 +683,17 @@ function setBackground(background, backgroundID, clicked, init, sendInit) {
         sketchContext.lineJoin = oldLineJoin;
         sketchContext.lineCap = oldLineCap;
         sketchContext.strokeStyle = oldStrokeStyle;
+        if (send) {
+            currentBackground = bgCanvas.toDataURL('image/jpeg');
+            if (TogetherJS.running) {
+                TogetherJS.send({
+                    type: 'setBackground',
+                    background: currentBackground,
+                    backgroundID: backgroundID,
+                    scaleBackground: scaleBackground
+                });
+            }
+        }
         if (init) {
             initDraw(sendInit);
         }

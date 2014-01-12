@@ -339,10 +339,6 @@ $(document).ready(function () {
         });
     });
 
-    $('.loadDrawings').click(function() {
-        $('#input').click();
-    });
-
     TogetherJS.once('ready', function () {
         stopSpinner();
         TogetherJS.require('session').on('self-updated', function () {
