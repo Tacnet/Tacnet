@@ -48,8 +48,8 @@ TogetherJS.hub.on('draw', function (msg) {
     if (!msg.sameUrl) {
         return;
     }
-    lines[msg.hash] = [msg.start, msg.end, msg.color, msg.size, msg.compositeoperation];
-    draw(msg.start, msg.end, msg.color, msg.size, msg.compositeoperation, true);
+    lines[msg.hash] = [msg.start, msg.end, msg.color, msg.size];
+    draw(msg.start, msg.end, msg.color, msg.size, true);
 });
 
 // Undo/redo-listeners:
@@ -76,7 +76,7 @@ TogetherJS.hub.on('redoLine', function (msg) {
         return;
     }
     for (var i = 0; i < msg.hashArray.length; i++) {
-        lines[msg.hashArray[i]] = [msg.fromArray[i], msg.toArray[i], msg.colorArray[i], msg.sizeArray[i], msg.compositeArray[i]];
+        lines[msg.hashArray[i]] = [msg.fromArray[i], msg.toArray[i], msg.colorArray[i], msg.sizeArray[i]];
     }
     reDraw(lines);
 });
@@ -282,7 +282,6 @@ TogetherJS.hub.on('togetherjs.hello', function (msg) {
     TogetherJS.send({
         type: 'init',
         peers: peers,
-        host: host,
         lines: lineArr,
         fabric: fabricJSON,
         undoArray: undoArray,
@@ -300,7 +299,6 @@ TogetherJS.hub.on('init', function (msg) {
     if (!initialized || (msg.background != '/static/img/boot.jpg'  && msg.background != currentBackground)) {
         initialized = true;
         peers = msg.peers;
-        host = msg.host;
         $('#peerList').trigger('updateList');
         lines = {};
         var linesArr = msg.lines;
@@ -343,7 +341,6 @@ TogetherJS.hub.on('load', function (msg) {
     for (var i = 0; i < linesArr.length; i++) {
         lines[linesArr[i][5]] = linesArr[i];
     }
-    console.log("new lines:",lines);
     initJSON = msg.fabric;
     scaleBackground = false; // Can't save tactics with custom maps, so the maps will always be original size.
     setBackground(msg.background, msg.backgroundID, false, true, false);

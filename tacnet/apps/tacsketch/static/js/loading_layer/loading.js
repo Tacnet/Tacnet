@@ -22,13 +22,13 @@ var spinner = new Spinner(opts).spin(target);
 
 
 function startSpinner() {
-  console.log("starting spinner");
   spinner.spin(target);
   $('#loading_layer').show();
+
 }
 
 function stopSpinner() {
-  console.log("stopping spinner");
+  
   $('#loading_layer').hide();
   spinner.stop();
 }

@@ -66,7 +66,7 @@ ICONS_ROOT = makepath('icons')
 
 STATIC_URL = '/static/'
 
-INTERNAL_IPS = '127.0.0.1'
+INTERNAL_IPS = ['127.0.0.1', '129.241.208.163']
 
 STATICFILES_DIRS = (
     makepath('apps', 'base', 'static'),
@@ -176,7 +176,10 @@ LOGGING = {
 configs = {
     ROOTPATH: 'settings',
     '/home/tacnet-www/www/tacnet': 'settings-production',
+    '/home/tacnet-www/test/tacnet': 'settings-test',
 }
+
+
 
 config_module = __import__('%s' % configs[ROOTPATH], globals(), locals(), 'tacnet')
 

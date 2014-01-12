@@ -12,6 +12,9 @@ var currentBackgroundID = '-';
 var scaleBackground = false;
 var initJSON;
 
+var textColor = '#000000';
+var textCounter = 1;
+
 var icons = {}; 
 var lines = {}; 
 var tempLines = {};
@@ -25,7 +28,6 @@ var stateObject = {};
 var initialized = false;
 
 var peers = {};
-var host; 
 
 var mouse = {
     x: 0,
@@ -42,7 +44,6 @@ setBackground('/static/img/boot.jpg', '-', false, false, false);
 sketchContext.lineWidth = 3;
 sketchContext.lineJoin = 'round';
 sketchContext.lineCap = 'round';
-sketchContext.strokeStyle = '#000';
 
 // Event listeneres for objects
 fabricCanvas.on('object:rotating', function(e) {
@@ -176,7 +177,6 @@ fabricCanvas.on('mouse:up', function(e) {
 // Set brush size
 function setSize(size) {
     sketchContext.lineWidth = size;
-
 }
 
 // Set brush color
@@ -578,8 +578,15 @@ function addText(text, color, hash, init) {
         top: 100,
         fill: color
     });
-
     fabricCanvas.add(fabricText).renderAll();
+    fabricText.toObject = (function(toObject) {
+        return function() {
+            return fabric.util.object.extend(toObject.call(fabricText), {
+                hash: fabricText.hash
+            });
+        };
+    })(fabricText.toObject);
+    
     fabricCanvas.setActiveObject(fabricText);
     icons[hash] = fabricText;
     if (init && !oHash) {
@@ -590,7 +597,7 @@ function addText(text, color, hash, init) {
             type: 'newText',
             hash: hash,
             text: text,
-            fill: sketchContext.strokeStyle
+            fill: color
         });
     }
     dfd.resolve();

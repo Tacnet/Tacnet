@@ -160,3 +160,9 @@ select, input[type="text"], input[type="password"], input[type="datetime"], inpu
 .table-curved tr:last-child td:last-child {
     border-radius: 0 0 4px 0;
 }
+
+.modal-dialog {
+
+    padding-top: 60px !important;
+
+}

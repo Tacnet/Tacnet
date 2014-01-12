@@ -17,8 +17,18 @@ $(document).ready(function () {
             $(button).removeClass('active');
         }
         else {
+            for (var i in buttonStates) {
+                if (['.eraser', '.toggleTrailing'].indexOf(i) === -1) {
+                    buttonStates[i] = '';
+                }
+            }
             buttonStates[buttonClass] = 'active';
             $(button).addClass('active');
+            if (buttonClass != '.eraser') {
+                erasing = false;
+                buttonStates['.eraser'] = '';
+                $('.eraser').removeClass('active');
+            }
         }
     }
     // Hide popover
@@ -84,8 +94,8 @@ $(document).ready(function () {
             }
         }
         hidePopover($('#clearMenu'));
-        $('#brushSizeForm').append('<input type="text" class="slider" id="brushSize" style="width: 440px;" />');
-        $('.slider').slider({
+        $('#brushSizeForm').append('<input type="text" id="brushSize" class="brushSlider" style="width: 438px;" />');
+        $('.brushSlider').slider({
             min: 1,
             max: 50,
             step: 1,
@@ -94,7 +104,8 @@ $(document).ready(function () {
             setSize(ev.value+2);
         }).on('slideStop', function (ev) {
             changeMouse();
-        });
+        })
+
 
         // Button listeners
 
@@ -108,7 +119,7 @@ $(document).ready(function () {
 
         //Color change functions
         $('.yellow-pick').click(function () {
-            setColor('#ff0');
+            setColor('#ffff00');
             $('.brush').removeClass('active');
             toggleState(this, '.yellow-pick');
             changeMouse();
@@ -137,9 +148,10 @@ $(document).ready(function () {
             toggleState(this, '.black-pick');
             changeMouse();
         });
+
         $('.eraser').click(function () {
             $('.brush').removeClass('active');
-            toggleState(this);
+            toggleState(this, '.eraser');
             if (sketchContext.globalCompositeOperation != 'destination-out') {
                 oldColor = sketchContext.strokeStyle;
                 sketchContext.globalCompositeOperation = 'destination-out';
@@ -151,6 +163,7 @@ $(document).ready(function () {
             }
             changeMouse();
         });
+
          //User color
         $('.user-color-pick').click(function() {
             setColor(TogetherJS.require('peers').Self.color);
@@ -191,7 +204,7 @@ $(document).ready(function () {
     });
 
     $('.addText').click(function() {
-        addText('TEXT', sketchContext.strokeStyle, false, true);
+        addText('Click to edit...', textColor, false, true);
     });
 
     $('.deleteIcon').click(function() {
@@ -331,12 +344,12 @@ $(document).ready(function () {
     });
 
     TogetherJS.once('ready', function () {
+        stopSpinner();
         TogetherJS.require('session').on('self-updated', function () {
-            stopSpinner();
-
+            setColor(TogetherJS.require('peers').Self.color);
             var tempName = TogetherJS.require('peers').Self.defaultName;
             if (TogetherJS.require('peers').Self.name != "") {
-                tempName = TogetherJS.require('peers').Self.name
+                tempName = TogetherJS.require('peers').Self.name;
             }
             peers[TogetherJS.require('peers').Self.identityId] = {
                 id: TogetherJS.require('peers').Self.identityId,
@@ -344,9 +357,22 @@ $(document).ready(function () {
                 draw: true,
                 host: true
             }
-            console.log(TogetherJS.require('peers').Self.identityId);
             $('#peerList').trigger('updateList');
         });
+    });
+
+
+    $('.select-cloud-load').click(function(){
+        // Open Cloud load modal if logged in
+        if (loggedIn != "") {
+            $('#loadCloudTactic').modal('show');
+        }
+        else {
+            $.bootstrapGrowl('You need to login before you can load cloud tactics.', {
+                type: 'danger',
+                width: 'auto'
+            });
+        }
     });
 
 
@@ -439,27 +465,51 @@ $(document).ready(function () {
         setBackground(URL.createObjectURL(e.target.files[0]), '-', true, false, false);
     });
 
-    $('#loadDrawingsInput').change(function (e) {
-        var img = new Image;
-        img.src = URL.createObjectURL(e.target.files[0]);
-        img.onload = function() {
-            if ((img.width != bgCanvas.width) || (img.height != bgCanvas.height)) {
-                bgCanvas.width = img.width;
-                bgCanvas.height = img.height;
-                sketchCanvas.width = img.width;
-                sketchCanvas.height = img.height;
-            }
-            sketchContext.drawImage(img, 0, 0);
-            img = sketchCanvas.toDataURL('image/png');
-            if (TogetherJS.running) {
-                TogetherJS.send({
-                    type: 'load',
-                    loadobject: img
-                });
-            }
-        }
+    var genericIcons = $(".generic-icons");
+    genericIcons.mousewheel(function(event, delta) {
+        // Vertical scroll genric icons
+        genericIcons.scrollLeft(genericIcons.scrollLeft() - (delta));
+        event.preventDefault();
     });
 
+    $('.number').click(function () {
+        addText(String(textCounter), textColor, false, true);
+        textCounter++;
+    });
+
+    $('.resetNumbers').click(function () {
+        textCounter = 1;
+    });
+
+    $('.generic-green').click(function () {
+        textColor = "#00ff00";
+        $('.generic-color').removeClass('active');
+        toggleState(this, '.generic-green');
+    });
+
+    $('.generic-yellow').click(function (){
+        textColor = "#ffff00";
+        $('.generic-color').removeClass('active');
+        toggleState(this, '.generic-yellow');
+    });
+
+    $('.generic-red').click(function () {
+        textColor = "#ff0000";
+        $('.generic-color').removeClass('active');
+        toggleState(this, '.generic-red');
+    });
+
+    $('.generic-blue').click(function () {
+        textColor = "#0000ff";
+        $('.generic-color').removeClass('active');
+        toggleState(this, '.generic-blue');
+    });
+
+    $('.generic-black').click(function () {
+        textColor = "#000000";
+        $('.generic-color').removeClass('active');
+        toggleState(this, '.generic-black');
+    });
 
     $('#peerList').on('updateList', function() {
         console.log("trigga");
@@ -526,4 +576,41 @@ $(document).ready(function () {
             }
         });
     });
-}); 
+
+    $('.generic-white').click(function () {
+        textColor = "#ffffff";
+        $('.generic-color').removeClass('active');
+        toggleState(this, '.generic-white');
+    });
+
+
+    var colors = {
+        '#00ff00': 'green',
+        '#ffff00': 'yellow',
+        '#ff0000': 'red',
+        '#0000ff': 'blue',
+        '#000000': 'black',
+        '#ffffff': 'white'
+    };
+
+    $('.circleFilled').click(function(){
+        addIcon('/static/img/fabric/circle_' + colors[textColor] + '.png', false, true);
+    });
+    $('.rectFilled').click(function(){
+        addIcon('/static/img/fabric/rect_' + colors[textColor] + '.png', false, true);
+    });
+    $('.triangleFilled').click(function(){
+        addIcon('/static/img/fabric/triangle_' + colors[textColor] + '.png', false, true);
+    });
+    $('.circle').click(function(){
+        addIcon('/static/img/fabric/circle_stroke_' + colors[textColor] + '.png', false, true);
+    });
+    $('.rect').click(function(){
+        addIcon('/static/img/fabric/rect_stroke_' + colors[textColor] + '.png', false, true);
+    });
+    $('.trinagle').click(function(){
+        addIcon('/static/img/fabric/triangle_stroke_' + colors[textColor] + '.png', false, true);
+    });
+
+});
+
