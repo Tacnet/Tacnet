@@ -5,3 +5,4 @@ TogetherJSConfig_siteName = "Tacnet";
 TogetherJSConfig_toolName = "Tacnet";
 TogetherJSConfig_disableWebRTC = true;
 TogetherJSConfig_dontShowClicks = ":not(canvas)";
+TogetherJSConfig_ignoreForms = true;

@@ -53,15 +53,12 @@
     <script src="/static/js/TogetherJSConfig.js"></script>
     {% if debug %}
         <script>
-            TogetherJSConfig_debug = true;
-            TogetherJSConfig_ignoreMessages = ["cursor-update", "keydown", "scroll-update", "app.draw"];
+            TogetherJSConfig_ignoreMessages = ["cursor-update", "cursor-down", "keydown", "scroll-update", "app.draw"];
         </script>
         <script src="/static/js/togetherjs-min-local.js"></script>
     {% else %}
         <script>
-            // FIX MEG FOR FAEEEEN TODO TODO TODO: ??
-            TogetherJSConfig_debug = true;
-            TogetherJSConfig_ignoreMessages = ["cursor-update", "cursor-down", "keydown", "scroll-update", "app.draw"];
+            TogetherJSConfig_ignoreMessages = true;
         </script>
         <script src="/static/js/togetherjs-min.js"></script>
     {% endif %}

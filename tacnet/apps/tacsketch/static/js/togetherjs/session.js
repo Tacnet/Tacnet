@@ -4,7 +4,7 @@
 
 define(["require", "util", "channels", "jquery", "storage"], function (require, util, channels, $, storage) {
 
-  var DEBUG = TogetherJS.config.get("debug");
+  var DEBUG = TogetherJS.config.get("debugMessages");
   // This is the amount of time in which a hello-back must be received after a hello
   // for us to respect a URL change:
   var HELLO_BACK_CUTOFF = 1500;

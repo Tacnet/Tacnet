@@ -66,15 +66,15 @@
     disableWebRTC: false,
     // When true, youTube videos will synchronize
     youtube: true,
-    // When false, disables all console logging
-    debug: true,
-    // Won't display the following console updates:
+    // When false, disables all console logging of messages
+    debugMessages: true,
+    // Ignores the following console messages
     ignoreMessages: ["cursor-update", "keydown", "scroll-update"]
   };
 
   var styleSheet = "/togetherjs/togetherjs.css";
 
-  var baseUrl = "http://127.0.0.1:8000/static/js";
+  var baseUrl = "http://127.0.0.1";
   if (baseUrl == "__" + "baseUrl__") {
     // Reset the variable if it doesn't get substituted
     baseUrl = "";

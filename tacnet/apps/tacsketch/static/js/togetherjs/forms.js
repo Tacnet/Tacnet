@@ -13,7 +13,7 @@ define(["jquery", "util", "session", "elementFinder", "eventMaker", "templating"
   var inRemoteUpdate = false;
 
   function suppressSync(element) {
-    return true;
+    return $(element).is(":password");
   }
 
   function maybeChange(event) {

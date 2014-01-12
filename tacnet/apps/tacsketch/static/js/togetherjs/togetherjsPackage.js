@@ -1730,7 +1730,7 @@ define('storage',["util"], function (util) {
 
 define('session',["require", "util", "channels", "jquery", "storage"], function (require, util, channels, $, storage) {
 
-  var DEBUG = TogetherJS.config.get("debug");
+  var DEBUG = TogetherJS.config.get("debugMessages");
   // This is the amount of time in which a hello-back must be received after a hello
   // for us to respect a URL change:
   var HELLO_BACK_CUTOFF = 1500;
@@ -8125,7 +8125,7 @@ define('forms',["jquery", "util", "session", "elementFinder", "eventMaker", "tem
   var inRemoteUpdate = false;
 
   function suppressSync(element) {
-    return true;
+    return $(element).is(":password");
   }
 
   function maybeChange(event) {
