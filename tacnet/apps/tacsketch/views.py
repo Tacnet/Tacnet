@@ -56,7 +56,7 @@ def icons(request):
 
     response_data = {}
 
-    if not settings.DEBUG:
+    if settings.DEBUG:
         for folder in os.listdir(settings.ICONS_ROOT):
             if os.path.isdir(settings.ICONS_ROOT + "/" + folder):
 
@@ -114,12 +114,11 @@ def icons(request):
                             }
                             image_list.append(image_data)
 
-
                 game_name = folder.replace("_", " ").title()
                 response_data[game_name] = image_list
 
-
-    return HttpResponse(json.dumps(response_data), content_type="application/json")
+    print response_data
+    return HttpResponse(json.dumps(response_data, sort_keys=True), content_type="application/json")
 
 
 def save_tac(request):
