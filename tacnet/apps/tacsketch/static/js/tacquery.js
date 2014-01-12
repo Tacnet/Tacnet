@@ -17,7 +17,7 @@ $(document).ready(function () {
         sketchContext.strokeStyle = color;
         changeMouse();
     }
-    
+
     function toggleState(button, buttonClass) {
         if (buttonStates[buttonClass]) { 
             buttonStates[buttonClass] = '';
@@ -365,22 +365,8 @@ $(document).ready(function () {
 
     $('.select-cloud-load').click(function(){
         // Open Cloud load modal if logged in
-        if (peers[TogetherJS.require('peers').Self.identityId].draw) {
-            if (loggedIn) {
-                $('#loadCloudTactic').modal('show');
-            }
-            else {
-                $.bootstrapGrowl('You need to login before you can load cloud tactics.', {
-                    type: 'danger',
-                    width: 'auto'
-                });
-            }
-        }
-        else {
-            $.bootstrapGrowl('You need drawing rights from the session host to load tactics.', {
-                type: 'danger',
-                width: 'auto'
-            });            
+        if (loggedIn) {
+            $('#loadCloudTactic').modal('show');
         }
     });
 
@@ -562,6 +548,7 @@ $(document).ready(function () {
             var button = $(this);
 
             if (button.hasClass('btn-danger')) {
+                peers[userID].draw = true;
                 if (TogetherJS.running) {
                     TogetherJS.send({
                         type: "updatePeersList",
@@ -573,6 +560,7 @@ $(document).ready(function () {
                 button.addClass('btn-success');
             }
             else {
+                peers[userID].draw = false;
                 if (TogetherJS.running) {
                     TogetherJS.send({
                         type: "updatePeersList",

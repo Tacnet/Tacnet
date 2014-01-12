@@ -69,11 +69,27 @@ $(document).ready(function () {
     });
 
     toggle_cloud_load.click(function() {
-        select_save.hide();
-        select_map.hide();
-        select_cloud.hide();
-        select_icons.hide();
-        select_restrictions.hide();
+        if (peers[TogetherJS.require('peers').Self.identityId].draw) {
+            if (loggedIn) {
+                select_save.hide();
+                select_map.hide();
+                select_cloud.hide();
+                select_icons.hide();
+                select_restrictions.hide();
+            }
+            else {
+                $.bootstrapGrowl('You need to login before you can load cloud tactics.', {
+                    type: 'warning',
+                    width: 'auto'
+                });
+            }
+        }
+        else {
+            $.bootstrapGrowl('You need drawing rights from the session host to load tactics.', {
+                type: 'warning',
+                width: 'auto'
+            });
+        }
     });
 
     toggle_restrictions.click(function() {
