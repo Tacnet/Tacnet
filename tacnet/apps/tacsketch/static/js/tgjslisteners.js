@@ -256,7 +256,7 @@ TogetherJS.hub.on('startSpinner', function (msg) {
     if (!msg.sameUrl) {
         return;
     }
-    startSpinner();
+    if (!initalized) startSpinner();
 });
 
 // Hello is fired whenever you connect (so that the other clients know you connected):
