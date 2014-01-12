@@ -11,18 +11,14 @@ prod_folder='/home/tacnet-www/www/'
 function usage {
     echo "Usage: prod_deploy [-q]"
     echo "Arguments:"
-    echo "  -f  --full:  Full prod: Runs pip install"
-    echo "  -p  --production: Deploys to production"
+    echo "  -t  --test:  Test deploy"
 }
 
-full_build=false
-pip=""
+test_build=false
 
 while [ "$1" != "" ]; do
     case $1 in
-        -f | --full )           full_build=true
-                                ;;
-        -p | --production )
+        -t | --test )           test_build=true
                                 ;;
         -h | --help | -q)       usage
                                 exit
@@ -33,8 +29,8 @@ while [ "$1" != "" ]; do
     shift
 done
 
-if [ "$full_build" == true ]; then
-    full=''
+if [ "$test_build" == true ]; then
+    prod_folder='/home/tacnet-www/test/'
 fi
 
 ssh eirikmsy@$target -t '
