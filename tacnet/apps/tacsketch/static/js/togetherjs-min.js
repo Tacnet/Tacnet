@@ -66,15 +66,15 @@
     disableWebRTC: false,
     // When true, youTube videos will synchronize
     youtube: true,
-    // When false, disables all console logging of messages
-    debugMessages: true,
-    // Ignores the following console messages
-    ignoreMessages: ["cursor-update", "keydown", "scroll-update"]
+    // Ignores the following console messages, disables all messages if set to true
+    ignoreMessages: ["cursor-update", "keydown", "scroll-update"],
+    // Ignores the following forms (will ignore all forms if set to true):
+    ignoreForms: [":password"]
   };
 
   var styleSheet = "/togetherjs/togetherjs.css";
 
-  var baseUrl = "http://tacnet.io";
+  var baseUrl = "http://tacnet.io/static/js";
   if (baseUrl == "__" + "baseUrl__") {
     // Reset the variable if it doesn't get substituted
     baseUrl = "";

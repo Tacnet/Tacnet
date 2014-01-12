@@ -142,7 +142,7 @@ TogetherJS.hub.on('redoIcon', function (msg) {
                 text: redoObj.text,
                 fill: redoObj.fill
                 //need to set more shit
-            })
+            });
         }
         else {
             icons[redoObj.hash].set({
@@ -214,13 +214,13 @@ TogetherJS.hub.on('scaledObject', function (msg) {
         return;
     }
     var sendObject = msg.sendObject;
-    icons[sendObject.hash]['scaleX'] = sendObject['scaleX']
-    icons[sendObject.hash]['scaleY'] = sendObject['scaleY']
-    icons[sendObject.hash]['width'] = sendObject['width']
-    icons[sendObject.hash]['height'] = sendObject['height']
-    icons[sendObject.hash]['left'] = sendObject['left']
-    icons[sendObject.hash]['top'] = sendObject['top']
-    icons[sendObject.hash]['oCoors'] = sendObject['oCoords']
+    icons[sendObject.hash]['scaleX'] = sendObject['scaleX'];
+    icons[sendObject.hash]['scaleY'] = sendObject['scaleY'];
+    icons[sendObject.hash]['width'] = sendObject['width'];
+    icons[sendObject.hash]['height'] = sendObject['height'];
+    icons[sendObject.hash]['left'] = sendObject['left'];
+    icons[sendObject.hash]['top'] = sendObject['top'];
+    icons[sendObject.hash]['oCoors'] = sendObject['oCoords'];
     fabricCanvas.renderAll();
     icons[sendObject.hash].setCoords();
 });
@@ -230,7 +230,7 @@ TogetherJS.hub.on('rotatedObject', function (msg) {
         return;
     }
     var sendObject = msg.sendObject;
-    icons[sendObject.hash]['angle'] = sendObject['angle']
+    icons[sendObject.hash]['angle'] = sendObject['angle'];
     fabricCanvas.renderAll();
     icons[sendObject.hash].setCoords();
 });
@@ -250,7 +250,7 @@ TogetherJS.hub.on('updatePeersList', function (msg) {
         fabricCanvas.renderAll();
     }
     $('#peerList').trigger('updateList');
-}
+});
 
 TogetherJS.hub.on('startSpinner', function (msg) {
     if (!msg.sameUrl) {
