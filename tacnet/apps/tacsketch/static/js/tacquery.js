@@ -344,20 +344,11 @@ $(document).ready(function () {
     });
 
     TogetherJS.once('ready', function () {
+        stopSpinner();
         TogetherJS.require('session').on('self-updated', function () {
-            stopSpinner();
-            self = {
-                name: TogetherJS.require('peers').Self.name,
-                id: TogetherJS.require('peers').Self.identityId
-            }
-            peers[self.id] = {
-                id: self.id,
-                name: self.name,
-                draw: true,
-                host: true
-            }
-            console.log("init peers", peers);
-            host = self;
+            setColor(TogetherJS.require('peers').Self.color);
+            buttonStates['.user-color-pick'] = 'active';
+            changeMouse();
         });
     });
 
