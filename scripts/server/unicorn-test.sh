@@ -11,7 +11,6 @@ source /home/tacnet-www/test/venv/bin/activate
 test -d $LOGDIR || mkdir -p $LOGDI
 
 export NEW_RELIC_CONFIG_FILE=/home/tacnet-www/test/scripts/server/newrelic.ini
-export DJANGO_SETTINGS_MODULE=tacnet.settings-test
 exec newrelic-admin run-program gunicorn tacnet.wsgi:application -w $NUM_WORKERS --bind=$ADDRESS \
   --user=$USER --group=$GROUP --log-level=debug \
   --log-file=$LOGFILE 2>>$LOGFILE

@@ -176,7 +176,10 @@ LOGGING = {
 configs = {
     ROOTPATH: 'settings',
     '/home/tacnet-www/www/tacnet': 'settings-production',
+    '/home/tacnet-www/test/tacnet': 'settings-test',
 }
+
+
 
 config_module = __import__('%s' % configs[ROOTPATH], globals(), locals(), 'tacnet')
 
