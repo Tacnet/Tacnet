@@ -17,8 +17,18 @@ $(document).ready(function () {
             $(button).removeClass('active');
         }
         else {
+            for (var i in buttonStates) {
+                if (['.eraser', '.toggleTrailing'].indexOf(i) === -1) {
+                    buttonStates[i] = '';
+                }
+            }
             buttonStates[buttonClass] = 'active';
             $(button).addClass('active');
+            if (buttonClass != '.eraser') {
+                erasing = false;
+                buttonStates['.eraser'] = '';
+                $('.eraser').removeClass('active');
+            }
         }
     }
     // Hide popover
@@ -84,7 +94,7 @@ $(document).ready(function () {
             }
         }
         hidePopover($('#clearMenu'));
-        $('#brushSizeForm').append('<input type="text" id="brushSize" class="brushSlider" style="width: 214px;" />');
+        $('#brushSizeForm').append('<input type="text" id="brushSize" class="brushSlider" style="width: 438px;" />');
         $('.brushSlider').slider({
             min: 1,
             max: 50,
@@ -96,24 +106,12 @@ $(document).ready(function () {
             changeMouse();
         })
 
-        $('#setAlphaForm').append('<input type="text" id="setAlpha" class="alphaSlider" style="width: 214px;" />');
-        $('.alphaSlider').slider({
-            min: 1,
-            max: 100,
-            step: 1,
-            value: alpha * 100
-        }).on('slide', function (ev) {
-            alpha = (Math.round((ev.value * 10) / 10) / 100);
-        }).on('slideStop', function (ev) {
-            setColor(globalColor);
-            changeMouse();
-        });
 
         // Button listeners
 
         //Color change functions
         $('.green-pick').click(function () {
-            setColor('rgb(0, 255, 0)');
+            setColor('#00ff00');
             $('.brush').removeClass('active');
             toggleState(this, '.green-pick');
             changeMouse();
@@ -121,7 +119,7 @@ $(document).ready(function () {
 
         //Color change functions
         $('.yellow-pick').click(function () {
-            setColor('rgb(255, 255, 0)');
+            setColor('#ffff00');
             $('.brush').removeClass('active');
             toggleState(this, '.yellow-pick');
             changeMouse();
@@ -129,7 +127,7 @@ $(document).ready(function () {
 
         //Color change functions
         $('.red-pick').click(function () {
-            setColor('rgb(255, 0, 0)');
+            setColor('#ff0000');
             $('.brush').removeClass('active');
             toggleState(this, '.red-pick');
             changeMouse();
@@ -137,7 +135,7 @@ $(document).ready(function () {
 
         //Color change functions
         $('.blue-pick').click(function () {
-            setColor('rgb(0, 0, 255)');
+            setColor('#0000ff');
             $('.brush').removeClass('active');
             toggleState(this, '.blue-pick');
             changeMouse();
@@ -145,25 +143,27 @@ $(document).ready(function () {
 
         //Color change functions
         $('.black-pick').click(function () {
-            setColor('rgb(0, 0, 0)');
+            setColor('#000');
             $('.brush').removeClass('active');
             toggleState(this, '.black-pick');
             changeMouse();
         });
+
         $('.eraser').click(function () {
             $('.brush').removeClass('active');
-            toggleState(this);
+            toggleState(this, '.eraser');
             if (sketchContext.globalCompositeOperation != 'destination-out') {
                 oldColor = sketchContext.strokeStyle;
                 sketchContext.globalCompositeOperation = 'destination-out';
                 sketchContext.strokeStyle = 'rgba(0,0,0,1)';
             }
             else {
-                sketchContext.globalCompositeOperation = 'copy';
+                sketchContext.globalCompositeOperation = 'source-over';
                 sketchContext.strokeStyle = oldColor;
             }
             changeMouse();
         });
+
          //User color
         $('.user-color-pick').click(function() {
             setColor(TogetherJS.require('peers').Self.color);

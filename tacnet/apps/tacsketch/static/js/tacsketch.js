@@ -10,8 +10,6 @@ var bgContext = bgCanvas.getContext('2d');
 var currentBackground;
 var currentBackgroundID = '-';
 var scaleBackground = false;
-var alpha = 1.0;
-var globalColor;
 var initJSON;
 
 var textColor = '#000000';
@@ -48,7 +46,6 @@ setBackground('/static/img/boot.jpg', '-', false, false, false);
 sketchContext.lineWidth = 3;
 sketchContext.lineJoin = 'round';
 sketchContext.lineCap = 'round';
-setColor('rgb(0,0,0)')
 
 // Event listeneres for objects
 fabricCanvas.on('object:rotating', function(e) {
@@ -184,10 +181,8 @@ function setSize(size) {
 
 // Set brush color
 function setColor(color) {
-    globalColor = color;
-    var rgb = globalColor.match(/\d+/g);
-    sketchContext.globalCompositeOperation = 'copy';
-    sketchContext.strokeStyle = 'rgba('+ rgb[0] +', '+ rgb[1] +', '+ rgb[2] +', '+ alpha +')';
+    sketchContext.globalCompositeOperation = 'source-over';
+    sketchContext.strokeStyle = color;
 }
 
 function undo() {
