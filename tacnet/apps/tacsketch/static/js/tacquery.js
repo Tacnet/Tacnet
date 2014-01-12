@@ -340,10 +340,6 @@ $(document).ready(function () {
         });
     });
 
-    $('.loadDrawings').click(function() {
-        $('#input').click();
-    });
-
     TogetherJS.once('ready', function () {
         stopSpinner();
         TogetherJS.require('session').on('self-updated', function () {
@@ -449,13 +445,21 @@ $(document).ready(function () {
             }
         });
     });
-
+    function sendSpinner() {
+        if (TogetherJS.running) {
+            TogetherJS.send({
+                type: 'startSpinner'
+            });
+        }
+    }
     $('#loadMapScaleInput').change(function (e) {
+        sendSpinner();
         scaleBackground = true;
         setBackground(URL.createObjectURL(e.target.files[0]), '-', true, false, false);
     });
 
     $('#loadMapNoScaleInput').change(function (e) {
+        sendSpinner();
         scaleBackground = false;
         setBackground(URL.createObjectURL(e.target.files[0]), '-', true, false, false);
     });
@@ -507,12 +511,10 @@ $(document).ready(function () {
     });
 
     $('#peerList').on('updateList', function() {
-        console.log("trigga");
         var userList = $('#peerBody');
         userList.html("");
 
         $.each(peers, function (k, v) {
-            console.log("got to peer: ", k, v);
             var lastButton = "";
             if (v.host === true){
                 lastButton = '<span class="label label-info">Host</span>';

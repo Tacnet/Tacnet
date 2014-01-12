@@ -651,6 +651,7 @@ function deleteIcon(hash, send) {
 
 // Sets background
 function setBackground(background, backgroundID, clicked, init, sendInit) {
+    var send = false;
     if (clicked) {
         if (!peers[TogetherJS.require('peers').Self.identityId].draw) {
             $.bootstrapGrowl('You need drawing rights from the session host to change map.', {
@@ -659,7 +660,7 @@ function setBackground(background, backgroundID, clicked, init, sendInit) {
             });
             return;
         }
-        if (TogetherJS.running) {
+        else if (TogetherJS.running && (background.slice(0,7) === '/media/' || background.slice(0,8) === '/static/')) {
             TogetherJS.send({
                 type: 'setBackground',
                 background: background,
@@ -667,6 +668,7 @@ function setBackground(background, backgroundID, clicked, init, sendInit) {
                 scaleBackground: scaleBackground
             });
         }
+        else send = clicked;
     }
 
     currentBackground = background;
@@ -701,6 +703,17 @@ function setBackground(background, backgroundID, clicked, init, sendInit) {
         sketchContext.lineJoin = oldLineJoin;
         sketchContext.lineCap = oldLineCap;
         sketchContext.strokeStyle = oldStrokeStyle;
+        if (send) {
+            currentBackground = bgCanvas.toDataURL('image/jpeg');
+            if (TogetherJS.running) {
+                TogetherJS.send({
+                    type: 'setBackground',
+                    background: currentBackground,
+                    backgroundID: backgroundID,
+                    scaleBackground: scaleBackground
+                });
+            }
+        }
         if (init) {
             initDraw(sendInit);
         }

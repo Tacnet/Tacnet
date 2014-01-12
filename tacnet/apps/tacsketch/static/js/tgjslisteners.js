@@ -243,7 +243,6 @@ TogetherJS.hub.on('updatePeersList', function (msg) {
     if (TogetherJS.require('peers').Self.identityId === msg.id) {
         fabricCanvas.deactivateAll().renderAll();
         for (var i in icons) {
-            console.log("setting to ", msg.draw, icons[i]);
             icons[i].set({
                 selectable: msg.draw
             });
@@ -251,6 +250,13 @@ TogetherJS.hub.on('updatePeersList', function (msg) {
         fabricCanvas.renderAll();
     }
     $('#peerList').trigger('updateList');
+}
+
+TogetherJS.hub.on('startSpinner', function (msg) {
+    if (!msg.sameUrl) {
+        return;
+    }
+    startSpinner();
 });
 
 // Hello is fired whenever you connect (so that the other clients know you connected):
@@ -280,6 +286,11 @@ TogetherJS.hub.on('togetherjs.hello', function (msg) {
         lineArr.push([lines[key][0], lines[key][1], lines[key][2], lines[key][3], lines[key][4], key]);
     }
     var fabricJSON = JSON.stringify(fabricCanvas);
+    if (currentBackground.slice(0,5) === 'data:') {
+        TogetherJS.send({
+            type: 'startSpinner'
+        });
+    }
     TogetherJS.send({
         type: 'init',
         peers: peers,
