@@ -707,6 +707,10 @@ function setBackground(background, backgroundID, clicked, init, sendInit) {
             currentBackground = bgCanvas.toDataURL('image/jpeg');
             if (TogetherJS.running) {
                 TogetherJS.send({
+                    type: 'startSpinner',
+                    background: currentBackground
+                });
+                TogetherJS.send({
                     type: 'setBackground',
                     background: currentBackground,
                     backgroundID: backgroundID,
