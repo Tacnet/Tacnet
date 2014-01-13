@@ -47,7 +47,7 @@ sketchContext.lineCap = 'round';
 
 // Event listeneres for objects
 fabricCanvas.on('object:rotating', function(e) {
-    var sendObject = new Object();
+    var sendObject = {};
     sendObject['hash'] = e.target.hash;
     sendObject['angle'] = e.target.angle;
     if (TogetherJS.running) {
@@ -59,7 +59,7 @@ fabricCanvas.on('object:rotating', function(e) {
 });
 
 fabricCanvas.on('object:scaling', function(e) {
-    var sendObject = new Object();
+    var sendObject = {};
     sendObject['hash'] = e.target.hash;
     sendObject['scaleX'] = e.target.scaleX;
     sendObject['scaleY'] = e.target.scaleY;
@@ -115,7 +115,7 @@ fabricCanvas.on('text:editing:exited', function (e) {
             hash: e.target.hash
         });
     }
-})
+});
 // Event listeners for mouse
 
 var lastState = 0;
@@ -181,7 +181,7 @@ function setSize(size) {
 
 function undo() {
     if (peers[TogetherJS.require('peers').Self.identityId].draw) {
-        if (undoArray[0] != null) {
+        if (undoArray[0] !== null) {
             var undoObj = undoArray[undoArray.length-1];
             if (undoObj.undoText) {
                 var redoObj = {
@@ -314,7 +314,7 @@ function undo() {
 
 function redo() {
     if (peers[TogetherJS.require('peers').Self.identityId].draw) {
-        if (redoArray[0] != null) {
+        if (redoArray[0] !== null) {
             var redoObj = redoArray[redoArray.length-1];
             if (redoObj.undoText) {
                 icons[redoObj.hash].set({
@@ -367,7 +367,7 @@ function redo() {
                             text: redoObj.text,
                             fill: redoObj.fill
                             //need to set more shit
-                        })
+                        });
                     }
                     else {
                         icons[redoObj.hash].set({
@@ -456,7 +456,7 @@ function move(e) {
         mouse = {
             x: fObj.left+(fObj.getWidth()/2),
             y: fObj.top+(fObj.getHeight()/2)
-        }
+        };
     }
     else {
         mouse = fabricCanvas.getPointer(e.e);
@@ -721,7 +721,7 @@ function setBackground(background, backgroundID, clicked, init, sendInit) {
             stopSpinner();
             lines = {};
         }
-    }
+    };
 }
 
 // Reset background

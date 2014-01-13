@@ -160,7 +160,6 @@ TogetherJS.hub.on('redoIcon', function (msg) {
         }
     }
     else setIcon();
-            
 });
 
 // Sent out whenever someone adds a n ew icon:
@@ -193,9 +192,9 @@ TogetherJS.hub.on('movedObject', function (msg) {
         return;
     }
     var sendObject = msg.sendObject;
-    icons[sendObject.hash]['left'] = sendObject['left']
-    icons[sendObject.hash]['top'] = sendObject['top']
-    icons[sendObject.hash]['oCoors'] = sendObject['oCoords']
+    icons[sendObject.hash]['left'] = sendObject['left'];
+    icons[sendObject.hash]['top'] = sendObject['top'];
+    icons[sendObject.hash]['oCoors'] = sendObject['oCoords'];
     fabricCanvas.renderAll();
     icons[sendObject.hash].setCoords();
 });
@@ -273,7 +272,7 @@ TogetherJS.hub.on('togetherjs.hello', function (msg) {
             name: msg.name,
             draw: true,
             host: false
-        }
+        };
         $('#peerList').trigger('updateList');
     }
     else {
@@ -327,7 +326,6 @@ TogetherJS.hub.on('init', function (msg) {
 });
 
 TogetherJS.hub.on('togetherjs.peer-update', function (msg) {
-
     var id = msg.clientId.split(".")[0];
     if (!peers[id]) {
         peers[id] = {
@@ -335,7 +333,7 @@ TogetherJS.hub.on('togetherjs.peer-update', function (msg) {
             name: msg.name,
             draw: true,
             host: false
-        }
+        };
         $('#peerList').trigger('updateList');
     }
     else {
@@ -344,8 +342,7 @@ TogetherJS.hub.on('togetherjs.peer-update', function (msg) {
             $('#peerList').trigger('updateList');
         }
     }
-
-})
+});
 
 TogetherJS.hub.on('load', function (msg) {
     if (!msg.sameUrl) {

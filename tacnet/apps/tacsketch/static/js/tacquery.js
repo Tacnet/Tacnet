@@ -111,7 +111,7 @@ $(document).ready(function () {
             setSize(ev.value+2);
         }).on('slideStop', function (ev) {
             changeMouse();
-        })
+        });
 
 
         // Button listeners
@@ -345,7 +345,7 @@ $(document).ready(function () {
         TogetherJS.require('session').on('self-updated', function () {
             setColor(TogetherJS.require('peers').Self.color);
             var tempName = TogetherJS.require('peers').Self.defaultName;
-            if (TogetherJS.require('peers').Self.name != "") {
+            if (!TogetherJS.require('peers').Self.name) {
                 tempName = TogetherJS.require('peers').Self.name;
             }
             peers[TogetherJS.require('peers').Self.identityId] = {
@@ -353,7 +353,7 @@ $(document).ready(function () {
                 name: tempName,
                 draw: true,
                 host: true
-            }
+            };
             $('#peerList').trigger('updateList');
         });
     });
@@ -368,46 +368,34 @@ $(document).ready(function () {
 
 
     $('#loadCloudTactic').on('shown.bs.modal', function (e) {
-
         $('.tac-table-content').html('<tr><td colspan="4">Loading...</td></tr>');
         $.get( "/tacsketch/get_tacs", {  } )
         .done(function( data ) {
             if (data != "False") {
-
                 $('.tac-table-content').html('');
                 jQuery.each(data, function() {
-
                     var fabricJSON = this.fabric;
                     var linesJSON = this.lines;
-                    $('.tac-table-content').append('<tr class="tac-element-' + this.id + '"><td style="cursor:pointer;" class="tac-click" data-id="' + this.id + '">' + this.name + '</td><td>' + this.mapName + '</td><td>' + this.gameName + '</td><td><button type="button" class="btn btn-danger btn-xs confirmation" data-id="' + this.id + '"><span class="glyphicon glyphicon-remove-circle"></span> Delete</button></td></tr>');
-
-
+                    $('.tac-table-content').append('<tr class="tac-element-' + this.id + '"><td style="cursor:pointer; word-wrap: break-word; max-width: 282px;" class="tac-click" data-id="' + this.id + '">' + this.name + '</td><td>' + this.mapName + '</td><td>' + this.gameName + '</td><td><button type="button" class="btn btn-danger btn-xs confirmation" data-id="' + this.id + '"><span class="glyphicon glyphicon-remove-circle"></span> Delete</button></td></tr>');
                 });
 
                 $('.tac-click').click(function(){
-
                     var id = $(this).attr('data-id');
                     jQuery.each(data, function() {
-
                         if(this.id == id) {
                             lines = JSON.parse(this.lines);
                             initJSON = JSON.parse(this.fabric);
                             setBackground('/media/' + this.mapURI, this.mapID, false, true, true);
                             $('#loadCloudTactic').modal('hide');
                         }
-
                     });
-
                 });
 
 
 
                 $('.confirmation').click(function(){
-
                     if ($(this).hasClass('stage')) {
-
                         var dataID = $(this).attr('data-id');
-
                         $.ajax({
                             type: "POST",
                             url: "/tacsketch/delete_tac",
@@ -540,7 +528,7 @@ $(document).ready(function () {
             }
 
             userList.append('<tr>' +
-                '<td>' + v.name + '</td>' +
+                '<td style="word-wrap: break-word; max-width: 130px;">' + v.name + '</td>' +
                 '<td>' + lastButton + '</td>' +
                 '</tr>'
             );
@@ -608,9 +596,8 @@ $(document).ready(function () {
     $('.rect').click(function(){
         addIcon('/static/img/fabric/rect_stroke_' + colors[textColor] + '.png', false, true);
     });
-    $('.trinagle').click(function(){
+    $('.triangle').click(function(){
         addIcon('/static/img/fabric/triangle_stroke_' + colors[textColor] + '.png', false, true);
     });
 
 });
-
