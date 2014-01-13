@@ -500,6 +500,8 @@ $(document).ready(function () {
     });
 
     $('#peerList').on('updateList', function() {
+        if (!peers[TogetherJS.require('peers').Self.identityId].draw && fabricCanvas.defaultCursor !== 'not-allowed') fabricCanvas.defaultCursor = 'not-allowed';
+        else if (peers[TogetherJS.require('peers').Self.identityId].draw && fabricCanvas.defaultCursor === 'not-allowed') changeMouse();
         var userList = $('#peerBody');
         userList.html("");
 
