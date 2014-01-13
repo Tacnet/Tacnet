@@ -143,28 +143,6 @@ textarea::-webkit-input-placeholder {
   background-color: #34789a;
 }
 
-[class^="icon-"],
-[class*=" icon-"] {
-  background-image: url("../img/glyphicons-halflings-white.png");
-}
-
-.icon-white,
-.nav-pills > .active > a > [class^="icon-"],
-.nav-pills > .active > a > [class*=" icon-"],
-.nav-list > .active > a > [class^="icon-"],
-.nav-list > .active > a > [class*=" icon-"],
-.navbar-inverse .nav > .active > a > [class^="icon-"],
-.navbar-inverse .nav > .active > a > [class*=" icon-"],
-.dropdown-menu > li > a:hover > [class^="icon-"],
-.dropdown-menu > li > a:hover > [class*=" icon-"],
-.dropdown-menu > .active > a > [class^="icon-"],
-.dropdown-menu > .active > a > [class*=" icon-"],
-.dropdown-submenu:hover > a > [class^="icon-"],
-.dropdown-submenu:hover > a > [class*=" icon-"] {
-  background-image: url("../img/glyphicons-halflings-white.png");
-}
-
-
 .btn-link:hover {
   color: #1ab2ff;
 }
@@ -784,7 +762,7 @@ select:focus:invalid:focus {
   background-color: #333333;
 }
 
-.navbar-inverse .navbar-toggle .icon-bar {
+.navbar-inverse .navbar-toggle {
   background-color: #ffffff;
 }
 
