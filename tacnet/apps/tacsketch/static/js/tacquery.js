@@ -361,7 +361,7 @@ $(document).ready(function () {
 
     $('.select-cloud-load').click(function(){
         // Open Cloud load modal if logged in
-        if (loggedIn && peers[TogetherJS.require('peers').Self.identityId].draw) {
+        if (loggedIn && allowed) {
             $('#loadCloudTactic').modal('show');
         }
     });
@@ -490,8 +490,8 @@ $(document).ready(function () {
     });
 
     $('#peerList').on('updateList', function() {
-        if (!peers[TogetherJS.require('peers').Self.identityId].draw && fabricCanvas.defaultCursor !== 'not-allowed') fabricCanvas.defaultCursor = 'not-allowed';
-        else if (peers[TogetherJS.require('peers').Self.identityId].draw && fabricCanvas.defaultCursor === 'not-allowed') changeMouse();
+        if (!allowed && fabricCanvas.defaultCursor !== 'not-allowed') fabricCanvas.defaultCursor = 'not-allowed';
+        else if (allowed && fabricCanvas.defaultCursor === 'not-allowed') changeMouse();
         var userList = $('#peerBody');
         userList.html("");
 

@@ -240,6 +240,7 @@ TogetherJS.hub.on('updatePeersList', function (msg) {
     }
     peers[msg.id].draw = msg.draw;
     if (TogetherJS.require('peers').Self.identityId === msg.id) {
+        allowed = msg.draw;
         fabricCanvas.deactivateAll().renderAll();
         for (var i in icons) {
             icons[i].set({

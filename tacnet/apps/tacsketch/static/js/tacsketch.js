@@ -28,6 +28,7 @@ var stateObject = {};
 var initialized = false;
 
 var peers = {};
+var allowed = true;
 
 var mouse = {
     x: 0,
@@ -120,7 +121,7 @@ fabricCanvas.on('text:editing:exited', function (e) {
 
 var lastState = 0;
 fabricCanvas.on('mouse:down', function(e) {
-    if (peers[TogetherJS.require('peers').Self.identityId].draw) {
+    if (allowed) {
         lastMouse = fabricCanvas.getPointer(e.e);
         if (!fabricCanvas.getActiveObject()) {
             lastState = Object.keys(lines).length;
@@ -180,7 +181,7 @@ function setSize(size) {
 }
 
 function undo() {
-    if (peers[TogetherJS.require('peers').Self.identityId].draw) {
+    if (allowed) {
         if (undoArray[0] !== null) {
             var undoObj = undoArray[undoArray.length-1];
             if (undoObj.undoText) {
@@ -313,7 +314,7 @@ function undo() {
 }
 
 function redo() {
-    if (peers[TogetherJS.require('peers').Self.identityId].draw) {
+    if (allowed) {
         if (redoArray[0] !== null) {
             var redoObj = redoArray[redoArray.length-1];
             if (redoObj.undoText) {
@@ -450,32 +451,34 @@ function draw(start, end, color, size, compositeoperation, save) {
 
 // Function called on mouse-move, draws.
 function move(e) {
-    var hash = Math.random().toString(36);
-    var fObj = fabricCanvas.getActiveObject();
-    if (iconTrail && fObj) {
-        mouse = {
-            x: fObj.left+(fObj.getWidth()/2),
-            y: fObj.top+(fObj.getHeight()/2)
-        };
+    if (allowed) {
+        var hash = Math.random().toString(36);
+        var fObj = fabricCanvas.getActiveObject();
+        if (iconTrail && fObj) {
+            mouse = {
+                x: fObj.left+(fObj.getWidth()/2),
+                y: fObj.top+(fObj.getHeight()/2)
+            };
+        }
+        else {
+            mouse = fabricCanvas.getPointer(e.e);
+        }
+        lines[hash] = [lastMouse, mouse, sketchContext.strokeStyle, sketchContext.lineWidth, sketchContext.globalCompositeOperation];
+        tempLines[hash] = [lastMouse, mouse, sketchContext.strokeStyle, sketchContext.lineWidth, sketchContext.globalCompositeOperation];
+        draw(lastMouse, mouse, sketchContext.strokeStyle, sketchContext.lineWidth, sketchContext.globalCompositeOperation, true);
+        if (TogetherJS.running) {
+            TogetherJS.send({
+                type: 'draw',
+                start: lastMouse,
+                end: mouse,
+                color: sketchContext.strokeStyle,
+                size: sketchContext.lineWidth,
+                compositeoperation: sketchContext.globalCompositeOperation,
+                hash: hash
+            });
+        }
+        lastMouse = mouse;
     }
-    else {
-        mouse = fabricCanvas.getPointer(e.e);
-    }
-    lines[hash] = [lastMouse, mouse, sketchContext.strokeStyle, sketchContext.lineWidth, sketchContext.globalCompositeOperation];
-    tempLines[hash] = [lastMouse, mouse, sketchContext.strokeStyle, sketchContext.lineWidth, sketchContext.globalCompositeOperation];
-    draw(lastMouse, mouse, sketchContext.strokeStyle, sketchContext.lineWidth, sketchContext.globalCompositeOperation, true);
-    if (TogetherJS.running) {
-        TogetherJS.send({
-            type: 'draw',
-            start: lastMouse,
-            end: mouse,
-            color: sketchContext.strokeStyle,
-            size: sketchContext.lineWidth,
-            compositeoperation: sketchContext.globalCompositeOperation,
-            hash: hash
-        });
-    }
-    lastMouse = mouse;
 }
 
 // Redraws the lines from the lines-array:
@@ -526,7 +529,7 @@ function initSend() {
 
 // Adds an icon to the canvas, sends info through TJS.
 function addIcon(icon, hash, init) {
-    if (peers[TogetherJS.require('peers').Self.identityId].draw) {
+    if (allowed) {
         var dfd = $.Deferred();
         var oHash = hash; // Original hash-argument
         fabric.Image.fromURL(icon, function (img) {
@@ -572,7 +575,7 @@ function addIcon(icon, hash, init) {
 }
 
 function addText(text, color, hash, init) {
-    if (peers[TogetherJS.require('peers').Self.identityId].draw) {
+    if (allowed) {
         var dfd = $.Deferred();
         var oHash = hash; // Original hash-argument
         if (!hash) {
@@ -653,7 +656,7 @@ function deleteIcon(hash, send) {
 function setBackground(background, backgroundID, clicked, init, sendInit) {
     var send = false;
     if (clicked) {
-        if (!peers[TogetherJS.require('peers').Self.identityId].draw) {
+        if (!allowed) {
             $.bootstrapGrowl('You need drawing rights from the session host to change map.', {
                 type: 'warning', 
                 width: 'auto'
