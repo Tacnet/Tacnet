@@ -345,7 +345,7 @@ $(document).ready(function () {
         TogetherJS.require('session').on('self-updated', function () {
             setColor(TogetherJS.require('peers').Self.color);
             var tempName = TogetherJS.require('peers').Self.defaultName;
-            if (!TogetherJS.require('peers').Self.name) {
+            if (TogetherJS.require('peers').Self.name != "") {
                 tempName = TogetherJS.require('peers').Self.name;
             }
             peers[TogetherJS.require('peers').Self.identityId] = {
