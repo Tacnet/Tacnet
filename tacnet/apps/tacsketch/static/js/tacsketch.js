@@ -128,6 +128,7 @@ fabricCanvas.on('mouse:down', function(e) {
             fabricCanvas.on('mouse:move', move);
         }
         else {
+            fabricCanvas.getActiveObject().bringToFront();
             lastState = Object.keys(lines).length;
             stateObject = {};
             stateObject.hash = fabricCanvas.getActiveObject().hash;
