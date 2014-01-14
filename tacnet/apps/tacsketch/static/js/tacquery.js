@@ -190,7 +190,7 @@ $(document).ready(function () {
     });
 
     // Close popovers when clicking on sketchCanvas
-    $('.upper-canvas').click(function () {
+    $('.upper-canvas').mousedown(function () {
         hidePopover($('#chooseBrush'));
         hidePopover($('#clearMenu'));
     });
