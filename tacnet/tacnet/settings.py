@@ -132,6 +132,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable the admin:
     'admin',
     'suit',
+    'suit_redactor',
     'django.contrib.admin',
     'suit_redactor',
     'django_object_actions',
