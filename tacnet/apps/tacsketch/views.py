@@ -85,7 +85,7 @@ def icons(request):
                                     if i.isdigit():
                                         containsNumbers = True
                                         break
-                                if containsNumbers or (if "counter" in folder.lower() and len(name) <= 3):
+                                if containsNumbers or ("counter" in folder.lower() and len(name) <= 3):
                                     name = name.upper()
                                 elif "-" in name:
                                     names = name.split("-")
