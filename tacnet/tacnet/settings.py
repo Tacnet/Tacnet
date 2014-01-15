@@ -194,7 +194,6 @@ configs = {
     ROOTPATH: 'settings',
     '/home/tacnet-www/www/tacnet': 'settings-production',
     '/home/tacnet-www/test/tacnet': 'settings-test',
-    '/home/tacnet-www/www/tacnet': 'twitter_config',
 }
 
 
