@@ -73,10 +73,18 @@ $(document).ready(function () {
         }
     });
 
-    $('#clearMenu').on('shown.bs.popover', function () {
-        hidePopover($('#chooseBrush'));
+    $('#clearMenu').on('show.bs.popover', function (e) {
+        if (!allowed) {
+            e.preventDefault();
+            $.bootstrapGrowl('You need drawing rights from the session host to clear the canvas. ', {
+                type: 'warning', 
+                width: 'auto'
+            });
+        }
+    });
 
-        $('.clearCanvas').click(function() {
+   $('#clearMenu').on('shown.bs.popover', function (e) {
+        $('.clearCanvas').click(function () {
             clearCanvas(true);
             hidePopover($('#clearMenu'));
         });
@@ -86,7 +94,7 @@ $(document).ready(function () {
             hidePopover($('#clearMenu'));
         });
 
-        $('.resetBackground').click(function() {
+        $('.resetBackground').click(function () {
             $("#gameslist").select2("val", "");
             $("#mapslist").select2("val", "");
             resetBackground(true);
