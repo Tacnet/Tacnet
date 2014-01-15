@@ -247,7 +247,7 @@ TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
 twitter = ["","","",""]
 try:
     with open('/home/tacnet-www/www/passwords/twitter', 'rb') as f:
-        twitter = f.readline().spit(',')
+        twitter = f.readline().split(',')
 except:
     pass
 TWITTER_OAUTH = {
