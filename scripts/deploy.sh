@@ -4,7 +4,7 @@ set -e # Exit on error
 user='tacnet-www'
 target='tacnet.io'
 port=''
-branch='twitter'
+branch='master'
 prod_folder='/home/tacnet-www/www/'
 
 # Help
