@@ -8,3 +8,4 @@ pil
 django-suit-redactor
 django-object-actions
 tweetpony
+python-memcached
