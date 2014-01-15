@@ -239,16 +239,6 @@ TogetherJS.hub.on('updatePeersList', function (msg) {
         return;
     }
     peers[msg.id].draw = msg.draw;
-    if (TogetherJS.require('peers').Self.identityId === msg.id) {
-        allowed = msg.draw;
-        fabricCanvas.deactivateAll().renderAll();
-        for (var i in icons) {
-            icons[i].set({
-                selectable: msg.draw
-            });
-        }
-        fabricCanvas.renderAll();
-    }
     $('#peerList').trigger('updateList');
 });
 
@@ -328,6 +318,7 @@ TogetherJS.hub.on('init', function (msg) {
 
 TogetherJS.hub.on('togetherjs.peer-update', function (msg) {
     var id = msg.clientId.split(".")[0];
+    console.log("got peer update with id",id);
     if (!peers[id]) {
         peers[id] = {
             id: id,

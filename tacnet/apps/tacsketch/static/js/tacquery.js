@@ -348,12 +348,17 @@ $(document).ready(function () {
             if (TogetherJS.require('peers').Self.name != "") {
                 tempName = TogetherJS.require('peers').Self.name;
             }
-            peers[TogetherJS.require('peers').Self.identityId] = {
-                id: TogetherJS.require('peers').Self.identityId,
-                name: tempName,
-                draw: true,
-                host: true
-            };
+            if (peers[TogetherJS.require('peers').Self.identityId]) {
+                peers[TogetherJS.require('peers').Self.identityId].name = tempName;
+            }
+            else {
+                peers[TogetherJS.require('peers').Self.identityId] = {
+                    id: TogetherJS.require('peers').Self.identityId,
+                    name: tempName,
+                    draw: true,
+                    host: true
+                };
+            }
             $('#peerList').trigger('updateList');
         });
     });
@@ -490,8 +495,20 @@ $(document).ready(function () {
     });
 
     $('#peerList').on('updateList', function() {
-        if (!allowed && fabricCanvas.defaultCursor !== 'not-allowed') fabricCanvas.defaultCursor = 'not-allowed';
-        else if (allowed && fabricCanvas.defaultCursor === 'not-allowed') changeMouse();
+        // Check if the users drawing rights has changed, update cursor and the icons.
+        if (TogetherJS.require('peers').Self.identityId != allowed) {
+            allowed = peers[TogetherJS.require('peers').Self.identityId].draw;
+            if (!allowed) fabricCanvas.defaultCursor = 'not-allowed';
+            else changeMouse();
+            fabricCanvas.deactivateAll().renderAll();
+            for (var i in icons) {
+                icons[i].set({
+                    selectable: msg.draw
+                });
+            }
+            fabricCanvas.renderAll();
+        }
+
         var userList = $('#peerBody');
         userList.html("");
 
