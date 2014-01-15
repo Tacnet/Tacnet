@@ -20,6 +20,14 @@
     display: inline;
 }
 
+.donate {
+    color: #FFF !important;
+
+}
+.donate-link {
+    color: #999999 !important;
+}
+
 #auth_bar .text-holder a:last-child, #auth_bar .text-holder p:last-child {
     margin-right: 0px;
 }
