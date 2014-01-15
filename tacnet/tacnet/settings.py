@@ -196,14 +196,26 @@ configs = {
     '/home/tacnet-www/test/tacnet': 'settings-test',
 }
 
-
-
 config_module = __import__('%s' % configs[ROOTPATH], globals(), locals(), 'tacnet')
 
 # Load the config settings properties into the local scope.
 for setting in dir(config_module):
     if setting == setting.upper():
         locals()[setting] = getattr(config_module, setting)
+
+
+# Production settings
+twitter_config = {
+    '/home/tacnet-www/www/tacnet': 'twitter_config',
+    '/home/tacnet-www/test/tacnet': 'twitter_config',
+}
+
+twitter_module = __import__('%s' % twitter_config[ROOTPATH], globals(), locals(), 'tacnet')
+
+# Load the config settings properties into the local scope.
+for setting in dir(twitter_module):
+    if setting == setting.upper():
+        locals()[setting] = getattr(twitter_module, setting)
 
 
 SUIT_CONFIG = {
