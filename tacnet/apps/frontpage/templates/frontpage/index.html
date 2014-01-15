@@ -64,8 +64,25 @@
                     <script>
                     $(document).ready(function(){
                         var tweet = jQuery('#tweet');
-                        var text = tweet.html();
-                        text = text.replace(/(http:\/\/\S+)/gi, '<a href="$1" target="_blank">$1</a>');
+                        var text = tweet.html().trim();
+
+                        var links = text.match(/(http:\/\/\S+)/gi);
+
+                        $.each(links, function( index, value ) {
+
+                            var found = value.trim().indexOf(".", value.trim().length - ".".length) !== -1;
+
+                            if (!found){
+                                found = value.trim().indexOf(",", value.trim().length - ",".length) !== -1;
+                            }
+
+                            if (found) {
+                                var newLink = value.substring(0, value.length - 1);
+                                text = text.replace(value, '<a href="' + newLink + '" target="_blank">' + value + '</a>');
+                            }
+
+                        });
+
                         tweet.html(text);
                     });
                     </script>
