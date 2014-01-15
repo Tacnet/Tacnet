@@ -1,8 +1,6 @@
 import os, sys
 from django.contrib.messages import constants as messages
 
-
-
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -178,17 +176,6 @@ LOGGING = {
 }
 
 
-TWITTER_OAUTH = {
-     'user': '',
-     'consumer_key': '',
-     'consumer_secret': '',
-     'access_token': '',
-     'access_token_secret': ''
-}
-
-
-
-
 # Production settings
 configs = {
     ROOTPATH: 'settings',
@@ -203,19 +190,6 @@ for setting in dir(config_module):
     if setting == setting.upper():
         locals()[setting] = getattr(config_module, setting)
 
-
-# Production settings
-twitter_config = {
-    '/home/tacnet-www/www/tacnet': 'twitter_config',
-    '/home/tacnet-www/test/tacnet': 'twitter_config',
-}
-
-twitter_module = __import__('%s' % twitter_config[ROOTPATH], globals(), locals(), 'tacnet')
-
-# Load the config settings properties into the local scope.
-for setting in dir(twitter_module):
-    if setting == setting.upper():
-        locals()[setting] = getattr(twitter_module, setting)
 
 
 SUIT_CONFIG = {
@@ -267,3 +241,19 @@ from django.conf import global_settings
 TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
     'base.context_processors.Twitter',
 )
+
+
+
+twitter = ["","","",""]
+try:
+    with open('/home/tacnet-www/www/passwords/twitter', 'rb') as f:
+        twitter = f.readline().spit(',')
+except:
+    pass
+TWITTER_OAUTH = {
+     'user': 'Reactu',
+     'consumer_key': twitter[0],
+     'consumer_secret': twitter[1],
+     'access_token': twitter[2],
+     'access_token_secret': twitter[3]
+}
