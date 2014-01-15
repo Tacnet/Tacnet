@@ -60,7 +60,7 @@
             <div class="row">
                 <div class="col-md-12 well text-center" style="color: #FFF;">
                     <span><i class="fa fa-twitter"></i> Latest Tweet from <a href="{{ twitter_link }}">@{{ twitter_user }}</a>:</span>
-                    <span id="tweet">{{ twitter_tweet.text }}</span>
+                    <span id="tweet">{% if twitter_tweet.text %}{{ twitter_tweet.text }}{% else %}Twitter API Error{% endif %}</span>
                     <script>
                     $(document).ready(function(){
                         var tweet = jQuery('#tweet');
