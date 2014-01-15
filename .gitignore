@@ -14,3 +14,4 @@ files
 scripts/iconcreator/input
 scripts/iconcreator/output
 logs
+twitter_config.py

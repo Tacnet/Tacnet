@@ -101,6 +101,12 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
+
 ROOT_URLCONF = 'tacnet.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
@@ -172,12 +178,23 @@ LOGGING = {
 }
 
 
+TWITTER_OAUTH = {
+     'user': '',
+     'consumer_key': '',
+     'consumer_secret': '',
+     'access_token': '',
+     'access_token_secret': ''
+}
+
+
+
 
 # Production settings
 configs = {
     ROOTPATH: 'settings',
     '/home/tacnet-www/www/tacnet': 'settings-production',
     '/home/tacnet-www/test/tacnet': 'settings-test',
+    '/home/tacnet-www/www/tacnet': 'twitter_config',
 }
 
 
@@ -233,3 +250,9 @@ MESSAGE_TAGS = {
     messages.WARNING: 'alert-warning',
     messages.ERROR: 'alert-danger',
 }
+
+
+from django.conf import global_settings
+TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
+    'base.context_processors.Twitter',
+)
