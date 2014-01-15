@@ -174,7 +174,7 @@
 }
 
 .restrict-scroll {
-    overflow-x: scroll;
+    overflow-x: hidden;
     height: 310px;
 }
 
