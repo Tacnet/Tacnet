@@ -1,8 +1,6 @@
 import os, sys
 from django.contrib.messages import constants as messages
 
-
-
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -101,6 +99,12 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
+
 ROOT_URLCONF = 'tacnet.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
@@ -172,7 +176,6 @@ LOGGING = {
 }
 
 
-
 # Production settings
 configs = {
     ROOTPATH: 'settings',
@@ -180,14 +183,13 @@ configs = {
     '/home/tacnet-www/test/tacnet': 'settings-test',
 }
 
-
-
 config_module = __import__('%s' % configs[ROOTPATH], globals(), locals(), 'tacnet')
 
 # Load the config settings properties into the local scope.
 for setting in dir(config_module):
     if setting == setting.upper():
         locals()[setting] = getattr(config_module, setting)
+
 
 
 SUIT_CONFIG = {
@@ -232,4 +234,26 @@ MESSAGE_TAGS = {
     messages.INFO: 'alert-info',
     messages.WARNING: 'alert-warning',
     messages.ERROR: 'alert-danger',
+}
+
+
+from django.conf import global_settings
+TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
+    'base.context_processors.Twitter',
+)
+
+
+
+twitter = ["","","",""]
+try:
+    with open('/home/tacnet-www/www/passwords/twitter', 'rb') as f:
+        twitter = f.read().strip().split(',')
+except:
+    pass
+TWITTER_OAUTH = {
+     'user': 'Reactu',
+     'consumer_key': twitter[0],
+     'consumer_secret': twitter[1],
+     'access_token': twitter[2],
+     'access_token_secret': twitter[3]
 }

@@ -18,14 +18,13 @@ DATABASES = {
 }
 
 
-'''
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
         'LOCATION': '127.0.0.1:11211',
+        'KEY_PREFIX': '/tacnet-prod'
     }
 }
-'''
 
 
 with open('/home/tacnet-www/www/passwords/django_secret', 'rb') as f:

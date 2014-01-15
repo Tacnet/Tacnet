@@ -58,6 +58,40 @@
 
         </div>
 
+        <div class="container" style="margin-top: 30px;">
+            <div class="row">
+                <div class="col-md-12 well text-center" style="color: #FFF;">
+                    <span><i class="fa fa-twitter"></i> Latest Tweet from <a href="{{ twitter_link }}">@{{ twitter_user }}</a>:</span>
+                    <span id="tweet">{% if twitter_tweet.text %}{{ twitter_tweet.text }}{% else %}Twitter API Error{% endif %}</span>
+                    <script>
+                    $(document).ready(function(){
+                        var tweet = jQuery('#tweet');
+                        var text = tweet.html().trim();
+
+                        var links = text.match(/(http:\/\/\S+)/gi);
+
+                        $.each(links, function( index, value ) {
+
+                            var found = value.trim().indexOf(".", value.trim().length - ".".length) !== -1;
+
+                            if (!found){
+                                found = value.trim().indexOf(",", value.trim().length - ",".length) !== -1;
+                            }
+
+                            if (found) {
+                                var newLink = value.substring(0, value.length - 1);
+                                text = text.replace(value, '<a href="' + newLink + '" target="_blank">' + value + '</a>');
+                            }
+
+                        });
+
+                        tweet.html(text);
+                    });
+                    </script>
+                </div>
+            </div>
+        </div>
+
 {% endblock %}
 
 
