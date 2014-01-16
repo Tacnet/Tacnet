@@ -16,7 +16,6 @@ urlpatterns = patterns('',
     (r'^$', 'frontpage.views.index'),
 
     (r'^frontpage/', include('frontpage.urls')),
-    (r'^blog/', include('blog.urls')),
     (r'^tacsketch/', include('tacsketch.urls')),
 
     (r'^auth/', include('authentication.urls')),
