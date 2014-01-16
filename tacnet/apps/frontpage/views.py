@@ -32,7 +32,12 @@ def about(request):
         context_instance=RequestContext(request)
     )
 
-
+def thankyou(request):
+    return render_to_response(
+        "frontpage/thankyou.html",
+        context_instance=RequestContext(request)
+    )
+    
 def contact(request):
     if request.method == 'POST':
         email = request.POST['email']
