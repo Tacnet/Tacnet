@@ -97,6 +97,7 @@ $(document).ready(function () {
         $('.resetBackground').click(function () {
             $("#gameslist").select2("val", "");
             $("#mapslist").select2("val", "");
+            resetFabric(true);
             resetBackground(true);
             hidePopover($('#clearMenu'));
         });
@@ -351,11 +352,21 @@ $(document).ready(function () {
     TogetherJS.once('ready', function () {
         stopSpinner();
         TogetherJS.require('session').on('self-updated', function () {
+            // Self-updated is fired whenever changes are made to the user's TogetherJS-settings.
             setColor(TogetherJS.require('peers').Self.color);
             var tempName = TogetherJS.require('peers').Self.defaultName;
-            if (TogetherJS.require('peers').Self.name != "") {
+            // loggedIn is set to the user's username whenever he logs in.
+            console.log(loggedIn,"<-- her");
+            if (loggedIn) {
+                tempName = loggedIn;
+                TogetherJSConfig_getUserName = function () {return "usernammeeeeee";};
+                TogetherJS.refreshUserData();
+                // Needs to change TGJS-name too.
+            }
+            else if (TogetherJS.require('peers').Self.name != "") {
                 tempName = TogetherJS.require('peers').Self.name;
             }
+
             if (peers[TogetherJS.require('peers').Self.identityId]) {
                 peers[TogetherJS.require('peers').Self.identityId].name = tempName;
             }
