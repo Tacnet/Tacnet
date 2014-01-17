@@ -225,6 +225,7 @@ from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
 
 TEMPLATE_CONTEXT_PROCESSORS = TCP + (
     'django.core.context_processors.request',
+    'base.context_processors.Twitter',
 )
 
 # Messages
@@ -237,19 +238,13 @@ MESSAGE_TAGS = {
 }
 
 
-from django.conf import global_settings
-TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
-    'base.context_processors.Twitter',
-)
-
-
-
 twitter = ["","","",""]
 try:
     with open('/home/tacnet-www/www/passwords/twitter', 'rb') as f:
         twitter = f.read().strip().split(',')
 except:
     pass
+
 TWITTER_OAUTH = {
      'user': 'Reactu',
      'consumer_key': twitter[0],
