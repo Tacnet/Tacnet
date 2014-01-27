@@ -119,7 +119,7 @@ def icons(request):
 
     return HttpResponse(json.dumps(response_data, sort_keys=True), content_type="application/json")
 
-
+@csrf_exempt
 def save_tac(request):
     if request.method == "POST":
         user = request.user
@@ -151,7 +151,7 @@ def load_tac_list(request):
     except:
         return HttpResponse("False")
 
-
+@csrf_exempt
 def delete_tac (request):
     try:
         id = request.POST['id']
