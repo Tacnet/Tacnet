@@ -538,11 +538,13 @@ function addIcon(icon, hash, init) {
             if (!hash) {
                 hash = Math.random().toString(36);
             }
+            if (img.width > 50) scale = 50/img.width;
+            else scale = 1;
             var oImg = img.set({
                 hash: hash,
                 left: fabricCanvas.width/3,
                 top: 100
-            }).scale(0.5);
+            }).scale(scale);
             fabricCanvas.add(oImg).renderAll();
             oImg.toObject = (function(toObject) {
                 return function() {
