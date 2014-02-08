@@ -246,7 +246,7 @@ except:
     pass
 
 TWITTER_OAUTH = {
-     'user': 'Reactu',
+     'user': 'ekmartinb',
      'consumer_key': twitter[0],
      'consumer_secret': twitter[1],
      'access_token': twitter[2],
