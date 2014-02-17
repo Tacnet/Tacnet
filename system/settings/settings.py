@@ -11,25 +11,14 @@ ADMINS = (
 ROOTPATH = os.path.dirname(os.path.dirname(__file__))
 makepath = lambda *f: os.path.join(ROOTPATH, *f)
 
+
 PROJECT_ROOT = ROOTPATH
 sys.path.insert(0, os.path.join(PROJECT_ROOT, 'apps'))
 
 MANAGERS = ADMINS
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': makepath('tacnet.db'),
 
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
-    }
-}
-
-
-ALLOWED_HOSTS = ['129.241.208.163', 'tacnet.io', 'www.tacnet.io']
+ALLOWED_HOSTS = ['129.241.208.79', 'tacnet.io', 'www.tacnet.io']
 
 
 TIME_ZONE = 'Europe/Oslo'
@@ -64,7 +53,7 @@ ICONS_ROOT = makepath('icons')
 
 STATIC_URL = '/static/'
 
-INTERNAL_IPS = ['127.0.0.1', '129.241.208.163']
+INTERNAL_IPS = ['127.0.0.1', '129.241.208.79']
 
 STATICFILES_DIRS = (
     makepath('apps', 'base', 'static'),
@@ -105,10 +94,10 @@ CACHES = {
     }
 }
 
-ROOT_URLCONF = 'tacnet.urls'
+ROOT_URLCONF = 'settings.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'tacnet.wsgi.application'
+WSGI_APPLICATION = 'settings.wsgi.application'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -176,19 +165,6 @@ LOGGING = {
 }
 
 
-# Production settings
-configs = {
-    ROOTPATH: 'settings',
-    '/home/tacnet-www/www/tacnet': 'settings-production',
-    '/home/tacnet-www/test/tacnet': 'settings-test',
-}
-
-config_module = __import__('%s' % configs[ROOTPATH], globals(), locals(), 'tacnet')
-
-# Load the config settings properties into the local scope.
-for setting in dir(config_module):
-    if setting == setting.upper():
-        locals()[setting] = getattr(config_module, setting)
 
 
 
@@ -240,8 +216,9 @@ MESSAGE_TAGS = {
 
 twitter = ["","","",""]
 try:
-    with open('/home/tacnet-www/www/passwords/twitter', 'rb') as f:
+    with open(ROOTPATH + '/../passwords/twitter', 'rb') as f:
         twitter = f.read().strip().split(',')
+
 except:
     pass
 

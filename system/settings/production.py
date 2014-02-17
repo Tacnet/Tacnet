@@ -1,18 +1,18 @@
+from settings import ROOTPATH
 DEBUG = False
 
-
-with open('/home/tacnet-www/www/passwords/tacnet_db', 'rb') as f:
+with open(ROOTPATH + '/../passwords/database', 'rb') as f:
     db_password = f.readline()
 
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'tacnet_db',
+        'NAME': 'tacnet-django',
 
         'USER': 'tacnet',
         'PASSWORD': db_password.strip(),
-        'HOST': 'localhost',
+        'HOST': 'database.sylliaas.no',
         'PORT': '',
     }
 }
@@ -27,12 +27,12 @@ CACHES = {
 }
 
 
-with open('/home/tacnet-www/www/passwords/django_secret', 'rb') as f:
+with open(ROOTPATH + '/../passwords/secret', 'rb') as f:
     SECRET_KEY_READ = f.readline()
 SECRET_KEY = SECRET_KEY_READ
 
 
-with open('/home/tacnet-www/www/passwords/mail_password', 'rb') as f:
+with open(ROOTPATH + '/../passwords/mail', 'rb') as f:
     mail_password = f.readline()
 EMAIL_HOST = 'smtp.stud.ntnu.no'
 EMAIL_HOST_USER = 'larek'

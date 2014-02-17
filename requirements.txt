@@ -1,11 +1,8 @@
 django
 gunicorn
-newrelic
 south
 django-suit
-psycopg2
 pil
 django-suit-redactor
 django-object-actions
 tweetpony
-python-memcached
