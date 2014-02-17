@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.join(PROJECT_ROOT, 'apps'))
 MANAGERS = ADMINS
 
 
-ALLOWED_HOSTS = ['129.241.208.79', 'tacnet.io', 'www.tacnet.io']
+ALLOWED_HOSTS = ['129.241.208.79', 'tacnet.io', 'www.tacnet.io', 'web.sylliaas.no']
 
 
 TIME_ZONE = 'Europe/Oslo'
