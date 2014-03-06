@@ -10,7 +10,6 @@ development:
 	venv/bin/python system/manage.py syncdb --migrate
 
 production:
-	virtualenv venv
 	venv/bin/pip install -r requirements.txt
 	venv/bin/pip install psycopg2 python-memcached newrelic
 	echo "from production import *" > system/settings/local.py
