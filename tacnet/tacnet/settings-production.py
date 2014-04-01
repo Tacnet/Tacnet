@@ -34,8 +34,9 @@ SECRET_KEY = SECRET_KEY_READ
 
 with open('/home/tacnet-www/www/passwords/mail_password', 'rb') as f:
     mail_password = f.readline()
-EMAIL_HOST = 'smtp.stud.ntnu.no'
-EMAIL_HOST_USER = 'larek'
-EMAIL_HOST_PASSWORD = mail_password.strip()
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+
+EMAIL_HOST = '127.0.0.1'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_PORT = 25
+EMAIL_USE_TLS = False
