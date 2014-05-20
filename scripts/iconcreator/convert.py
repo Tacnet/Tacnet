@@ -57,5 +57,5 @@ try:
             print("Converted " + file + "..")
     print("Converting finished, now move the content of the output-folder to icons/gamename.")
     
-except:
-    print("Error! Have you created the folders and activated virtualenv?")
+except Exception as e:
+    print("Error! Have you created the folders and activated virtualenv?", e)
