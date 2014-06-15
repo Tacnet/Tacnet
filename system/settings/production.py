@@ -32,9 +32,6 @@ with open(ROOTPATH + '/../passwords/secret', 'rb') as f:
 SECRET_KEY = SECRET_KEY_READ
 
 
-with open(ROOTPATH + '/../passwords/mail', 'rb') as f:
-    mail_password = f.readline()
-
 EMAIL_HOST = '127.0.0.1'
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
