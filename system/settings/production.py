@@ -8,11 +8,11 @@ with open(ROOTPATH + '/../passwords/database', 'rb') as f:
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'tacnet-django',
+        'NAME': 'tacnet',
 
         'USER': 'tacnet',
         'PASSWORD': db_password.strip(),
-        'HOST': 'database.sylliaas.no',
+        'HOST': '127.0.0.1',
         'PORT': '',
     }
 }
