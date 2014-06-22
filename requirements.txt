@@ -2,7 +2,7 @@ django
 gunicorn
 south
 django-suit
-pil
+pillow
 django-suit-redactor
 django-object-actions
 tweetpony
