@@ -15,11 +15,11 @@ var initJSON;
 var textColor = '#000000';
 var textCounter = 1;
 
-var icons = {}; 
-var lines = {}; 
+var icons = {};
+var lines = {};
 var tempLines = {};
 var iconTrail = false;
-var startText = "TEXT"; 
+var startText = "TEXT";
 
 var undoArray = [];
 var redoArray = [];
@@ -140,7 +140,7 @@ fabricCanvas.on('mouse:down', function(e) {
             stateObject.scaleY = fabricCanvas.getActiveObject().scaleY;
             stateObject.angle = fabricCanvas.getActiveObject().angle;
             stateObject.oCoords = fabricCanvas.getActiveObject().oCoords;
-            if (typeof fabricCanvas.getActiveObject().text !== 'undefined') { 
+            if (typeof fabricCanvas.getActiveObject().text !== 'undefined') {
                 stateObject.text = fabricCanvas.getActiveObject().text;
                 stateObject.fill = fabricCanvas.getActiveObject().fill;
             }
@@ -162,7 +162,7 @@ fabricCanvas.on('mouse:up', function(e) {
     else {
         if (iconTrail && (lastState != Object.keys(lines).length)) {
             undoArray.push(tempLines);
-            tempLines = {};    
+            tempLines = {};
         }
         var currentObj = fabricCanvas.getActiveObject();
         var identical = true;
@@ -380,7 +380,7 @@ function redo() {
                     fabricCanvas.renderAll();
                 };
 
-                // Check if the icon already exists, if it doesn't, add it. 
+                // Check if the icon already exists, if it doesn't, add it.
                 if (!icons[redoObj.hash]) {
                     if (redoObj.src) {
                         addIcon(redoObj.src, redoObj.hash, false).done(setIcon);
@@ -484,7 +484,7 @@ function move(e) {
 
 // Redraws the lines from the lines-array:
 function reDraw(lines){
-    clearCanvas(false);
+    sketchContext.clearRect(0,0 , sketchCanvas.width, sketchCanvas.height);
     for (var key in lines) {
         draw(lines[key][0], lines[key][1], lines[key][2], lines[key][3], lines[key][4], false);
     }
@@ -571,7 +571,7 @@ function addIcon(icon, hash, init) {
     }
     else {
         $.bootstrapGrowl('You need drawing rights from the session host to add icons.', {
-            type: 'warning', 
+            type: 'warning',
             width: 'auto'
         });
     }
@@ -599,7 +599,7 @@ function addText(text, color, hash, init) {
                 });
             };
         })(fabricText.toObject);
-        
+
         fabricCanvas.setActiveObject(fabricText);
         icons[hash] = fabricText;
         if (init && !oHash) {
@@ -618,7 +618,7 @@ function addText(text, color, hash, init) {
     }
     else {
         $.bootstrapGrowl('You need drawing rights from the session host to add icons.', {
-            type: 'warning', 
+            type: 'warning',
             width: 'auto'
         });
     }
@@ -661,7 +661,7 @@ function setBackground(background, backgroundID, clicked, init, sendInit) {
     if (clicked) {
         if (!allowed) {
             $.bootstrapGrowl('You need drawing rights from the session host to change map.', {
-                type: 'warning', 
+                type: 'warning',
                 width: 'auto'
             });
             return;
@@ -757,6 +757,7 @@ function clearCanvas(clicked) {
         });
     }
     sketchContext.clearRect(0,0 , sketchCanvas.width, sketchCanvas.height);
+    lines = {};
 }
 
 function resetFabric(clicked) {
