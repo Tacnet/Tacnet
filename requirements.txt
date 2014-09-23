@@ -1,4 +1,4 @@
-django
+django==1.5.10
 gunicorn
 south
 django-suit
