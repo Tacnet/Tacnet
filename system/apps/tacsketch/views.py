@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from django.http import Http404
 from models import *
 from forms import MapRequestForm
@@ -10,6 +11,7 @@ from django.conf import settings
 import os
 import json
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.cache import cache_page
 
 @csrf_exempt
 @never_cache
@@ -41,17 +43,22 @@ def index(request):
         return redirect('index')
     else:
         form = MapRequestForm
-        games = Game.objects.all().order_by('name')
+
+        games = cache.get('games')
+        if not games:
+            games = Game.objects.all().order_by('name')
+            cache.set('games', games, 60*60*24)
+
         for game in games:
-            modes = GameMode.objects.filter(game = game).order_by('name')
+            modes = GameMode.objects.filter(game=game).order_by('name')
             for mode in modes:
-                maps = Map.objects.filter(game = game, gameMode = mode).order_by('name')
+                maps = Map.objects.filter(game=game, gameMode=mode).order_by('name')
                 setattr(mode, 'maps', maps)
             setattr(game, 'modes', modes)
 
     return render(request, 'tacsketch/tac.html', {'games': games, 'MapRequestForm': form})
 
-
+@cache_page(60*60*24*3)  # Cache for 3 days
 def icons(request):
 
     response_data = {}
