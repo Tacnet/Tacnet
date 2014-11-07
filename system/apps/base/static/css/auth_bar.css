@@ -2,7 +2,7 @@
     background-color: #1a1a1a;
     height: 30px;
     width: 100%;
-    position: fixed;
+    position: absolute;
     top: 0px;
     left: 0px;
     right: 0px;
