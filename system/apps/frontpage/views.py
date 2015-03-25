@@ -56,8 +56,8 @@ def contact(request):
                     email=email,
                 ),
                 message=message,
-                from_email='larek@stud.ntnu.no',
-                recipient_list=['larek@stud.ntnu.no',],
+                from_email='contact@tacnet.io',
+                recipient_list=['contact@tacnet.io',],
             )
 
             if status:

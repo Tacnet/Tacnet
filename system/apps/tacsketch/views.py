@@ -34,8 +34,8 @@ def index(request):
                     map=form.cleaned_data.get('map').strip(),
                 ),
                 message=message,
-                from_email='larek@stud.ntnu.no',
-                recipient_list=['larek@stud.ntnu.no',],
+                from_email='contact@tacnet.io',
+                recipient_list=['contact@tacnet.io',],
             )
             messages.add_message(request, messages.SUCCESS, "We have received your map suggestions. We will consider the suggestion as soon as possible.")
         else:
