@@ -16,3 +16,6 @@ scripts/iconcreator/output
 logs
 twitter_config.py
 local.py
+.coverage
+.tox/
+coverage.xml

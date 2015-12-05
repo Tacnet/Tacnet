@@ -1,8 +1,0 @@
-django==1.5.10
-gunicorn
-south
-django-suit
-pillow
-django-suit-redactor
-django-object-actions
-tweetpony
