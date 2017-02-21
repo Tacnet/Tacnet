@@ -7,8 +7,8 @@ from django.contrib import admin
 admin.autodiscover()
 
 # Custom 404 and 500 file
-handler404 = 'errors.views.error404'
-handler500 = 'errors.views.error500'
+handler404 = 'tacnet.errors.views.error404'
+handler500 = 'tacnet.errors.views.error500'
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
