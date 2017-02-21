@@ -1,0 +1,143 @@
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tacnet.io - Real-time Tactics</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Tacnet is a tool that lets teams construct tactics in real-time, without any registration or installation.">
+    <meta name="keywords" content="Tacnet,tacticsharing,bf3,bf4,csgo,cod,lol,dota2,tactics live,collaborate,atc">
+    <link rel="shortcut icon" href="/static/img/favicon.ico">
+    <!-- Bootstrap -->
+    {% if debug %}
+        <!-- Local -->
+        <link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <script src="/static/js/jquery-2.0.3.min.js"></script>
+        <script src="/static/js/bootstrap.min.js"></script>
+    {% else %}
+        <!-- CDN -->
+        <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    {% endif %}
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link href="/static/css/bootstrap-darkstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/auth_bar.css">
+
+    <!--JS-->
+    <script type='text/javascript'>
+        $(document).ready(function () {
+            if ($("[rel=tooltip]").length) {
+                $("[rel=tooltip]").tooltip();
+            }
+        });
+    </script>
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+
+{% include "base/auth/auth_bar.html" %}
+
+<div id="body_content">
+
+    {% block header %}{% endblock %}
+
+    <div class="container">
+        <nav class="navbar navbar-default" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/"><span class="glyphicon glyphicon-eye-open"></span> Tacnet.io</a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="visible-xs visible-lg"><a href="/"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                    <li class="visible-xs visible-lg"><a href="/frontpage/about"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+                    <li class="visible-xs visible-lg"><a class="contact" href="#"><span class="glyphicon glyphicon-envelope"></span> Feedback</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% block nav %}{% endblock %}
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    {% include "base/messages.html" %}
+
+    <div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="contact" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="ContactForm" action="/frontpage/contact/" method="post" role="form">
+                    {% csrf_token %}
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-envelope"></span> Contact</h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="alert alert-success contactformSuccess" style="display: none;">
+                            <strong>Success!</strong> We received your message.
+                        </div>
+
+                        <div class="alert alert-warning contactformWarning" style="display: none;">
+                            <strong>Warning!</strong> Couldn't send the message, please give all the fields a value.
+                        </div>
+
+                        <div id="contactFormContainer">
+                            {{ feedbackForm|crispy }}
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary submitContactForm">Send</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    {% block container %}{% endblock %}
+
+    <!-- Footer -->
+    <div class="container footer">
+        <div class="row">
+            <hr/>
+
+            <div class="col-md-12" style="margin-bottom: 30px;">
+                <p>Tacnet.io - <a href="/frontpage/about/">Developed by the Tacnet Team</a>.</p>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% block iconbar %}{% endblock %}
+{% if debug %}
+    <script src="/static/js/jquery.bootstrap-growl.min.js"></script>
+{% else %}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-growl/1.0.0/jquery.bootstrap-growl.min.js"></script>
+{% endif %}
+<script src="/static/js/auth.js"></script>
+
+<script src="/static/js/jquery.mobile.js"></script>
+<script src="/static/js/googleanalytics.js"></script>
+<script src="/static/js/base.js"></script>
+
+
+
+</body>
+</html>

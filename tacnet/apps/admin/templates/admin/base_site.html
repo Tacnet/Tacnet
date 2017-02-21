@@ -1,0 +1,11 @@
+{% extends "admin/base.html" %}
+{% load admin_static %}
+
+{% block footer_links %}
+    <a href="/" target="_blank" class="icon"><i class="con-folder-open"></i>Frontpage</a>
+{% endblock %}
+
+{# Footer copyright (right side) #}
+{% block copyright %}
+    Copyright &copy; {%now "Y"%} TACNET<br/>Developed by <a href="/frontpage/contact/" target="_blank">Tacnet Team</a>
+{% endblock %}

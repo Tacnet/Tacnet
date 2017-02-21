@@ -16,3 +16,5 @@ scripts/iconcreator/output
 logs
 twitter_config.py
 tacnet/settings/local.py
+
+.git/
