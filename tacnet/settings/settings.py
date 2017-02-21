@@ -94,6 +94,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'captcha',
     'crispy_forms',
+    'raven.contrib.django.raven_compat',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
