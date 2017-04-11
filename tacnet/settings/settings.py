@@ -116,6 +116,11 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
+        'sentry.errors': {
+            'level': 'DEBUG',
+            'handlers': [],
+            'propagate': False,
+        },
     }
 }
 

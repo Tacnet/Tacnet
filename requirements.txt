@@ -1,4 +1,6 @@
 uwsgi
+psycopg2
+python-memcached
 
 django==1.5.12
 South==1.0.2

@@ -74,7 +74,7 @@
 
   var styleSheet = "/togetherjs/togetherjs.css";
 
-  var baseUrl = "http://tacnet.io/static/js";
+  var baseUrl = "//tacnet.io/static/js";
   if (baseUrl == "__" + "baseUrl__") {
     // Reset the variable if it doesn't get substituted
     baseUrl = "";
