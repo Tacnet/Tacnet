@@ -4,11 +4,15 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 from django.contrib import admin
+
+from tacnet.apps.errors.views import error404, error500
+
+
 admin.autodiscover()
 
 # Custom 404 and 500 file
-handler404 = 'tacnet.errors.views.error404'
-handler500 = 'tacnet.errors.views.error500'
+handler404 = error404
+handler500 = error500
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
